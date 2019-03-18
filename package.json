@@ -16,5 +16,14 @@
   "bugs": {
     "url": "https://github.com/Bernd-L/memes-bot/issues"
   },
-  "homepage": "https://github.com/Bernd-L/memes-bot#readme"
+  "homepage": "https://github.com/Bernd-L/memes-bot#readme",
+  "devDependencies": {
+    "@types/node": "^11.11.3",
+    "tslint": "^5.14.0"
+  },
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "ts-node": "^8.0.3",
+    "typescript": "^3.3.3333"
+  }
 }
