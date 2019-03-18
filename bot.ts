@@ -1,5 +1,4 @@
+import commands from "./commands/cmd";
 import { log } from "util";
 
-var message: string = "Hello world!"; 
-
-log(message);
+log(commands);
