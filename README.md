@@ -89,5 +89,5 @@ Here are your options
 
 ## Copyright notice
 
-**Copyright 2018 TheCrether & Bernd-L.  
+**Copyright 2019 Bernd-L.  
 All rights reserved.**
