@@ -5,6 +5,7 @@
   "scripts": {
     "start": "ts-node bot.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon -e ts -w ./commands -w ./bot.ts -x ts-node ./bot.ts",
     "lint": "tslint **.ts"
   },
   "repository": {
@@ -19,9 +20,11 @@
   "homepage": "https://github.com/Bernd-L/memes-bot#readme",
   "devDependencies": {
     "@types/node": "^11.11.3",
+    "nodemon": "^1.18.10",
     "tslint": "^5.14.0"
   },
   "dependencies": {
+    "commander": "^2.19.0",
     "discord.js": "^11.4.2",
     "ts-node": "^8.0.3",
     "typescript": "^3.3.3333"
