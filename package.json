@@ -4,7 +4,8 @@
   "description": "Automates and manages meme channels for Discord guilds",
   "scripts": {
     "start": "ts-node bot.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "tslint **.ts"
   },
   "repository": {
     "type": "git",
