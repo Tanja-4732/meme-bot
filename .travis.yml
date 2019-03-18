@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "10"
+dist: trusty
+sudo: false
+
+cache:
+  directories:
+    - node_modules
+
+script:
+  - npm run lint
+
+notifications:
+  email: false
