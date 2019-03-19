@@ -75,7 +75,7 @@ export default class Cmd {
     }
     // If the command could be parsed
     log(ret.stdout.toString() + ret.stderr.toString());
-    msg.reply(ret.stdout.toString()) + ret.stderr.toString();
+    msg.reply(ret.stdout.toString() + ret.stderr.toString());
     log("ret status=" + ret.status);
   }
 }

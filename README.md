@@ -66,8 +66,8 @@ As an admin you might want to configure more settings.
 Here are your options
 
 | Command                                                             | Purpose                                                                       |
-| ------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| `!MB --init`                                                          | Initializes the MemeBot (creates config files)                                |
+|---------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| `!MB --init`                                                        | Initializes the MemeBot (creates config files)                                |
 | `!MB cmd-channel <channel_name>`                                    | Sets the channel to listen to commands to                                     |
 | `!MB admin-role <role_name>`                                        | Sets the role the bot accept commands from                                    |
 | `!MB section <section_name>`                                        | Defines a new section                                                         |
