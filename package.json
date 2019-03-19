@@ -5,7 +5,7 @@
   "scripts": {
     "start": "ts-node bot.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon -e ts -w ./commands -w ./bot.ts -x ts-node ./bot.ts",
+    "dev": "nodemon -e ts -w ./*.ts -x ts-node ./bot.ts",
     "lint": "tslint **.ts"
   },
   "repository": {
@@ -26,7 +26,9 @@
   "dependencies": {
     "commander": "^2.19.0",
     "discord.js": "^11.4.2",
+    "pg": "^7.9.0",
     "ts-node": "^8.0.3",
+    "typeorm": "^0.2.15",
     "typescript": "^3.3.3333"
   }
 }

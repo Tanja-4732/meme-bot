@@ -1,21 +1,50 @@
-import cmd from "./commands/cmd";
+import cmd from "./cmd";
 import { log } from "util";
-import { Client, Collection, Message } from "discord.js";
-import { readdirSync } from "fs";
-import Init from "./commands/controllers/init";
+import { Client, Message } from "discord.js";
+import Init from "./commands/init";
+import { createConnection, ConnectionOptions } from "typeorm";
+import Events from "./events";
+
+// Startup message
+log("Starting MemeBot");
 
 const bot: Client = new Client();
 
-const prefix: string = process.env.MB_PREFIX || "mb";
+export const prefix: string = process.env.MB_PREFIX || "mb";
 
 // Register events
-bot.on("message", (message: Message) => Init.init(bot, message));
+bot.on("message", (message: Message) => Events.message(bot, message));
+
+// Connect to the database
+createConnection({
+  type: "postgres",
+  host: process.env.MB_HOST,
+  port: parseInt(process.env.MB_PORT, 10),
+  username: process.env.MB_USER,
+  password: process.env.MB_PWD,
+  database: process.env.MB_DB,
+  ssl: true,
+  entities: [__dirname + "/models/*"],
+  synchronize: process.env.MB_MODE !== "production" || true,
+  logging: process.env.MB_LOG_DB === "3" ? true : ["error", "warn"],
+  schema: process.env.MB_SCHEMA || "mb_dev"
+} as ConnectionOptions)
+  .then(() => {
+    log("Connected to DB");
+  })
+  .catch((reason: any) => {
+    log("DB connection failed:\n" + reason);
+    process.exit(1);
+  });
 
 // Connect to Discord
-log("Logging in with token: " + process.env.MB_TOKEN);
-try {
-  bot.login(process.env.MB_TOKEN);
-} catch (error) {
-  log("Couldn't log in:\n" + error);
-  process.exit(1);
-}
+bot
+  .login(process.env.MB_TOKEN)
+  .then(() => {
+    log("Connected to Discord");
+  })
+  .catch((reason: any) => {
+    log("Discord connection failed:\n" + reason);
+    log(process.env.MB_TOKEN);
+    process.exit(2);
+  });

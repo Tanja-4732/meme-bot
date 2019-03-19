@@ -8,6 +8,8 @@
     "downvoting",
     "upvote",
     "upvoted",
-    "upvotes"
+    "upvotes",
+    "postgres",
+    "typeorm"
   ]
 }
