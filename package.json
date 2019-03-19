@@ -5,7 +5,7 @@
   "scripts": {
     "start": "ts-node bot.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon -e ts -w ./*.ts -x ts-node ./bot.ts",
+    "dev": "nodemon -e ts -w ./**/*.ts -x ts-node ./bot.ts",
     "lint": "tslint **.ts"
   },
   "repository": {

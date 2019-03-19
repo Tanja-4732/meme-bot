@@ -1,9 +1,14 @@
-import cmd from "./cmd";
-import { log } from "util";
 import { Client, Message } from "discord.js";
-import Init from "./commands/init";
 import { createConnection, ConnectionOptions } from "typeorm";
-import Events from "./events";
+import { log } from "util";
+
+import Events from "./middlewares/events";
+
+/**
+ * This is the main entry point for the application.
+ *
+ * It connects to a Postgres database, and the Discord API.
+ */
 
 // Startup message
 log("Starting MemeBot");

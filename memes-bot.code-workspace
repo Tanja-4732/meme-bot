@@ -6,11 +6,5 @@
     {
       "path": "..\\memes-bot-old"
     }
-  ],
-  "settings": {
-    "cSpell.words": [
-      "postgres",
-      "typeorm"
-    ]
-  }
+  ]
 }
