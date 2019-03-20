@@ -36,10 +36,10 @@ createConnection({
   schema: process.env.MB_SCHEMA || "mb_dev"
 } as ConnectionOptions)
   .then(() => {
-    log("Connected to DB");
+    log("Connected to database");
   })
   .catch((reason: any) => {
-    log("DB connection failed:\n" + reason);
+    log("database connection failed:\n" + reason);
     process.exit(1);
   });
 
