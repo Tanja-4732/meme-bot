@@ -7,7 +7,7 @@ import SendMsg, { CmdStatus } from "../utils/sendMsg";
 export default class Init {
   /**
    * Initializes a guild
-   * 
+   *
    * Sets the cmd channel and the admin role,
    * and adds the required records to the db.
    *
@@ -17,7 +17,11 @@ export default class Init {
    * @param {string} adminRoleRef The output-ed string of the cmdParser
    * @memberof Init
    */
-  public static async init(bot: Client, msg: Message, adminRoleRef: string): Promise<void> {
+  public static async init(
+    bot: Client,
+    msg: Message,
+    adminRoleRef: string
+  ): Promise<void> {
     log("Init...");
     /**
      * Anti-duplicate flag
@@ -28,20 +32,33 @@ export default class Init {
     try {
       // This should fail
       await GuildController.getCmdChanel(msg.guild);
+
+      // If the guild is already initialized
       alreadyInitialized = true;
     } catch (error) {
+      // If the guild isn't already initialized
       alreadyInitialized = false;
     }
-    
+
+    // Continue only if the guild isn't already initialized
     if (alreadyInitialized) {
-      SendMsg.cmdRes(bot, msg, CmdStatus.ERROR, "error: Guild already initialized");
+      // If the guild is already initialized
+      SendMsg.cmdRes(
+        bot,
+        msg,
+        CmdStatus.ERROR,
+        "error: Guild already initialized"
+      );
       return;
     }
-  
-    // GuildController.registerGuild({id: msg.guild.id, name: msg.guild.name, })
 
-    log(ParseRef.parseRoleRef(adminRoleRef));
-    log(msg.channel.id);
+    // Register the guild in the db
+    GuildController.registerGuild({
+      id: parseInt(msg.guild.id, 10),
+      name: msg.guild.name,
+      adminRoleId: parseInt(ParseRef.parseRoleRef(adminRoleRef)),
+      cmdChannelId: parseInt(msg.channel.id)
+    });
 
     log("init done.");
   }

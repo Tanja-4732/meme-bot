@@ -15,6 +15,7 @@ export default class CmdChannel {
         CmdStatus.ERROR,
         error.toString()
       );
+      return;
     }
 
     SendMsg.cmdRes(

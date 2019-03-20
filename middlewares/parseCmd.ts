@@ -8,7 +8,11 @@ import { exit, stdout } from "process";
  * It runs in a child-process of the bot.
  */
 
-
+/**
+ * Requests init and outputs adminRoleRef
+ *
+ * @param {string} adminRoleRef The mention of the admin role
+ */
 function init(adminRoleRef: string) {
   // Write the specified adminRoleRef to stdout
   stdout.write(adminRoleRef);

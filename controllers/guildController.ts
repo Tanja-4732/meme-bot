@@ -26,7 +26,7 @@ export default class GuildController {
       const guildToRegister: MGuild = { id, adminRoleId, cmdChannelId, name, admins: [] };
 
       // Add the guild-model to the db
-      await em.save(guildToRegister);
+      await em.save(MGuild, guildToRegister);
     } catch (error) {
       throw Error("Error while registering guild:\n" + error);
     }

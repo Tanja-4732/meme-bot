@@ -20,9 +20,6 @@ export default class Events {
     // Check for authorization
     // TODO
 
-
-    msg.reply(msg.guild.id);
-
     // Parse message for command
     Cmd.useCmd(bot, msg);
   }

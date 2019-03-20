@@ -3,7 +3,7 @@ import { GuildAdmin } from "./guildAdmin";
 
 @Entity()
 export class Guild {
-  @PrimaryColumn()
+  @PrimaryColumn("bigint")
   id: number;
 
   @Column()
@@ -12,9 +12,9 @@ export class Guild {
   @OneToMany(() => GuildAdmin, guildAdmin => guildAdmin.guild)
   admins: GuildAdmin[];
 
-  @Column()
+  @Column("bigint")
   adminRoleId: number;
 
-  @Column()
+  @Column("bigint")
   cmdChannelId: number
 }
