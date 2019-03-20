@@ -3,6 +3,7 @@ import { createConnection, ConnectionOptions } from "typeorm";
 import { log } from "util";
 
 import Events from "./middlewares/events";
+import SendMsg from "./utils/sendMsg";
 
 /**
  * This is the main entry point for the application.
@@ -53,3 +54,6 @@ bot
     log(process.env.MB_TOKEN);
     process.exit(2);
   });
+
+// Fetch quotes
+SendMsg.fetchQuotes();

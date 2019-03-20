@@ -7,7 +7,7 @@ import * as cmd from "commander";
  */
 
 cmd
-  .version("MemeBot version 0.1.0", "-v, --version")
+  .version("MemeBot version 0.2.0", "-v, --version")
   .option("-i, --init", "Initialize")
   .option(
     "-c <cmdChannel>, --cmd <cmdChannel>",

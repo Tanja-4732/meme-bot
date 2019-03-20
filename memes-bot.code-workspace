@@ -1,10 +1,5 @@
 {
-	"folders": [
-    {
-      "path": "."
-    },
-    {
-      "path": "..\\memes-bot-old"
-    }
-  ]
+  "folders": [{
+    "path": "."
+  }]
 }

@@ -1,6 +1,7 @@
 import { log } from "util";
 import { Client, Message } from "discord.js";
 import { spawnSync, SpawnSyncReturns } from "child_process";
+import SendMsg, { CmdStatus } from "../utils/sendMsg";
 
 /**
  * This class parses commands; it doesn't handle message, dm or any other events
@@ -70,12 +71,24 @@ export default class Cmd {
     if (oof || ret.stdout == null) {
       // If the command couldn't be parsed
       log("memebot went oof");
-      msg.reply(JSON.stringify(ret, null, 2));
+      // msg.reply(JSON.stringify(ret, null, 2));
       throw Error("Couldn't parse command");
     }
-    // If the command could be parsed
-    log(ret.stdout.toString() + ret.stderr.toString());
-    msg.reply(ret.stdout.toString() + ret.stderr.toString());
+
+    /**
+     * The error state
+     */
+    const status: CmdStatus =
+      ret.stderr.toString() === "" ? CmdStatus.SUCCESS : CmdStatus.ERROR;
+
+    /**
+     * The complete response from the parser
+     */
+    const parserResponse: string =
+      ret.stdout.toString() + ret.stderr.toString();
+
+    // Send the message as an embed
+    SendMsg.cmdRes(bot, msg, status, parserResponse);
     log("ret status=" + ret.status);
   }
 }
