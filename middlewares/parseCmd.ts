@@ -15,18 +15,46 @@ function init() {
 }
 
 function cmdChannel(channelName: string) {
+  if (channelName == null) {
+    // TODO remove
+    log("print channel name");
+    
+    // Request cmd channel to be printed
+    exit(3001);
+  }
+
+  // TODO remove
   log("Setting cmd-channel to " + channelName);
-  exit(2002);
+  
+  // Log channel name to be read later
+  log(channelName);
+
+  // Request setting the channel name
+  exit(3002);
 }
 
 program
   .version("MemeBot version 0.2.0", "-v, --version")
-  .description("MemeBot - Automates and manages meme channels for Discord guilds")
-  .option("-i, --init", "Initialize", init)
-  .option(
-    "-c <cmdChannel>, --cmd-channel <cmdChannel>",
-    "Set the cmd channel to <cmdChannel>", cmdChannel
-  )
+  .description("MemeBot - Automates and manages meme channels for Discord guilds");
+
+// Cmd-channel
+program
+.command("cmd [cmdChannel]")
+.description("Set the cmd channel to [cmdChannel], or get the current cmd channel")
+// .alias("cmd-channel <cmdChannel>")
+.alias("c")
+.action(cmdChannel);
+
+// Init
+program
+  .command("init")
+  .description("Initialize this guild")
+  .alias("i")
+  .action(init);
+
+
+
+program
   .on("--help", function(){
     log("");
     log("Examples:");

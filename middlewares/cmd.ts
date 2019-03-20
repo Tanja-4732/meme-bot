@@ -87,8 +87,20 @@ export default class Cmd {
     const parserResponse: string =
       ret.stdout.toString() + ret.stderr.toString();
 
-    // Send the message as an embed
-    SendMsg.cmdRes(bot, msg, status, parserResponse);
+    // TODO remove
     log("ret status=" + ret.status);
+
+    switch (ret.status) {
+      case 0:
+      case 1:
+        // Send the message as an embed
+        SendMsg.cmdRes(bot, msg, status, parserResponse);
+        break;
+      case 3001:
+        // Print the cmd channel
+        
+    }
+
+    
   }
 }
