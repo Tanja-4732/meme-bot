@@ -2,6 +2,8 @@ import { log } from "util";
 import { Client, Message } from "discord.js";
 import { spawnSync, SpawnSyncReturns } from "child_process";
 import SendMsg, { CmdStatus } from "../utils/sendMsg";
+import CmdChannel from "../commands/cmdChannel";
+import Init from "../commands/init";
 
 /**
  * This class parses commands; it doesn't handle message, dm or any other events
@@ -92,13 +94,23 @@ export default class Cmd {
 
     switch (ret.status) {
       case 0:
+       // Version or help
+       SendMsg.cmdRes(bot, msg, CmdStatus.INFO, parserResponse);
+       break;
       case 1:
-        // Send the message as an embed
+        // Something went wrong
         SendMsg.cmdRes(bot, msg, status, parserResponse);
+        break;
+      case 2001:
+        // Initialize guild
+        Init.init(bot, msg, ret.stdout.toString());
         break;
       case 3001:
         // Print the cmd channel
-        
+        CmdChannel.printCmdChannel(bot, msg);
+      case 4242:
+        log("Critical error, parser-fallthrough");
+        break;
     }
 
     

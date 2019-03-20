@@ -1,6 +1,6 @@
 import * as program from "commander";
 import { log } from "console";
-import { exit } from "process";
+import { exit, stdout } from "process";
 
 /**
  * This script receives the parameters and does the actual parsing.
@@ -9,25 +9,22 @@ import { exit } from "process";
  */
 
 
-function init() {
-  log("Initialize...");
+function init(adminRoleRef: string) {
+  // Write the specified adminRoleRef to stdout
+  stdout.write(adminRoleRef);
+  
+  // Request init
   exit(2001);
 }
 
 function cmdChannel(channelName: string) {
   if (channelName == null) {
-    // TODO remove
-    log("print channel name");
-    
     // Request cmd channel to be printed
     exit(3001);
   }
 
-  // TODO remove
-  log("Setting cmd-channel to " + channelName);
-  
   // Log channel name to be read later
-  log(channelName);
+  stdout.write(channelName);
 
   // Request setting the channel name
   exit(3002);
@@ -47,8 +44,9 @@ program
 
 // Init
 program
-  .command("init")
-  .description("Initialize this guild")
+  .command("init <adminRole>")
+  .description("Initialize this guild; Sets the cmd channel to the one this command is issued in"
+            + ", and the admin role to <adminRole>")
   .alias("i")
   .action(init);
 
@@ -72,4 +70,4 @@ program
 if (!program.args.length) program.help();
 
 // Exit the process
-exit(4201);
+exit(4242);

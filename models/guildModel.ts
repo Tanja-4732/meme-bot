@@ -7,7 +7,7 @@ export class Guild {
   id: number;
 
   @Column()
-  guildName: string;
+  name: string;
 
   @OneToMany(() => GuildAdmin, guildAdmin => guildAdmin.guild)
   admins: GuildAdmin[];
