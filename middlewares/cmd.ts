@@ -4,6 +4,7 @@ import { spawnSync, SpawnSyncReturns } from "child_process";
 import SendMsg, { CmdStatus } from "../utils/sendMsg";
 import CmdChannel from "../commands/cmdChannel";
 import Init from "../commands/init";
+import CheckCmd from "../utils/checkCmd";
 
 /**
  * This class parses commands; it doesn't handle message, dm or any other events
@@ -29,7 +30,7 @@ export default class Cmd {
    * @param {Message} msg The message object from an event
    * @memberof Command
    */
-  public static useCmd(bot: Client, msg: Message): void {
+  public static async useCmd(bot: Client, msg: Message): Promise<void> {
     /**
      * Error flag
      */
@@ -92,6 +93,7 @@ export default class Cmd {
     // TODO remove
     log("ret status=" + ret.status);
 
+    if (await CheckCmd.checkCmdChannelOrFail(bot, msg))
     switch (ret.status) {
       case 0:
         // Version or help

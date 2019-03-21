@@ -17,9 +17,6 @@ export default class Events {
       return;
     }
 
-    // Check for authorization
-    // TODO
-
     // Parse message for command
     Cmd.useCmd(bot, msg);
   }
