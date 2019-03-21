@@ -53,10 +53,10 @@ export default class Init {
 
     // Register the guild in the db
     GuildController.registerGuild({
-      id: parseInt(msg.guild.id, 10),
+      id: msg.guild.id,
       name: msg.guild.name,
-      adminRoleId: parseInt(ParseRef.parseRoleRef(adminRoleRef)),
-      cmdChannelId: parseInt(msg.channel.id)
+      adminRoleId: ParseRef.parseRoleRef(adminRoleRef),
+      cmdChannelId: msg.channel.id
     });
 
     // Send success

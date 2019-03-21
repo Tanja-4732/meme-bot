@@ -109,8 +109,15 @@ export default class Cmd {
         // Print the cmd channel
         CmdChannel.printCmdChannel(bot, msg);
         break;
+      case 3002:
+        // Set the cmd channel
+        CmdChannel.setCmdChannel(bot, msg, ret.stdout.toString());
+        break;
       case 4242:
         log("Critical error, parser-fallthrough");
+        break;
+      default:
+        log("Critical error, switch-fallthrough");
         break;
     }
   }

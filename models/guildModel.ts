@@ -2,15 +2,15 @@ import { Entity, PrimaryColumn, Column } from "typeorm";
 
 @Entity()
 export class Guild {
-  @PrimaryColumn("bigint")
-  id: number;
+  @PrimaryColumn()
+  id: string;
 
   @Column()
   name: string;
 
-  @Column("bigint")
-  adminRoleId: number;
+  @Column()
+  adminRoleId: string;
 
-  @Column("bigint")
-  cmdChannelId: number;
+  @Column()
+  cmdChannelId: string;
 }

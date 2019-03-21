@@ -35,7 +35,7 @@ function cmdChannel(channelName: string) {
 }
 
 program
-  .version("MemeBot version 0.3.0", "-v, --version")
+  .version("MemeBot version 0.4.0", "-v, --version")
   .description(
     "MemeBot - Automates and manages meme channels for Discord guilds"
   );
@@ -65,12 +65,16 @@ program
     log("");
     log("Examples:");
     log("");
+    log("  mb --version");
+    log("  mb -v");
     log("  mb --help");
     log("  mb -h");
-    log("  mb --init");
-    log("  mb -i");
-    log("  mb --cmd-channel #bot-commands");
-    log("  mb -c #bot-commands");
+    log("  mb init @AdminRole");
+    log("  mb i @AdminRole");
+    log("  mb cmd #bot-commands");
+    log("  mb c #bot-commands");
+    log("  mb cmd");
+    log("  mb c");
   })
   .parse(process.argv);
 

@@ -9,9 +9,9 @@ export default class GuildController {
     cmdChannelId,
     name
   }: {
-    id: number;
-    adminRoleId: number;
-    cmdChannelId: number;
+    id: string;
+    adminRoleId: string;
+    cmdChannelId: string;
     name: string;
   }): Promise<void> {
     /**
@@ -56,14 +56,61 @@ export default class GuildController {
       // Get the guild-data from the db
       g = await em.findOneOrFail(MGuild, {
         where: {
-          id: parseInt(guild.id)
+          id: guild.id
         }
       });
     } catch (error) {
       throw Error(
-        "Couldn't find guild or channel. Make sure to initialize the guild."
+        "Couldn't find guild. Make sure to initialize the guild."
       );
     }
-    return guild.channels.get(g.cmdChannelId + "");
+
+    // Validate chanel
+    if (guild.channels.get(g.cmdChannelId) == null) {
+      throw Error(
+        "Couldn't find channel. Make sure to specify an existing channel."
+      );
+    }
+
+    return guild.channels.get(g.cmdChannelId);
+  }
+
+  public static async setCmdChannel(
+    guild: Guild,
+    channelId: string
+  ): Promise<void> {
+    /**
+     * The EntityManager to perform db operations on
+     */
+    const em: EntityManager = getManager();
+
+    /**
+     * The Guild-model of the guild
+     */
+    let g: MGuild;
+
+    try {
+      // Get the guild-data from the db
+      g = await em.findOneOrFail(MGuild, {
+        where: {
+          id: guild.id
+        }
+      });
+
+      // Validate chanel
+      if (guild.channels.get(channelId) == null) {
+        throw Error();
+      }
+
+      // Set the channel
+      g.cmdChannelId = channelId;
+
+
+      em.save(g);
+    } catch (error) {
+      throw Error(
+        "Couldn't find guild or channel. Make sure to specify an existing channel and to initialize the guild."
+      );
+    }
   }
 }

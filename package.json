@@ -1,6 +1,6 @@
 {
   "name": "memes-bot",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Automates and manages meme channels for Discord guilds",
   "scripts": {
     "start": "ts-node bot.ts",
