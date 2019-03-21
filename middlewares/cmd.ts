@@ -115,6 +115,10 @@ export default class Cmd {
         // Set the cmd channel
         CmdChannel.setCmdChannel(bot, msg, ret.stdout.toString());
         break;
+      case 3003:
+        // Remove cmd channel requirement
+        CmdChannel.removeChannel(bot, msg);
+        break;
       case 4242:
         log("Critical error, parser-fallthrough");
         break;

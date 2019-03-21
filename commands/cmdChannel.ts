@@ -6,6 +6,10 @@ import ParseRef from "../utils/parseRef";
 
 export default class CmdChannel {
 
+  public static async removeChannel(bot: Client, msg: Message): Promise<void> {
+    log("Remove cmd req");
+  }
+  
   public static async getCmdChannel(bot: Client, msg: Message): Promise<GuildChannel> {
     let cmdChannel: GuildChannel;
     

@@ -21,7 +21,7 @@ function init(adminRoleRef: string) {
   exit(2001);
 }
 
-function cmdChannel(channelName: string) {
+function cmdChannel(channelName: string, cmd: any) {
   if (channelName == null) {
     // Request cmd channel to be printed
     exit(3001);
@@ -30,10 +30,20 @@ function cmdChannel(channelName: string) {
   // Log channel name to be read later
   stdout.write(channelName);
 
+  // Request the removal of the cmd channel
+  if (cmd.disable)
+  exit(3003);
+  
   // Request setting the channel name
   exit(3002);
 }
 
+// Admin role
+function adminRole(adminRoleRef: string, cmd: any) {
+  stdout.write(adminRoleRef);
+}
+
+// Start
 program
   .version("MemeBot version 0.4.0", "-v, --version")
   .description(
@@ -61,6 +71,10 @@ program
   .alias("i")
   .action(init);
 
+// Set admin role
+
+
+// Help
 program
   .on("--help", function() {
     log("");
