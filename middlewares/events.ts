@@ -16,7 +16,7 @@ export default class Events {
       // Abort command execution
       return;
     }
-    
+
     // Check for authorization
     // TODO
 

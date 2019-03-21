@@ -23,7 +23,7 @@ export default class GuildController {
       /**
        * The guild-model to be added to the db
        */
-      const guildToRegister: MGuild = { id, adminRoleId, cmdChannelId, name, admins: [] };
+      const guildToRegister: MGuild = { id, adminRoleId, cmdChannelId, name };
 
       // Add the guild-model to the db
       await em.save(MGuild, guildToRegister);
@@ -56,7 +56,7 @@ export default class GuildController {
       // Get the guild-data from the db
       g = await em.findOneOrFail(MGuild, {
         where: {
-          id: guild.id
+          id: parseInt(guild.id)
         }
       });
     } catch (error) {

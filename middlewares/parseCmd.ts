@@ -4,7 +4,7 @@ import { exit, stdout } from "process";
 
 /**
  * This script receives the parameters and does the actual parsing.
- * 
+ *
  * It runs in a child-process of the bot.
  */
 
@@ -16,7 +16,7 @@ import { exit, stdout } from "process";
 function init(adminRoleRef: string) {
   // Write the specified adminRoleRef to stdout
   stdout.write(adminRoleRef);
-  
+
   // Request init
   exit(2001);
 }
@@ -35,29 +35,33 @@ function cmdChannel(channelName: string) {
 }
 
 program
-  .version("MemeBot version 0.2.0", "-v, --version")
-  .description("MemeBot - Automates and manages meme channels for Discord guilds");
+  .version("MemeBot version 0.3.0", "-v, --version")
+  .description(
+    "MemeBot - Automates and manages meme channels for Discord guilds"
+  );
 
 // Cmd-channel
 program
-.command("cmd [cmdChannel]")
-.description("Set the cmd channel to [cmdChannel], or get the current cmd channel")
-// .alias("cmd-channel <cmdChannel>")
-.alias("c")
-.action(cmdChannel);
+  .command("cmd [cmdChannel]")
+  .description(
+    "Set the cmd channel to [cmdChannel], or get the current cmd channel"
+  )
+  // .alias("cmd-channel <cmdChannel>")
+  .alias("c")
+  .action(cmdChannel);
 
 // Init
 program
   .command("init <adminRole>")
-  .description("Initialize this guild; Sets the cmd channel to the one this command is issued in"
-            + ", and the admin role to <adminRole>")
+  .description(
+    "Initialize this guild; Sets the cmd channel to the one this command is issued in" +
+      ", and the admin role to <adminRole>"
+  )
   .alias("i")
   .action(init);
 
-
-
 program
-  .on("--help", function(){
+  .on("--help", function() {
     log("");
     log("Examples:");
     log("");

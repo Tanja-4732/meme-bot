@@ -1,5 +1,4 @@
-import { Entity, PrimaryColumn, Column, OneToMany } from "typeorm";
-import { GuildAdmin } from "./guildAdmin";
+import { Entity, PrimaryColumn, Column } from "typeorm";
 
 @Entity()
 export class Guild {
@@ -9,12 +8,9 @@ export class Guild {
   @Column()
   name: string;
 
-  @OneToMany(() => GuildAdmin, guildAdmin => guildAdmin.guild)
-  admins: GuildAdmin[];
-
   @Column("bigint")
   adminRoleId: number;
 
   @Column("bigint")
-  cmdChannelId: number
+  cmdChannelId: number;
 }

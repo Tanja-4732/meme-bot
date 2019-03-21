@@ -1,11 +1,10 @@
 {
   "folders": [{
     "path": "."
+  }],
+  "settings": {
+    "cSpell.words": [
+      "bigint"
+    ]
   }
-],
-"settings": {
-  "cSpell.words": [
-    "bigint"
-  ]
-}
 }

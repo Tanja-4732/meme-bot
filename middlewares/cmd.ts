@@ -94,9 +94,9 @@ export default class Cmd {
 
     switch (ret.status) {
       case 0:
-       // Version or help
-       SendMsg.cmdRes(bot, msg, CmdStatus.INFO, parserResponse);
-       break;
+        // Version or help
+        SendMsg.cmdRes(bot, msg, CmdStatus.INFO, parserResponse);
+        break;
       case 1:
         // Something went wrong
         SendMsg.cmdRes(bot, msg, status, parserResponse);
@@ -113,7 +113,5 @@ export default class Cmd {
         log("Critical error, parser-fallthrough");
         break;
     }
-
-    
   }
 }

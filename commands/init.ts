@@ -22,11 +22,10 @@ export default class Init {
     msg: Message,
     adminRoleRef: string
   ): Promise<void> {
-    log("Init...");
     /**
      * Anti-duplicate flag
      */
-    let alreadyInitialized: boolean;
+    let alreadyInitialized: boolean = false;
 
     // Check if guild is already initialized
     try {
@@ -60,6 +59,12 @@ export default class Init {
       cmdChannelId: parseInt(msg.channel.id)
     });
 
-    log("init done.");
+    // Send success
+    SendMsg.cmdRes(
+      bot,
+      msg,
+      CmdStatus.SUCCESS,
+      "Guild successfully initialized.\n\n" + "Welcome to MemeBot!"
+    );
   }
 }
