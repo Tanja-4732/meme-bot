@@ -48,6 +48,7 @@ program
   )
   // .alias("cmd-channel <cmdChannel>")
   .alias("c")
+  .option("-d, --disable", "Disable the cmd channel check")
   .action(cmdChannel);
 
 // Init
@@ -67,10 +68,13 @@ program
     log("");
     log("  mb --version");
     log("  mb -v");
+    log("");
     log("  mb --help");
     log("  mb -h");
+    log("");
     log("  mb init @AdminRole");
     log("  mb i @AdminRole");
+    log("");
     log("  mb cmd #bot-commands");
     log("  mb c #bot-commands");
     log("  mb cmd");
