@@ -76,10 +76,10 @@ program
 
 // Help
 program
-  .option("-e, --example", "Print examples with the help output")
+  .option("-e, --examples", "Print examples with the help output")
   .on("--help", function() {
     log("");
-    if (program.example) {
+    if (program.examples) {
       log("Examples:");
       log("");
       log("  mb --version");
@@ -96,7 +96,7 @@ program
       log("  mb cmd");
       log("  mb c");
     } else {
-      log("  Print examples using --examples -h");
+      log("Print examples using --examples or -e");
     }
   })
 
