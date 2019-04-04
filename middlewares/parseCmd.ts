@@ -76,24 +76,32 @@ program
 
 // Help
 program
+  .option("-e, --examples", "Print examples with the help output")
   .on("--help", function() {
     log("");
-    log("Examples:");
-    log("");
-    log("  mb --version");
-    log("  mb -v");
-    log("");
-    log("  mb --help");
-    log("  mb -h");
-    log("");
-    log("  mb init @AdminRole");
-    log("  mb i @AdminRole");
-    log("");
-    log("  mb cmd #bot-commands");
-    log("  mb c #bot-commands");
-    log("  mb cmd");
-    log("  mb c");
+    if (program.examples) {
+      log("Examples:");
+      log("");
+      log("  mb --version");
+      log("  mb -v");
+      log("");
+      log("  mb --help");
+      log("  mb -h");
+      log("");
+      log("  mb init @AdminRole");
+      log("  mb i @AdminRole");
+      log("");
+      log("  mb cmd #bot-commands");
+      log("  mb c #bot-commands");
+      log("  mb cmd");
+      log("  mb c");
+    } else {
+      log("Print examples using --examples or -e");
+    }
   })
+
+// Parse
+program
   .parse(process.argv);
 
 // Print help if no args are defined
