@@ -31,16 +31,25 @@ function cmdChannel(channelName: string, cmd: any) {
   stdout.write(channelName);
 
   // Request the removal of the cmd channel
-  if (cmd.disable)
-  exit(3003);
-  
+  if (cmd.disable) exit(3003);
+
   // Request setting the channel name
   exit(3002);
 }
 
 // Admin role
-function adminRole(adminRoleRef: string, cmd: any) {
+function setAdminRole(adminRoleRef: string, cmd: any) {
+  // Output the desired adminRoleRef
   stdout.write(adminRoleRef);
+
+  // Check if force is used
+  if (cmd.force) {
+    // Request an admin role change using force
+    process.exit(4002);
+  } else {
+    // Request an admin role change without force
+    process.exit(4001);
+  }
 }
 
 // Start
@@ -72,7 +81,17 @@ program
   .action(init);
 
 // Set admin role
-
+program
+  .command("admin [adminRole]")
+  .description(
+    "Set the admin role to [adminRole] (use a @roleReference), or get the current admin role"
+  )
+  .alias("a")
+  .option(
+    "-f, --force",
+    "Change the admin role even if it means losing access to the bot"
+  )
+  .action(setAdminRole);
 
 // Help
 program
@@ -98,11 +117,10 @@ program
     } else {
       log("Print examples using --examples or -e");
     }
-  })
+  });
 
 // Parse
-program
-  .parse(process.argv);
+program.parse(process.argv);
 
 // Print help if no args are defined
 if (!program.args.length) program.help();

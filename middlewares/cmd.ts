@@ -5,6 +5,7 @@ import SendMsg, { CmdStatus } from "../utils/sendMsg";
 import CmdChannel from "../commands/cmdChannel";
 import Init from "../commands/init";
 import CheckCmd from "../utils/checkCmd";
+import AdminRole from "../commands/adminRole";
 
 /**
  * This class parses commands; it doesn't handle message, dm or any other events
@@ -93,38 +94,80 @@ export default class Cmd {
     // TODO remove
     log("ret status=" + ret.status);
 
-    if (await CheckCmd.checkCmdChannelOrFail(bot, msg))
-    switch (ret.status) {
-      case 0:
-        // Version or help
-        SendMsg.cmdRes(bot, msg, CmdStatus.INFO, parserResponse);
-        break;
-      case 1:
-        // Something went wrong
-        SendMsg.cmdRes(bot, msg, status, parserResponse);
-        break;
-      case 2001:
-        // Initialize guild
-        Init.init(bot, msg, ret.stdout.toString());
-        break;
-      case 3001:
-        // Print the cmd channel
-        CmdChannel.printCmdChannel(bot, msg);
-        break;
-      case 3002:
-        // Set the cmd channel
-        CmdChannel.setCmdChannel(bot, msg, ret.stdout.toString());
-        break;
-      case 3003:
-        // Remove cmd channel requirement
-        CmdChannel.removeChannel(bot, msg);
-        break;
-      case 4242:
-        log("Critical error, parser-fallthrough");
-        break;
-      default:
-        log("Critical error, switch-fallthrough");
-        break;
+    try {
+      // Assure the message was sent from the cmd channel
+      if (await CheckCmd.checkCmdChannelOrFail(bot, msg)) {
+        // Call a static method to handle the requested command based on the status
+        switch (ret.status) {
+          case 0:
+            // Version or help
+            SendMsg.cmdRes(bot, msg, CmdStatus.INFO, parserResponse);
+            break;
+          case 1:
+            // Something went wrong
+            SendMsg.cmdRes(bot, msg, status, parserResponse);
+            break;
+          case 2001:
+            // Initialize guild
+            Init.init(bot, msg, ret.stdout.toString());
+            break;
+          case 3001:
+            // Print the cmd channel
+            CmdChannel.printCmdChannel(bot, msg);
+            break;
+          case 3002:
+            // Set the cmd channel
+            CmdChannel.setCmdChannel(bot, msg, ret.stdout.toString());
+            break;
+          case 3003:
+            // Remove cmd channel requirement
+            CmdChannel.removeChannel(bot, msg);
+            break;
+          case 4001:
+            // Set the admin role without force
+            AdminRole.setAdminRole(bot, msg, ret.stdout.toString());
+            break;
+          case 4002:
+            // Set the admin role using force
+            AdminRole.setAdminRoleForce(bot, msg, ret.stdout.toString());
+            break;
+          case 4242:
+            log("Critical error, parser-fallthrough");
+            break;
+          default:
+            log("Critical error, switch-fallthrough");
+            break;
+        }
+      } else {
+        // When the message wasn't sent from the cmd channel
+      }
+    } catch (error) {
+      switch (ret.status) {
+        // When the guild isn't initialized
+        case 0:
+          // Version or help
+          SendMsg.cmdRes(bot, msg, CmdStatus.INFO, parserResponse);
+          break;
+        case 1:
+          // Something went wrong
+          SendMsg.cmdRes(bot, msg, status, parserResponse);
+          break;
+        case 2001:
+          // Initialize guild
+          Init.init(bot, msg, ret.stdout.toString());
+          break;
+        case 4242:
+          log("Critical error, parser-fallthrough");
+          break;
+        default:
+          SendMsg.cmdRes(
+            bot,
+            msg,
+            CmdStatus.ERROR,
+            "error: Guild not initialized"
+          );
+          break;
+      }
     }
   }
 }
