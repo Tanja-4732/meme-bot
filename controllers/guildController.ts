@@ -180,6 +180,10 @@ export default class GuildController {
         }
       });
 
+      log("Got this far 1");
+
+      log("roles:\n" + JSON.stringify(guild.roles, null ,2));
+
       // Validate role
       if (guild.roles.get(roleId) == null) {
         throw new Error("Invalid role");
@@ -187,7 +191,7 @@ export default class GuildController {
 
       // Set the channel
       g.adminRoleId = roleId;
-        log("Got this far");
+        log("Got this far 2");
 
 
       em.save(g);
