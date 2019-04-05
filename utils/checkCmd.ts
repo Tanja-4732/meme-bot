@@ -7,6 +7,7 @@ export default class CheckCmd {
     bot: Client,
     msg: Message
   ): Promise<boolean> {
-    return (await CmdChannel.getCmdChannel(bot, msg)).id === msg.channel.id;
+    const cmdChannel = (await CmdChannel.getCmdChannel(bot, msg)).id;
+    return cmdChannel === msg.channel.id;
   }
 }

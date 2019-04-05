@@ -76,7 +76,7 @@ export default class Cmd {
       // If the command couldn't be parsed
       log("memebot went oof");
       // msg.reply(JSON.stringify(ret, null, 2));
-      throw Error("Couldn't parse command");
+      throw new Error("Couldn't parse command");
     }
 
     /**
@@ -96,9 +96,12 @@ export default class Cmd {
 
     try {
       // Assure the message was sent from the cmd channel
-      if (await CheckCmd.checkCmdChannelOrFail(bot, msg)) {
+      const sentInCmdChannel = await CheckCmd.checkCmdChannelOrFail(bot, msg);
+      log("sentInCmdChannel=" + sentInCmdChannel);
+      if (sentInCmdChannel) {
         // Call a static method to handle the requested command based on the status
         switch (ret.status) {
+          // Resolve here
           case 0:
             // Version or help
             SendMsg.cmdRes(bot, msg, CmdStatus.INFO, parserResponse);
@@ -107,10 +110,14 @@ export default class Cmd {
             // Something went wrong
             SendMsg.cmdRes(bot, msg, status, parserResponse);
             break;
+          
+          // 2 Initialize
           case 2001:
             // Initialize guild
             Init.init(bot, msg, ret.stdout.toString());
             break;
+
+          // 3 Cmd channel
           case 3001:
             // Print the cmd channel
             CmdChannel.printCmdChannel(bot, msg);
@@ -123,6 +130,8 @@ export default class Cmd {
             // Remove cmd channel requirement
             CmdChannel.removeChannel(bot, msg);
             break;
+
+          // 4 Admin role
           case 4001:
             // Set the admin role without force
             AdminRole.setAdminRole(bot, msg, ret.stdout.toString());
@@ -131,8 +140,14 @@ export default class Cmd {
             // Set the admin role using force
             AdminRole.setAdminRoleForce(bot, msg, ret.stdout.toString());
             break;
+          case 4003:
+            // Print the admin role
+            AdminRole.printAdminRole(bot, msg);
+            break;
+
+          // Errors
           case 4242:
-            log("Critical error, parser-fallthrough");
+           SendMsg.cmdRes(bot, msg, CmdStatus.ERROR, "error: No such command");
             break;
           default:
             log("Critical error, switch-fallthrough");
@@ -157,7 +172,7 @@ export default class Cmd {
           Init.init(bot, msg, ret.stdout.toString());
           break;
         case 4242:
-          log("Critical error, parser-fallthrough");
+         SendMsg.cmdRes(bot, msg, CmdStatus.ERROR, "error: No such command");
           break;
         default:
           SendMsg.cmdRes(

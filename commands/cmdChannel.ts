@@ -16,7 +16,7 @@ export default class CmdChannel {
     try {
      cmdChannel = await GuildController.getCmdChanel(msg.guild);
     } catch (error) {
-      throw Error("Couldn't find the cmd channel")
+      throw new Error("Couldn't find the cmd channel")
     }
 
     return cmdChannel;
@@ -41,7 +41,7 @@ export default class CmdChannel {
       bot,
       msg,
       CmdStatus.INFO,
-      "Cmd channel is #" + cmdChannel.name
+      "The cmd channel is #" + cmdChannel.name
     );
   }
 

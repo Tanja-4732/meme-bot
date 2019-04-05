@@ -1,6 +1,7 @@
-import { Guild, GuildChannel } from "discord.js";
+import { Guild, GuildChannel, Role } from "discord.js";
 import { Guild as MGuild } from "../models/guildModel";
 import { EntityManager, getManager } from "typeorm";
+import { log } from "util";
 
 export default class GuildController {
   public static async registerGuild({
@@ -28,7 +29,7 @@ export default class GuildController {
       // Add the guild-model to the db
       await em.save(MGuild, guildToRegister);
     } catch (error) {
-      throw Error("Error while registering guild:\n" + error);
+      throw new Error("Error while registering guild:\n" + error);
     }
   }
 
@@ -60,14 +61,14 @@ export default class GuildController {
         }
       });
     } catch (error) {
-      throw Error(
+      throw new Error(
         "Couldn't find guild. Make sure to initialize the guild."
       );
     }
 
     // Validate chanel
     if (guild.channels.get(g.cmdChannelId) == null) {
-      throw Error(
+      throw new Error(
         "Couldn't find channel. Make sure to specify an existing channel."
       );
     }
@@ -99,7 +100,7 @@ export default class GuildController {
 
       // Validate chanel
       if (guild.channels.get(channelId) == null) {
-        throw Error();
+        throw new Error();
       }
 
       // Set the channel
@@ -108,8 +109,91 @@ export default class GuildController {
 
       em.save(g);
     } catch (error) {
-      throw Error(
+      throw new Error(
         "Couldn't find guild or channel. Make sure to specify an existing channel and to initialize the guild."
+      );
+    }
+  }
+
+  static async getAdminRole(guild: Guild): Promise<Role> {
+    /**
+     * The EntityManager to perform db operations on
+     */
+    const em: EntityManager = getManager();
+
+    /**
+     * The Guild-model of the guild
+     */
+    let g: MGuild;
+
+    try {
+      // Get the guild-data from the db
+      g = await em.findOneOrFail(MGuild, {
+        where: {
+          id: guild.id
+        }
+      });
+    } catch (error) {
+      throw new Error(
+        "Couldn't find guild. Make sure to initialize the guild."
+      );
+    }
+
+    // Validate role
+    if (guild.roles.get(g.adminRoleId) == null) {
+      throw new Error(
+        "Couldn't find role. Make sure to specify an existing role."
+      );
+    }
+
+    return guild.roles.get(g.adminRoleId);
+  }
+
+  /**
+   * Sets the admin role for a guild on the db
+   *
+   * @static
+   * @param {Guild} guild The discord.js guild object
+   * @param {string} roleId The parsed role id
+   * @returns {Promise<void>}
+   * @memberof GuildController
+   */
+  public static async setAdminRole(
+    guild: Guild,
+    roleId: string
+  ): Promise<void> {
+    /**
+     * The EntityManager to perform db operations on
+     */
+    const em: EntityManager = getManager();
+
+    /**
+     * The Guild-model of the guild
+     */
+    let g: MGuild;
+
+    try {
+      // Get the guild-data from the db
+      g = await em.findOneOrFail(MGuild, {
+        where: {
+          id: guild.id
+        }
+      });
+
+      // Validate role
+      if (guild.roles.get(roleId) == null) {
+        throw new Error("Invalid role");
+      }
+
+      // Set the channel
+      g.adminRoleId = roleId;
+        log("Got this far");
+
+
+      em.save(g);
+    } catch (error) {
+      throw new Error(
+        "Couldn't find guild or role. Make sure to specify an existing role and to initialize the guild."
       );
     }
   }

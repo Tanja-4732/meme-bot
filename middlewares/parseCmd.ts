@@ -39,16 +39,21 @@ function cmdChannel(channelName: string, cmd: any) {
 
 // Admin role
 function setAdminRole(adminRoleRef: string, cmd: any) {
-  // Output the desired adminRoleRef
-  stdout.write(adminRoleRef);
-
-  // Check if force is used
-  if (cmd.force) {
-    // Request an admin role change using force
-    process.exit(4002);
+  // Check if a admin role was specified
+  if (adminRoleRef != null) {
+    // Output the desired adminRoleRef
+    stdout.write(adminRoleRef);
+    // Check if force is used
+    if (cmd.force) {
+      // Request an admin role change using force
+      process.exit(4002);
+    } else {
+      // Request an admin role change without force
+      process.exit(4001);
+    }
   } else {
-    // Request an admin role change without force
-    process.exit(4001);
+    // Request the admin role to be printed
+    process.exit(4003);
   }
 }
 
