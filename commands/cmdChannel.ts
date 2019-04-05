@@ -41,7 +41,7 @@ export default class CmdChannel {
       bot,
       msg,
       CmdStatus.INFO,
-      "Cmd channel is " + cmdChannel.name
+      "Cmd channel is #" + cmdChannel.name
     );
   }
 
@@ -70,7 +70,7 @@ export default class CmdChannel {
       bot,
       msg,
       CmdStatus.SUCCESS,
-      "Set cmd channel to " + cmdChannel.name
+      "Set cmd channel to #" + cmdChannel.name
     );
   }
 }
