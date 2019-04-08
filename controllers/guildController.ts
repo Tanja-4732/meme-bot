@@ -182,7 +182,9 @@ export default class GuildController {
 
       log("Got this far 1");
 
-      log("roles:\n" + JSON.stringify(guild.roles, null ,2));
+      
+
+      log("roles:\n" + JSON.stringify(guild, null ,2));
 
       // Validate role
       if (guild.roles.get(roleId) == null) {

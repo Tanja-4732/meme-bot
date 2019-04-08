@@ -17,6 +17,7 @@ export default class AdminRole {
     let adminRole: Role;
 
     try {
+      log("roles:\n" + JSON.stringify(msg.guild, null ,2));
      adminRole = msg.guild.roles.get(parsedRef);
      await GuildController.setAdminRole(msg.guild, parsedRef);
     } catch (error) {
