@@ -2,8 +2,8 @@ import { Client, Message } from "discord.js";
 import { createConnection, ConnectionOptions } from "typeorm";
 import { log } from "util";
 
-import Events from "./src/middlewares/events";
-import SendMsg from "./src/utils/sendMsg";
+import Events from "./middlewares/events";
+import SendMsg from "./utils/sendMsg";
 
 /**
  * This is the main entry point for the application.

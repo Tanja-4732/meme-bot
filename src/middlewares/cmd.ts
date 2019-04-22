@@ -40,7 +40,6 @@ export default class Cmd {
     /**
      * Return variable
      */
-
     let ret: SpawnSyncReturns<String>;
     try {
       /**
@@ -50,9 +49,9 @@ export default class Cmd {
        * later, they get the user-defined ones concatenated.
        */
       let args: string[] = [
-        "-r",
-        "ts-node/register",
-        "./middlewares/parseCmd.ts"
+        // "-r",
+        // "ts-node/register",
+        "./dist/middlewares/parseCmd.js"
       ];
 
       // Concat the user-specified parameters to the others
@@ -110,7 +109,7 @@ export default class Cmd {
             // Something went wrong
             SendMsg.cmdRes(bot, msg, status, parserResponse);
             break;
-          
+
           // 2 Initialize
           case 2001:
             // Initialize guild
@@ -147,7 +146,7 @@ export default class Cmd {
 
           // Errors
           case 4242:
-           SendMsg.cmdRes(bot, msg, CmdStatus.ERROR, "error: No such command");
+            SendMsg.cmdRes(bot, msg, CmdStatus.ERROR, "error: No such command");
             break;
           default:
             log("Critical error, switch-fallthrough");
@@ -172,7 +171,7 @@ export default class Cmd {
           Init.init(bot, msg, ret.stdout.toString());
           break;
         case 4242:
-         SendMsg.cmdRes(bot, msg, CmdStatus.ERROR, "error: No such command");
+          SendMsg.cmdRes(bot, msg, CmdStatus.ERROR, "error: No such command");
           break;
         default:
           SendMsg.cmdRes(

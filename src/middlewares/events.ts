@@ -1,7 +1,7 @@
 import { Client, Message } from "discord.js";
 import { log } from "util";
 import Cmd from "./cmd";
-import { prefix } from "../../bot";
+import { prefix } from "../bot";
 
 export default class Events {
   public static message(bot: Client, msg: Message): void {

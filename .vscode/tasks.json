@@ -5,16 +5,49 @@
       "label": "Transpile TypeScript",
       "type": "typescript",
       "tsconfig": "tsconfig.json",
-      "options": { "shell": { "executable": "powershell.exe" } },
-      "problemMatcher": ["$tsc"]
+      "options": {
+        "shell": {
+          "executable": "powershell.exe"
+        }
+      },
+      "problemMatcher": [
+        "$tsc"
+      ],
+      "group": "build"
     },
     {
       "label": "Watch TypeScript",
       "type": "typescript",
       "tsconfig": "tsconfig.json",
       "option": "watch",
-      "options": { "shell": { "executable": "powershell.exe" } },
-      "problemMatcher": ["$tsc-watch"]
+      "options": {
+        "shell": {
+          "executable": "powershell.exe"
+        }
+      },
+      "problemMatcher": [
+        "$tsc-watch"
+      ],
+      "group": "build"
+    },
+    {
+      "label": "Nodemon",
+      "type": "shell",
+      "command": "nodemon -x ./dist/bot.js -w ./dist/**/*.js --ignore ./**/parseCmd.js ",
+      "problemMatcher": [],
+      "group": "build",
+      "dependsOn": [
+        "Watch Typescript"
+      ]
+    },
+    {
+      "label": "dev",
+      "type": "process",
+      "command": "",
+      "dependsOn": [
+        "Watch TypeScript",
+        "Nodemon"
+      ]
     }
   ]
 }
