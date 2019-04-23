@@ -3,9 +3,10 @@
   "version": "0.4.0",
   "description": "Automates and manages meme channels for Discord guilds",
   "scripts": {
-    "start": "tsc && node ./dist/bot.js",
+    "start": "node ./dist/bot.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "tslint **.ts"
+    "lint": "tslint **.ts",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
