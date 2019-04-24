@@ -59,7 +59,7 @@ function setAdminRole(adminRoleRef: string, cmd: any) {
 
 // Start
 program
-  .version("MemeBot version 0.4.0", "-v, --version")
+  .version("MemeBot version 0.5.0", "-v, --version")
   .description(
     "MemeBot - Automates and manages meme channels for Discord guilds"
   );
