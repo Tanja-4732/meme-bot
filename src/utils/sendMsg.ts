@@ -42,6 +42,23 @@ export default class SendMsg {
     msg.channel.send(re);
   }
 
+  public static confession(){
+    /**
+     * The RichEmbed to be sent into the channel
+     */
+    let re: RichEmbed = new RichEmbed()
+      .setColor(710071)
+      .setTitle(title || "")
+      .setAuthor(msg.author.username, msg.author.avatarURL)
+      .setDescription(msg.author.toString() || "")
+      .addField(status, "```\n" + text + "```")
+      .setTimestamp()
+      .setFooter(this.getQuote());
+
+    // Send the RichEmbed into the target channel
+    msg.channel.send(re);
+  }
+
   /**
    * Gets the color for the embeds border based on a status
    *

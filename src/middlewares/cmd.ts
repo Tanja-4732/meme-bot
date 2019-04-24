@@ -268,8 +268,8 @@ export default class Cmd {
           SendMsg.cmdRes(bot, msg, status, parserResponse);
           break;
 
-        // 2 Submit post
-
+        // 2 Submit confession
+        
 
         // Errors
         case 4242:
