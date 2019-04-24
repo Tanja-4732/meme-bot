@@ -19,12 +19,13 @@ export default class GuildController {
      * The EntityManager to perform db operations on
      */
     const em: EntityManager = getManager();
+    const oneNiceNull: null = null;
 
     try {
       /**
        * The guild-model to be added to the db
        */
-      const guildToRegister: MGuild = { id, adminRoleId, cmdChannelId, name };
+      const guildToRegister: MGuild = { id, adminRoleId, cmdChannelId, name, oneNiceNull };
 
       // Add the guild-model to the db
       await em.save(MGuild, guildToRegister);

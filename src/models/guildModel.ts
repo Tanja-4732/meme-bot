@@ -1,4 +1,5 @@
-import { Entity, PrimaryColumn, Column } from "typeorm";
+import { Entity, PrimaryColumn, Column, OneToMany } from "typeorm";
+import PostingGroup from "./postingGroup";
 
 @Entity()
 export class Guild {
@@ -16,4 +17,7 @@ export class Guild {
 
   @Column({nullable: true})
   confessionChannelId: string;
+
+  @OneToMany(() => PostingGroup, postingGroup => postingGroup.guildModel)
+  postingGroups: PostingGroup[];
 }

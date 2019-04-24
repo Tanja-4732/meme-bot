@@ -1,8 +1,10 @@
-import { Client, Message, RichEmbed } from "discord.js";
+import { Client, Message, RichEmbed, TextChannel, Role } from "discord.js";
 import { log } from "util";
 import request = require("request-promise-native");
 
 export default class SendMsg {
+  public static readonly questionMarkImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Icon-round-Question_mark.svg/1024px-Icon-round-Question_mark.svg.png";
+
   /**
    * Sends an embed with a quote into the channel of the message, mentioning
    * the user who triggered it, using a code block for the contents.
@@ -42,14 +44,21 @@ export default class SendMsg {
     msg.channel.send(re);
   }
 
-  public static confession(){
+  public static confession(
+    bot: Client,
+    channel: TextChannel,
+    groupRole: Role,
+    text: string,
+    imageUrl?: string,
+    age?: number
+  ) {
     /**
      * The RichEmbed to be sent into the channel
      */
     let re: RichEmbed = new RichEmbed()
-      .setColor(710071)
-      .setTitle(title || "")
-      .setAuthor(msg.author.username, msg.author.avatarURL)
+      .setColor(groupRole.color)
+      .setAuthor(age == null ? groupRole.name : groupRole.name + " (" + age + ")",
+        imageUrl || this.questionMarkImageUrl)
       .setDescription(msg.author.toString() || "")
       .addField(status, "```\n" + text + "```")
       .setTimestamp()

@@ -3,6 +3,9 @@ import { Guild as GuildModel } from "./guildModel";
 
 @Entity()
 export default class PostingGroup {
-  @ManyToOne()
-  guildModel: GuildModel
+  @ManyToOne(() => GuildModel, guildModel => guildModel.postingGroups, { primary: true })
+  guildModel: GuildModel;
+
+  @Column({ primary: true })
+  roleId: string;
 }
