@@ -17,9 +17,9 @@ export default class AdminRole {
     let adminRole: Role;
 
     try {
-      log("roles:\n" + JSON.stringify(msg.guild, null ,2));
-     adminRole = msg.guild.roles.get(parsedRef);
-     await GuildController.setAdminRole(msg.guild, parsedRef);
+      log("roles:\n" + JSON.stringify(msg.guild, null, 2));
+      adminRole = msg.guild.roles.get(parsedRef);
+      await GuildController.setAdminRole(msg.guild, parsedRef);
     } catch (error) {
       SendMsg.cmdRes(
         bot,
@@ -37,16 +37,30 @@ export default class AdminRole {
       CmdStatus.SUCCESS,
       "Set admin role to @" + adminRole.name
     );
-  
+
   }
 
   static async printAdminRole(bot: Client, msg: Message): Promise<void> {
     log("Printing admin role");
-    
-    let adminRole: Role;
-    
+
+
+
+
+
+
+
+
+    SendMsg.cmdRes(
+      bot,
+      msg,
+      CmdStatus.INFO,
+      "The admin role is @" + (await this.getAdminRole(bot, msg)).name
+    );
+  }
+
+  public static async getAdminRole(bot: Client, msg: Message): Promise<Role> {
     try {
-     adminRole = await GuildController.getAdminRole(msg.guild);
+      return await GuildController.getAdminRole(msg.guild);
     } catch (error) {
       SendMsg.cmdRes(
         bot,
@@ -56,12 +70,5 @@ export default class AdminRole {
       );
       return;
     }
-
-    SendMsg.cmdRes(
-      bot,
-      msg,
-      CmdStatus.INFO,
-      "The admin role is @" + adminRole.name
-    );
   }
 }

@@ -6,7 +6,8 @@
     "start": "node ./dist/bot.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "tslint **.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "nodemon": "nodemon"
   },
   "repository": {
     "type": "git",

@@ -95,63 +95,74 @@ export default class Cmd {
 
     try {
       // Assure the message was sent from the cmd channel
-      const sentInCmdChannel = await CheckCmd.checkCmdChannelOrFail(bot, msg);
+      const sentInCmdChannel = await CheckCmd.isInCmdChannel(bot, msg);
       log("sentInCmdChannel=" + sentInCmdChannel);
       if (sentInCmdChannel) {
-        // Call a static method to handle the requested command based on the status
-        switch (ret.status) {
-          // Resolve here
-          case 0:
-            // Version or help
-            SendMsg.cmdRes(bot, msg, CmdStatus.INFO, parserResponse);
-            break;
-          case 1:
-            // Something went wrong
-            SendMsg.cmdRes(bot, msg, status, parserResponse);
-            break;
 
-          // 2 Initialize
-          case 2001:
-            // Initialize guild
-            Init.init(bot, msg, ret.stdout.toString());
-            break;
+        // Check auth
+        if (CheckCmd.hasAdminRole(bot, msg)) {
 
-          // 3 Cmd channel
-          case 3001:
-            // Print the cmd channel
-            CmdChannel.printCmdChannel(bot, msg);
-            break;
-          case 3002:
-            // Set the cmd channel
-            CmdChannel.setCmdChannel(bot, msg, ret.stdout.toString());
-            break;
-          case 3003:
-            // Remove cmd channel requirement
-            CmdChannel.removeChannel(bot, msg);
-            break;
+          // If authorized, call a static method to handle the requested command based on the status
+          switch (ret.status) {
+            // Resolve here
+            case 0:
+              // Version or help
+              SendMsg.cmdRes(bot, msg, CmdStatus.INFO, parserResponse);
+              break;
+            case 1:
+              // Something went wrong
+              SendMsg.cmdRes(bot, msg, status, parserResponse);
+              break;
 
-          // 4 Admin role
-          case 4001:
-            // Set the admin role without force
-            AdminRole.setAdminRole(bot, msg, ret.stdout.toString());
-            break;
-          case 4002:
-            // Set the admin role using force
-            AdminRole.setAdminRoleForce(bot, msg, ret.stdout.toString());
-            break;
-          case 4003:
-            // Print the admin role
-            AdminRole.printAdminRole(bot, msg);
-            break;
+            // 2 Initialize
+            case 2001:
+              // Initialize guild
+              Init.init(bot, msg, ret.stdout.toString());
+              break;
 
-          // Errors
-          case 4242:
-            SendMsg.cmdRes(bot, msg, CmdStatus.ERROR, "error: No such command");
-            break;
-          default:
-            log("Critical error, switch-fallthrough");
-            break;
+            // 3 Cmd channel
+            case 3001:
+              // Print the cmd channel
+              CmdChannel.printCmdChannel(bot, msg);
+              break;
+            case 3002:
+              // Set the cmd channel
+              CmdChannel.setCmdChannel(bot, msg, ret.stdout.toString());
+              break;
+            case 3003:
+              // Remove cmd channel requirement
+              CmdChannel.removeChannel(bot, msg);
+              break;
+
+            // 4 Admin role
+            case 4001:
+              // Set the admin role without force
+              AdminRole.setAdminRole(bot, msg, ret.stdout.toString());
+              break;
+            case 4002:
+              // Set the admin role using force
+              AdminRole.setAdminRoleForce(bot, msg, ret.stdout.toString());
+              break;
+            case 4003:
+              // Print the admin role
+              AdminRole.printAdminRole(bot, msg);
+              break;
+
+            // Errors
+            case 4242:
+              SendMsg.cmdRes(bot, msg, CmdStatus.ERROR, "error: No such command");
+              break;
+            default:
+              log("Critical error, switch-fallthrough");
+              break;
+          }
+
+        } else {
+          // When not authorized
+          SendMsg.cmdRes(bot, msg, CmdStatus.ERROR,
+            "Unauthorized.\nThe admin privilege or the admin role is required");
         }
+
       } else {
         // When the message wasn't sent from the cmd channel
       }
