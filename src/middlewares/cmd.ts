@@ -49,9 +49,7 @@ export default class Cmd {
        * later, they get the user-defined ones concatenated.
        */
       let args: string[] = [
-        // "-r",
-        // "ts-node/register",
-        "./dist/middlewares/parseCmd.js"
+        "./dist/middlewares/mb.js"
       ];
 
       // Concat the user-specified parameters to the others
