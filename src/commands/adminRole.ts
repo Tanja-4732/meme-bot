@@ -5,10 +5,37 @@ import SendMsg, { CmdStatus } from "../utils/sendMsg";
 import { log } from "util";
 
 export default class AdminRole {
+  /**
+   * Checks, if a user would lose access to the bot by changing the admin role and
+   * only sets the admin role, if that wouldn't be the case
+   *
+   * @static
+   * @param {Client} bot
+   * @param {Message} msg
+   * @param {string} adminRoleRef
+   * @returns {Promise<void>}
+   * @memberof AdminRole
+   */
   static async setAdminRole(bot: Client, msg: Message, adminRoleRef: string): Promise<void> {
-    // TODO implement access-loss checks #32
-    await this.setAdminRoleForce(bot, msg, adminRoleRef);
+    if (msg.member.permissions.hasPermission("ADMINISTRATOR")
+      || msg.member.roles.has(ParseRef.parseChannelRef(adminRoleRef))) {
+      await this.setAdminRoleForce(bot, msg, adminRoleRef);
+    } else {
+      SendMsg.cmdRes(bot, msg, CmdStatus.WARNING,
+        "Didn't change admin role.\nUser would lose access to bot.\nUse -f to force-set.")
+    }
   }
+
+  /**
+   * Sets the admin role in every case.
+   *
+   * @static
+   * @param {Client} bot
+   * @param {Message} msg
+   * @param {string} adminRoleRef
+   * @returns {Promise<void>}
+   * @memberof AdminRole
+   */
   static async setAdminRoleForce(bot: Client, msg: Message, adminRoleRef: string): Promise<void> {
     /**
      * The role id parsed from adminRoleRef
