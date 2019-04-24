@@ -17,7 +17,22 @@ export default class Events {
       return;
     }
 
-    // Parse message for command
-    Cmd.useCmd(bot, msg);
+    // Check if the message was sent as a DM
+    switch (msg.channel.type) {
+      case "text":
+        // Parse & execute message as guild command
+        Cmd.useCmd(bot, msg);
+        break;
+      case "dm":
+        Cmd.useDmCmd(bot, msg);
+        break;
+      case "group":
+        Cmd.useGroupCmd(bot, msg);
+        break;
+    }
+  }
+
+  public static dm(bot: Client, msg: Message): void {
+
   }
 }

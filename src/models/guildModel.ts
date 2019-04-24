@@ -13,4 +13,7 @@ export class Guild {
 
   @Column()
   cmdChannelId: string;
+
+  @Column({nullable: true})
+  confessionChannelId: string;
 }

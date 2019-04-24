@@ -49,7 +49,7 @@ export default class Cmd {
        * later, they get the user-defined ones concatenated.
        */
       let args: string[] = [
-        "./dist/middlewares/mb.js"
+        "./dist/middlewares/guild/mb.js"
       ];
 
       // Concat the user-specified parameters to the others
@@ -192,5 +192,124 @@ export default class Cmd {
           break;
       }
     }
+  }
+
+  public static async useDmCmd(bot: Client, msg: Message): Promise<void> {
+
+    /**
+     * Error flag
+     */
+    let oof: boolean = false;
+
+    /**
+     * Return variable
+     */
+    let ret: SpawnSyncReturns<String>;
+    try {
+      /**
+       * The parameters to be passed to spawnAsync
+       *
+       * They get initialized with the default parameters,
+       * later, they get the user-defined ones concatenated.
+       */
+      let args: string[] = [
+        "./dist/middlewares/dm/mb.js"
+      ];
+
+      // Concat the user-specified parameters to the others
+      args = args.concat(
+        msg.content
+          // Split the user-specified parameters
+          .split(/ +/)
+          // Don't include the prefix
+          .slice(1)
+      );
+
+      // Spawn a child process of the parseCmd.ts script with the args above
+      ret = spawnSync("node", args);
+    } catch (error) {
+      oof = true;
+      console.log("Be like:\n" + error.stdout.toString());
+    }
+
+    // Check if command execution was
+    if (oof || ret.stdout == null) {
+      // If the command couldn't be parsed
+      log("memebot went oof");
+      // msg.reply(JSON.stringify(ret, null, 2));
+      throw new Error("Couldn't parse command");
+    }
+
+    /**
+     * The error state
+     */
+    const status: CmdStatus =
+      ret.stderr.toString() === "" ? CmdStatus.SUCCESS : CmdStatus.ERROR;
+
+    /**
+     * The complete response from the parser
+     */
+    const parserResponse: string =
+      ret.stdout.toString() + ret.stderr.toString();
+
+    // TODO remove
+    log("ret status=" + ret.status);
+
+    try {
+      // If authorized, call a static method to handle the requested command based on the status
+      switch (ret.status) {
+        // Resolve here
+        case 0:
+          // Version or help
+          SendMsg.cmdRes(bot, msg, CmdStatus.INFO, parserResponse);
+          break;
+        case 1:
+          // Something went wrong
+          SendMsg.cmdRes(bot, msg, status, parserResponse);
+          break;
+
+        // 2 Submit post
+
+
+        // Errors
+        case 4242:
+          SendMsg.cmdRes(bot, msg, CmdStatus.ERROR, "error: No such command");
+          break;
+        default:
+          log("Critical error, switch-fallthrough");
+          break;
+      }
+    } catch (error) {
+      switch (ret.status) {
+        // When the guild isn't initialized
+        case 0:
+          // Version or help
+          SendMsg.cmdRes(bot, msg, CmdStatus.INFO, parserResponse);
+          break;
+        case 1:
+          // Something went wrong
+          SendMsg.cmdRes(bot, msg, status, parserResponse);
+          break;
+        case 2001:
+          // Initialize guild
+          Init.init(bot, msg, ret.stdout.toString());
+          break;
+        case 4242:
+          SendMsg.cmdRes(bot, msg, CmdStatus.ERROR, "error: No such command");
+          break;
+        default:
+          SendMsg.cmdRes(
+            bot,
+            msg,
+            CmdStatus.ERROR,
+            "error: Guild not initialized"
+          );
+          break;
+      }
+    }
+
+  }
+
+  public static async useGroupCmd(bot: Client, msg: Message): Promise<void> {
   }
 }
