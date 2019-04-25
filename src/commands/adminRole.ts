@@ -29,10 +29,9 @@ export default class AdminRole {
       msg.member.permissions.hasPermission("ADMINISTRATOR") ||
       msg.member.roles.has(ParseRef.parseChannelRef(adminRoleRef))
     ) {
-      await this.setAdminRoleForce(bot, msg, adminRoleRef);
+      await this.setAdminRoleForce({ msg, adminRoleRef });
     } else {
       SendMsg.cmdRes({
-        bot,
         msg,
         status: CmdStatus.WARNING,
         text:
@@ -51,11 +50,13 @@ export default class AdminRole {
    * @returns {Promise<void>}
    * @memberof AdminRole
    */
-  static async setAdminRoleForce(
-    bot: Client,
-    msg: Message,
-    adminRoleRef: string
-  ): Promise<void> {
+  static async setAdminRoleForce({
+    msg,
+    adminRoleRef
+  }: {
+    msg: Message;
+    adminRoleRef: string;
+  }): Promise<void> {
     /**
      * The role id parsed from adminRoleRef
      */
@@ -65,10 +66,12 @@ export default class AdminRole {
     try {
       log("roles:\n" + JSON.stringify(msg.guild, null, 2));
       adminRole = msg.guild.roles.get(parsedRef);
-      await GuildController.setAdminRole({ guild: msg.guild, roleId: parsedRef });
+      await GuildController.setAdminRole({
+        guild: msg.guild,
+        roleId: parsedRef
+      });
     } catch (error) {
       SendMsg.cmdRes({
-        bot,
         msg,
         status: CmdStatus.ERROR,
         text: error.toString()
@@ -78,7 +81,6 @@ export default class AdminRole {
 
     // On success
     SendMsg.cmdRes({
-      bot,
       msg,
       status: CmdStatus.SUCCESS,
       text: "Set admin role to @" + adminRole.name
@@ -95,7 +97,6 @@ export default class AdminRole {
     log("Printing admin role");
 
     SendMsg.cmdRes({
-      bot,
       msg,
       status: CmdStatus.INFO,
       text: "The admin role is @" + (await this.getAdminRole({ bot, msg })).name

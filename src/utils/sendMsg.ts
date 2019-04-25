@@ -13,7 +13,6 @@ export default class SendMsg {
    * This is only meant to be used to reply to commands
    *
    * @static
-   * @param {Client} bot The discord.js Client
    * @param {Message} msg The message from an event
    * @param {CmdStatus} status The status of the command executed (e.g. success)
    * @param {string} text The text to be displayed (in a code-block) (include a newline yourself)
@@ -22,14 +21,12 @@ export default class SendMsg {
    * @memberof SendMsg
    */
   public static cmdRes({
-    bot,
     msg,
     status,
     text,
     title,
     description
   }: {
-    bot: Client;
     msg: Message;
     status: CmdStatus;
     text: string;

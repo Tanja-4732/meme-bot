@@ -2,6 +2,7 @@ import { Client, Message, TextChannel } from "discord.js";
 import { getManager, EntityManager } from "typeorm";
 import { GuildModel } from "../models/guildModel";
 import SendMsg, { CmdStatus } from "../utils/sendMsg";
+import GuildController from "../controllers/guildController";
 
 export default class Confession {
   public static async postConfession({
@@ -53,8 +54,23 @@ export default class Confession {
     }
   }
 
+  public static async printConfessionChannel(msg: Message): Promise<void> {
+    const confessionChannel = await GuildController.getConfessionChannel(
+      msg.guild
+    );
+
+    SendMsg.cmdRes({
+      msg,
+      status: CmdStatus.INFO,
+      text:
+        "The confession channel is " +
+        (confessionChannel == null
+          ? "disabled."
+          : " set to #" + confessionChannel.name)
+    });
+  }
+
   // TODO implement #43
-  public static printConfessionChannel() {}
   public static disableConfessions() {}
   public static setConfessionChannel() {}
 }

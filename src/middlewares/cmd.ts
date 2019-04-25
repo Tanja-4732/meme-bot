@@ -149,7 +149,7 @@ export default class Cmd {
               break;
             case 4002:
               // Set the admin role using force
-              AdminRole.setAdminRoleForce(bot, msg, ret.stdout.toString());
+              AdminRole.setAdminRoleForce({ bot, msg, adminRoleRef: ret.stdout.toString() });
               break;
             case 4003:
               // Print the admin role
@@ -167,12 +167,11 @@ export default class Cmd {
               break;
             case 5003:
               // Print the confession channel
-              Confession.printConfessionChannel();
+              Confession.printConfessionChannel(msg);
               break;
             case 5004:
               // Print error (can't set channel and disable it)
               SendMsg.cmdRes({
-                bot,
                 msg,
                 status: CmdStatus.ERROR,
                 text: "Cannot set the confession channel whilst disabling it."

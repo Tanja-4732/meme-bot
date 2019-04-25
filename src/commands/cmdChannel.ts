@@ -46,7 +46,6 @@ export default class CmdChannel {
       cmdChannel = await GuildController.getCmdChanel(msg.guild);
     } catch (error) {
       SendMsg.cmdRes({
-        bot,
         msg,
         status: CmdStatus.ERROR,
         text: error.toString()
@@ -92,7 +91,6 @@ export default class CmdChannel {
 
     // On success
     SendMsg.cmdRes({
-      bot,
       msg,
       status: CmdStatus.SUCCESS,
       text: "Set cmd channel to #" + cmdChannel.name

@@ -47,7 +47,6 @@ export default class Init {
     if (alreadyInitialized) {
       // If the guild is already initialized
       SendMsg.cmdRes({
-        bot,
         msg,
         status: CmdStatus.ERROR,
         text: "error: Guild already initialized"

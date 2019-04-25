@@ -1,4 +1,4 @@
-import { Guild, GuildChannel, Role } from "discord.js";
+import { Guild, GuildChannel, Role, TextChannel } from "discord.js";
 import { GuildModel } from "../models/guildModel";
 import { EntityManager, getManager } from "typeorm";
 import { log } from "util";
@@ -210,6 +210,20 @@ export default class GuildController {
       throw new Error(
         "Couldn't find guild or role. Make sure to specify an existing role and to initialize the guild."
       );
+    }
+  }
+
+  public static async getConfessionChannel(
+    guild: Guild
+  ): Promise<TextChannel | null> {
+    const mgr = getManager();
+
+    try {
+      const gm = await mgr.findOne(GuildModel, guild.id);
+
+      return guild.channels.find("id", gm.confessionChannelId) as TextChannel;
+    } catch (error) {
+      return null;
     }
   }
 }
