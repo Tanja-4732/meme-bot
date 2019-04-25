@@ -127,7 +127,11 @@ export default class Cmd {
               break;
             case 3002:
               // Set the cmd channel
-              CmdChannel.setCmdChannel({ bot, msg, channelRef: ret.stdout.toString() });
+              CmdChannel.setCmdChannel({
+                bot,
+                msg,
+                channelRef: ret.stdout.toString()
+              });
               break;
             case 3003:
               // Remove cmd channel requirement
@@ -137,7 +141,11 @@ export default class Cmd {
             // 4 Admin role
             case 4001:
               // Set the admin role without force
-              AdminRole.setAdminRole({ bot, msg, adminRoleRef: ret.stdout.toString() });
+              AdminRole.setAdminRole({
+                bot,
+                msg,
+                adminRoleRef: ret.stdout.toString()
+              });
               break;
             case 4002:
               // Set the admin role using force
@@ -146,6 +154,29 @@ export default class Cmd {
             case 4003:
               // Print the admin role
               AdminRole.printAdminRole({ bot, msg });
+              break;
+
+            // 5 Confessions
+            case 5001:
+              // Set confession channel
+              Confession.setConfessionChannel();
+              break;
+            case 5002:
+              // Disable confessions
+              Confession.disableConfessions();
+              break;
+            case 5003:
+              // Print the confession channel
+              Confession.printConfessionChannel();
+              break;
+            case 5004:
+              // Print error (can't set channel and disable it)
+              SendMsg.cmdRes({
+                bot,
+                msg,
+                status: CmdStatus.ERROR,
+                text: "Cannot set the confession channel whilst disabling it."
+              });
               break;
 
             // Errors
@@ -293,6 +324,7 @@ export default class Cmd {
 
         // 2 Submit confession without age
         case 2001:
+          log(JSON.stringify(msg.member));
           Confession.postConfession({ bot, msg, text: ret.stdout.toString() });
           break;
 

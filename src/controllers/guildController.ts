@@ -1,5 +1,5 @@
 import { Guild, GuildChannel, Role } from "discord.js";
-import { Guild as MGuild } from "../models/guildModel";
+import { GuildModel } from "../models/guildModel";
 import { EntityManager, getManager } from "typeorm";
 import { log } from "util";
 
@@ -24,7 +24,7 @@ export default class GuildController {
       /**
        * The guild-model to be added to the db
        */
-      const guildToRegister: MGuild = {
+      const guildToRegister: GuildModel = {
         id,
         adminRoleId,
         cmdChannelId,
@@ -34,7 +34,7 @@ export default class GuildController {
       };
 
       // Add the guild-model to the db
-      await em.save(MGuild, guildToRegister);
+      await em.save(GuildModel, guildToRegister);
     } catch (error) {
       throw new Error("Error while registering guild:\n" + error);
     }
@@ -58,11 +58,11 @@ export default class GuildController {
     /**
      * The Guild-model of the guild
      */
-    let g: MGuild;
+    let g: GuildModel;
 
     try {
       // Get the guild-data from the db
-      g = await em.findOneOrFail(MGuild, {
+      g = await em.findOneOrFail(GuildModel, {
         where: {
           id: guild.id
         }
@@ -98,11 +98,11 @@ export default class GuildController {
     /**
      * The Guild-model of the guild
      */
-    let g: MGuild;
+    let g: GuildModel;
 
     try {
       // Get the guild-data from the db
-      g = await em.findOneOrFail(MGuild, {
+      g = await em.findOneOrFail(GuildModel, {
         where: {
           id: guild.id
         }
@@ -133,11 +133,11 @@ export default class GuildController {
     /**
      * The Guild-model of the guild
      */
-    let g: MGuild;
+    let g: GuildModel;
 
     try {
       // Get the guild-data from the db
-      g = await em.findOneOrFail(MGuild, {
+      g = await em.findOneOrFail(GuildModel, {
         where: {
           id: guild.id
         }
@@ -182,11 +182,11 @@ export default class GuildController {
     /**
      * The Guild-model of the guild
      */
-    let g: MGuild;
+    let g: GuildModel;
 
     try {
       // Get the guild-data from the db
-      g = await em.findOneOrFail(MGuild, {
+      g = await em.findOneOrFail(GuildModel, {
         where: {
           id: guild.id
         }

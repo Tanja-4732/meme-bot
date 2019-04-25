@@ -2,7 +2,7 @@ import { Entity, PrimaryColumn, Column, OneToMany } from "typeorm";
 import PostingGroup from "./postingGroup";
 
 @Entity()
-export class Guild {
+export class GuildModel {
   @PrimaryColumn()
   id: string;
 

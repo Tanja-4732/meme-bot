@@ -43,17 +43,45 @@ function setAdminRole(adminRoleRef: string, cmd: any) {
   if (adminRoleRef != null) {
     // Output the desired adminRoleRef
     stdout.write(adminRoleRef);
+
     // Check if force is used
     if (cmd.force) {
       // Request an admin role change using force
-      process.exit(4002);
+      exit(4002);
     } else {
       // Request an admin role change without force
-      process.exit(4001);
+      exit(4001);
     }
   } else {
     // Request the admin role to be printed
-    process.exit(4003);
+    exit(4003);
+  }
+}
+
+// Cong-Channel
+function setConfChannel(confChannelRef: string, cmd: any) {
+  // Check if a channel was specified
+  if (confChannelRef != null) {
+    // Check if disable is desired
+    if (cmd.disable) {
+      // Request error (can't set channel and disable it)
+      exit(5004);
+    }
+
+    // Output the desired channel
+    stdout.write(confChannelRef);
+
+    // Request a confession channel change
+    exit(5001);
+  } else {
+    // Check if disable is desired
+    if (cmd.disable) {
+      // Request disabling confessions
+      exit(5002);
+    } else {
+      // Request printing the confession channel
+      exit(5003);
+    }
   }
 }
 
@@ -97,6 +125,18 @@ program
     "Change the admin role even if it means losing access to the bot"
   )
   .action(setAdminRole);
+
+// confession channel
+program
+  .command("conf [confChannel]")
+  .description(
+    "Set the confession channel to [confChannel] (use a #channel-reference), or get the current confession channel"
+  )
+  .option(
+    "-d, --disable",
+    "Disable the confession channel. The channel remains unchanged."
+  )
+  .action(setConfChannel);
 
 // Help
 program

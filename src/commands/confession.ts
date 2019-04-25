@@ -1,6 +1,6 @@
 import { Client, Message, TextChannel } from "discord.js";
 import { getManager, EntityManager } from "typeorm";
-import { Guild as GuildModel } from "../models/guildModel";
+import { GuildModel } from "../models/guildModel";
 import SendMsg, { CmdStatus } from "../utils/sendMsg";
 
 export default class Confession {
@@ -52,4 +52,9 @@ export default class Confession {
       });
     }
   }
+
+  // TODO implement #43
+  public static printConfessionChannel() {}
+  public static disableConfessions() {}
+  public static setConfessionChannel() {}
 }
