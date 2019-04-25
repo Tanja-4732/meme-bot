@@ -8,12 +8,16 @@ import { exit, stdout } from "process";
  * It runs in a child-process of the bot.
  */
 
-function confession(confMsg: string) {
-  // Write the specified adminRoleRef to stdout
-  stdout.write(confMsg);
+function confession(text: string, cmd: any) {
+  if (cmd.age == null) {
+    exit(2001);
+  } else {
+    // Write the specified adminRoleRef to stdout
+    stdout.write(cmd);
 
-  // Request init
-  exit(2001);
+    // Request init
+    exit(2002);
+  }
 }
 
 // Start
@@ -25,41 +29,18 @@ program
 
 // Confession
 program
-  .command("conf <confession message>")
+  .command("confession <confession message>")
   .description(
     "Post an anonymous <confession message>. Using\"quote marks\" is required."
   )
-  .alias("c")
-  // .option("-d, --disclose", "Post non-anonymous")
-  .action(cmdChannel);
-
-// Init
-program
-  .command("init <adminRole>")
-  .description(
-    "Initialize this guild; Sets the cmd channel to the one this command is issued in" +
-      ", and the admin role to <adminRole>"
-  )
-  .alias("i")
-  .action(init);
-
-// Set admin role
-program
-  .command("admin [adminRole]")
-  .description(
-    "Set the admin role to [adminRole] (use a @roleReference), or get the current admin role"
-  )
-  .alias("a")
-  .option(
-    "-f, --force",
-    "Change the admin role even if it means losing access to the bot"
-  )
-  .action(setAdminRole);
+  .alias("conf")
+  .option("-a <age>, --age <age>", "specify ones age")
+  .action(confession);
 
 // Help
 program
   .option("-e, --examples", "Print examples with the help output")
-  .on("--help", function() {
+  .on("--help", function () {
     log("");
     if (program.examples) {
       log("Examples:");
@@ -70,13 +51,13 @@ program
       log("  mb --help");
       log("  mb -h");
       log("");
-      log("  mb init @AdminRole");
-      log("  mb i @AdminRole");
+      log("  mb confession \"I did stuff.\"");
+      log("  mb conf \"I did stuff.\"");
       log("");
-      log("  mb cmd #bot-commands");
-      log("  mb c #bot-commands");
-      log("  mb cmd");
-      log("  mb c");
+      log("  mb submit");
+      log("  mb sub");
+      log("  mb abort");
+      log("  mb abt");
     } else {
       log("Print examples using --examples or -e");
     }

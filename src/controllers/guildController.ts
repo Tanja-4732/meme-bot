@@ -19,13 +19,19 @@ export default class GuildController {
      * The EntityManager to perform db operations on
      */
     const em: EntityManager = getManager();
-    const oneNiceNull: null = null;
 
     try {
       /**
        * The guild-model to be added to the db
        */
-      const guildToRegister: MGuild = { id, adminRoleId, cmdChannelId, name, oneNiceNull };
+      const guildToRegister: MGuild = {
+        id,
+        adminRoleId,
+        cmdChannelId,
+        name,
+        confessionChannelId: null,
+        postingGroups: null
+      };
 
       // Add the guild-model to the db
       await em.save(MGuild, guildToRegister);
@@ -77,10 +83,13 @@ export default class GuildController {
     return guild.channels.get(g.cmdChannelId);
   }
 
-  public static async setCmdChannel(
-    guild: Guild,
-    channelId: string
-  ): Promise<void> {
+  public static async setCmdChannel({
+    guild,
+    channelId
+  }: {
+    guild: Guild;
+    channelId: string;
+  }): Promise<void> {
     /**
      * The EntityManager to perform db operations on
      */
@@ -106,7 +115,6 @@ export default class GuildController {
 
       // Set the channel
       g.cmdChannelId = channelId;
-
 
       em.save(g);
     } catch (error) {
@@ -159,10 +167,13 @@ export default class GuildController {
    * @returns {Promise<void>}
    * @memberof GuildController
    */
-  public static async setAdminRole(
-    guild: Guild,
-    roleId: string
-  ): Promise<void> {
+  public static async setAdminRole({
+    guild,
+    roleId
+  }: {
+    guild: Guild;
+    roleId: string;
+  }): Promise<void> {
     /**
      * The EntityManager to perform db operations on
      */
@@ -183,9 +194,7 @@ export default class GuildController {
 
       log("Got this far 1");
 
-      
-
-      log("roles:\n" + JSON.stringify(guild, null ,2));
+      log("roles:\n" + JSON.stringify(guild, null, 2));
 
       // Validate role
       if (guild.roles.get(roleId) == null) {
@@ -194,8 +203,7 @@ export default class GuildController {
 
       // Set the channel
       g.adminRoleId = roleId;
-        log("Got this far 2");
-
+      log("Got this far 2");
 
       em.save(g);
     } catch (error) {

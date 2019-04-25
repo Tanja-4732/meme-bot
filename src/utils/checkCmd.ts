@@ -8,7 +8,7 @@ export default class CheckCmd {
     bot: Client,
     msg: Message
   ): Promise<boolean> {
-    const cmdChannel = (await CmdChannel.getCmdChannel(bot, msg)).id;
+    const cmdChannel = (await CmdChannel.getCmdChannel({ bot, msg })).id;
     return cmdChannel === msg.channel.id;
   }
 
@@ -16,7 +16,7 @@ export default class CheckCmd {
     bot: Client,
     msg: Message
   ): Promise<boolean> {
-    const hasAdminRole: boolean = msg.member.roles.has((await AdminRole.getAdminRole(bot, msg)).id);
+    const hasAdminRole: boolean = msg.member.roles.has((await AdminRole.getAdminRole({ bot, msg })).id);
     const isGuildAdmin: boolean = msg.member.permissions.hasPermission("ADMINISTRATOR");
 
     return hasAdminRole || isGuildAdmin;

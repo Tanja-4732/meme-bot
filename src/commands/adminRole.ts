@@ -16,13 +16,28 @@ export default class AdminRole {
    * @returns {Promise<void>}
    * @memberof AdminRole
    */
-  static async setAdminRole(bot: Client, msg: Message, adminRoleRef: string): Promise<void> {
-    if (msg.member.permissions.hasPermission("ADMINISTRATOR")
-      || msg.member.roles.has(ParseRef.parseChannelRef(adminRoleRef))) {
+  static async setAdminRole({
+    bot,
+    msg,
+    adminRoleRef
+  }: {
+    bot: Client;
+    msg: Message;
+    adminRoleRef: string;
+  }): Promise<void> {
+    if (
+      msg.member.permissions.hasPermission("ADMINISTRATOR") ||
+      msg.member.roles.has(ParseRef.parseChannelRef(adminRoleRef))
+    ) {
       await this.setAdminRoleForce(bot, msg, adminRoleRef);
     } else {
-      SendMsg.cmdRes(bot, msg, CmdStatus.WARNING,
-        "Didn't change admin role.\nUser would lose access to bot.\nUse -f to force-set.")
+      SendMsg.cmdRes({
+        bot,
+        msg,
+        status: CmdStatus.WARNING,
+        text:
+          "Didn't change admin role.\nUser would lose access to bot.\nUse -f to force-set."
+      });
     }
   }
 
@@ -36,7 +51,11 @@ export default class AdminRole {
    * @returns {Promise<void>}
    * @memberof AdminRole
    */
-  static async setAdminRoleForce(bot: Client, msg: Message, adminRoleRef: string): Promise<void> {
+  static async setAdminRoleForce(
+    bot: Client,
+    msg: Message,
+    adminRoleRef: string
+  ): Promise<void> {
     /**
      * The role id parsed from adminRoleRef
      */
@@ -46,55 +65,59 @@ export default class AdminRole {
     try {
       log("roles:\n" + JSON.stringify(msg.guild, null, 2));
       adminRole = msg.guild.roles.get(parsedRef);
-      await GuildController.setAdminRole(msg.guild, parsedRef);
+      await GuildController.setAdminRole({ guild: msg.guild, roleId: parsedRef });
     } catch (error) {
-      SendMsg.cmdRes(
+      SendMsg.cmdRes({
         bot,
         msg,
-        CmdStatus.ERROR,
-        error.toString()
-      );
+        status: CmdStatus.ERROR,
+        text: error.toString()
+      });
       return;
     }
 
     // On success
-    SendMsg.cmdRes(
+    SendMsg.cmdRes({
       bot,
       msg,
-      CmdStatus.SUCCESS,
-      "Set admin role to @" + adminRole.name
-    );
-
+      status: CmdStatus.SUCCESS,
+      text: "Set admin role to @" + adminRole.name
+    });
   }
 
-  static async printAdminRole(bot: Client, msg: Message): Promise<void> {
+  static async printAdminRole({
+    bot,
+    msg
+  }: {
+    bot: Client;
+    msg: Message;
+  }): Promise<void> {
     log("Printing admin role");
 
-
-
-
-
-
-
-
-    SendMsg.cmdRes(
+    SendMsg.cmdRes({
       bot,
       msg,
-      CmdStatus.INFO,
-      "The admin role is @" + (await this.getAdminRole(bot, msg)).name
-    );
+      status: CmdStatus.INFO,
+      text: "The admin role is @" + (await this.getAdminRole({ bot, msg })).name
+    });
   }
 
-  public static async getAdminRole(bot: Client, msg: Message): Promise<Role> {
+  public static async getAdminRole({
+    bot,
+    msg
+  }: {
+    bot: Client;
+    msg: Message;
+  }): Promise<Role> {
     try {
       return await GuildController.getAdminRole(msg.guild);
     } catch (error) {
-      SendMsg.cmdRes(
+      SendMsg.cmdRes({
         bot,
         msg,
-        CmdStatus.ERROR,
-        error.toString()
-      );
+        status: CmdStatus.ERROR,
+        text: error.toString()
+      });
       return;
     }
   }

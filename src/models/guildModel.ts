@@ -15,7 +15,7 @@ export class Guild {
   @Column()
   cmdChannelId: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   confessionChannelId: string;
 
   @OneToMany(() => PostingGroup, postingGroup => postingGroup.guildModel)

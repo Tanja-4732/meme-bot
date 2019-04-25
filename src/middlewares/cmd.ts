@@ -6,6 +6,7 @@ import CmdChannel from "../commands/cmdChannel";
 import Init from "../commands/init";
 import CheckCmd from "../utils/checkCmd";
 import AdminRole from "../commands/adminRole";
+import Confession from "../commands/confession";
 
 /**
  * This class parses commands; it doesn't handle message, dm or any other events
@@ -48,9 +49,7 @@ export default class Cmd {
        * They get initialized with the default parameters,
        * later, they get the user-defined ones concatenated.
        */
-      let args: string[] = [
-        "./dist/middlewares/guild/mb.js"
-      ];
+      let args: string[] = ["./dist/middlewares/guild/mb.js"];
 
       // Concat the user-specified parameters to the others
       args = args.concat(
@@ -96,46 +95,49 @@ export default class Cmd {
       const sentInCmdChannel = await CheckCmd.isInCmdChannel(bot, msg);
       log("sentInCmdChannel=" + sentInCmdChannel);
       if (sentInCmdChannel) {
-
         // Check auth
         if (CheckCmd.hasAdminRole(bot, msg)) {
-
           // If authorized, call a static method to handle the requested command based on the status
           switch (ret.status) {
             // Resolve here
             case 0:
               // Version or help
-              SendMsg.cmdRes(bot, msg, CmdStatus.INFO, parserResponse);
+              SendMsg.cmdRes({
+                bot,
+                msg,
+                status: CmdStatus.INFO,
+                text: parserResponse
+              });
               break;
             case 1:
               // Something went wrong
-              SendMsg.cmdRes(bot, msg, status, parserResponse);
+              SendMsg.cmdRes({ bot, msg, status, text: parserResponse });
               break;
 
             // 2 Initialize
             case 2001:
               // Initialize guild
-              Init.init(bot, msg, ret.stdout.toString());
+              Init.init({ bot, msg, adminRoleRef: ret.stdout.toString() });
               break;
 
             // 3 Cmd channel
             case 3001:
               // Print the cmd channel
-              CmdChannel.printCmdChannel(bot, msg);
+              CmdChannel.printCmdChannel({ bot, msg });
               break;
             case 3002:
               // Set the cmd channel
-              CmdChannel.setCmdChannel(bot, msg, ret.stdout.toString());
+              CmdChannel.setCmdChannel({ bot, msg, channelRef: ret.stdout.toString() });
               break;
             case 3003:
               // Remove cmd channel requirement
-              CmdChannel.removeChannel(bot, msg);
+              CmdChannel.removeChannel({ bot, msg });
               break;
 
             // 4 Admin role
             case 4001:
               // Set the admin role without force
-              AdminRole.setAdminRole(bot, msg, ret.stdout.toString());
+              AdminRole.setAdminRole({ bot, msg, adminRoleRef: ret.stdout.toString() });
               break;
             case 4002:
               // Set the admin role using force
@@ -143,24 +145,32 @@ export default class Cmd {
               break;
             case 4003:
               // Print the admin role
-              AdminRole.printAdminRole(bot, msg);
+              AdminRole.printAdminRole({ bot, msg });
               break;
 
             // Errors
             case 4242:
-              SendMsg.cmdRes(bot, msg, CmdStatus.ERROR, "error: No such command");
+              SendMsg.cmdRes({
+                bot,
+                msg,
+                status: CmdStatus.ERROR,
+                text: "error: No such command"
+              });
               break;
             default:
               log("Critical error, switch-fallthrough");
               break;
           }
-
         } else {
           // When not authorized
-          SendMsg.cmdRes(bot, msg, CmdStatus.ERROR,
-            "Unauthorized.\nThe admin privilege or the admin role is required");
+          SendMsg.cmdRes({
+            bot,
+            msg,
+            status: CmdStatus.ERROR,
+            text:
+              "Unauthorized.\nThe admin privilege or the admin role is required"
+          });
         }
-
       } else {
         // When the message wasn't sent from the cmd channel
       }
@@ -169,33 +179,42 @@ export default class Cmd {
         // When the guild isn't initialized
         case 0:
           // Version or help
-          SendMsg.cmdRes(bot, msg, CmdStatus.INFO, parserResponse);
+          SendMsg.cmdRes({
+            bot,
+            msg,
+            status: CmdStatus.INFO,
+            text: parserResponse
+          });
           break;
         case 1:
           // Something went wrong
-          SendMsg.cmdRes(bot, msg, status, parserResponse);
+          SendMsg.cmdRes({ bot, msg, status, text: parserResponse });
           break;
         case 2001:
           // Initialize guild
-          Init.init(bot, msg, ret.stdout.toString());
+          Init.init({ bot, msg, adminRoleRef: ret.stdout.toString() });
           break;
         case 4242:
-          SendMsg.cmdRes(bot, msg, CmdStatus.ERROR, "error: No such command");
-          break;
-        default:
-          SendMsg.cmdRes(
+          SendMsg.cmdRes({
             bot,
             msg,
-            CmdStatus.ERROR,
-            "error: Guild not initialized"
-          );
+            status: CmdStatus.ERROR,
+            text: "error: No such command"
+          });
+          break;
+        default:
+          SendMsg.cmdRes({
+            bot,
+            msg,
+            status: CmdStatus.ERROR,
+            text: "error: Guild not initialized"
+          });
           break;
       }
     }
   }
 
   public static async useDmCmd(bot: Client, msg: Message): Promise<void> {
-
     /**
      * Error flag
      */
@@ -212,9 +231,7 @@ export default class Cmd {
        * They get initialized with the default parameters,
        * later, they get the user-defined ones concatenated.
        */
-      let args: string[] = [
-        "./dist/middlewares/dm/mb.js"
-      ];
+      let args: string[] = ["./dist/middlewares/dm/mb.js"];
 
       // Concat the user-specified parameters to the others
       args = args.concat(
@@ -261,19 +278,32 @@ export default class Cmd {
         // Resolve here
         case 0:
           // Version or help
-          SendMsg.cmdRes(bot, msg, CmdStatus.INFO, parserResponse);
+          SendMsg.cmdRes({
+            bot,
+            msg,
+            status: CmdStatus.INFO,
+            text: parserResponse
+          });
           break;
         case 1:
           // Something went wrong
-          SendMsg.cmdRes(bot, msg, status, parserResponse);
+          log(parserResponse);
+          SendMsg.cmdRes({ bot, msg, status, text: parserResponse });
           break;
 
-        // 2 Submit confession
-        
+        // 2 Submit confession without age
+        case 2001:
+          Confession.postConfession({ bot, msg, text: ret.stdout.toString() });
+          break;
 
         // Errors
         case 4242:
-          SendMsg.cmdRes(bot, msg, CmdStatus.ERROR, "error: No such command");
+          SendMsg.cmdRes({
+            bot,
+            msg,
+            status: CmdStatus.ERROR,
+            text: "error: No such command"
+          });
           break;
         default:
           log("Critical error, switch-fallthrough");
@@ -284,32 +314,40 @@ export default class Cmd {
         // When the guild isn't initialized
         case 0:
           // Version or help
-          SendMsg.cmdRes(bot, msg, CmdStatus.INFO, parserResponse);
+          SendMsg.cmdRes({
+            bot,
+            msg,
+            status: CmdStatus.INFO,
+            text: parserResponse
+          });
           break;
         case 1:
           // Something went wrong
-          SendMsg.cmdRes(bot, msg, status, parserResponse);
+          SendMsg.cmdRes({ bot, msg, status, text: parserResponse });
           break;
         case 2001:
           // Initialize guild
-          Init.init(bot, msg, ret.stdout.toString());
+          Init.init({ bot, msg, adminRoleRef: ret.stdout.toString() });
           break;
         case 4242:
-          SendMsg.cmdRes(bot, msg, CmdStatus.ERROR, "error: No such command");
-          break;
-        default:
-          SendMsg.cmdRes(
+          SendMsg.cmdRes({
             bot,
             msg,
-            CmdStatus.ERROR,
-            "error: Guild not initialized"
-          );
+            status: CmdStatus.ERROR,
+            text: "error: No such command"
+          });
+          break;
+        default:
+          SendMsg.cmdRes({
+            bot,
+            msg,
+            status: CmdStatus.ERROR,
+            text: "error: Guild not initialized"
+          });
           break;
       }
     }
-
   }
 
-  public static async useGroupCmd(bot: Client, msg: Message): Promise<void> {
-  }
+  public static async useGroupCmd(bot: Client, msg: Message): Promise<void> {}
 }

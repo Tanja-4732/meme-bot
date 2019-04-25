@@ -4,7 +4,7 @@ import Cmd from "./cmd";
 import { prefix } from "../bot";
 
 export default class Events {
-  public static message(bot: Client, msg: Message): void {
+  public static message({ bot, msg }: { bot: Client; msg: Message }): void {
     // Ignore bots own messages
     if (msg.author.id === bot.user.id) {
       // Avoid any further actions on own message
@@ -32,7 +32,5 @@ export default class Events {
     }
   }
 
-  public static dm(bot: Client, msg: Message): void {
-
-  }
+  public static dm({ bot, msg }: { bot: Client; msg: Message }): void {}
 }

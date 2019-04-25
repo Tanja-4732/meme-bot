@@ -11,12 +11,7 @@
     "experimentalDecorators": true,
     "target": "es2018",
     "noImplicitAny": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2018",
-      "dom"
-    ]
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2018", "dom"]
   }
 }

@@ -5,47 +5,72 @@ import { log } from "util";
 import ParseRef from "../utils/parseRef";
 
 export default class CmdChannel {
-
-  public static async removeChannel(bot: Client, msg: Message): Promise<void> {
+  public static async removeChannel({
+    bot,
+    msg
+  }: {
+    bot: Client;
+    msg: Message;
+  }): Promise<void> {
     log("Remove cmd req (implement me) #30"); // TODO implement
   }
-  
-  public static async getCmdChannel(bot: Client, msg: Message): Promise<GuildChannel> {
+
+  public static async getCmdChannel({
+    bot,
+    msg
+  }: {
+    bot: Client;
+    msg: Message;
+  }): Promise<GuildChannel> {
     let cmdChannel: GuildChannel;
-    
+
     try {
-     cmdChannel = await GuildController.getCmdChanel(msg.guild);
+      cmdChannel = await GuildController.getCmdChanel(msg.guild);
     } catch (error) {
-      throw new Error("Couldn't find the cmd channel")
+      throw new Error("Couldn't find the cmd channel");
     }
 
     return cmdChannel;
   }
 
-  public static async printCmdChannel(bot: Client, msg: Message): Promise<void> {
+  public static async printCmdChannel({
+    bot,
+    msg
+  }: {
+    bot: Client;
+    msg: Message;
+  }): Promise<void> {
     let cmdChannel: GuildChannel;
-    
+
     try {
-     cmdChannel = await GuildController.getCmdChanel(msg.guild);
+      cmdChannel = await GuildController.getCmdChanel(msg.guild);
     } catch (error) {
-      SendMsg.cmdRes(
+      SendMsg.cmdRes({
         bot,
         msg,
-        CmdStatus.ERROR,
-        error.toString()
-      );
+        status: CmdStatus.ERROR,
+        text: error.toString()
+      });
       return;
     }
 
-    SendMsg.cmdRes(
+    SendMsg.cmdRes({
       bot,
       msg,
-      CmdStatus.INFO,
-      "The cmd channel is #" + cmdChannel.name
-    );
+      status: CmdStatus.INFO,
+      text: "The cmd channel is #" + cmdChannel.name
+    });
   }
 
-  public static async setCmdChannel(bot: Client, msg: Message, channelRef: string): Promise<void> {
+  public static async setCmdChannel({
+    bot,
+    msg,
+    channelRef
+  }: {
+    bot: Client;
+    msg: Message;
+    channelRef: string;
+  }): Promise<void> {
     /**
      * The channel id parsed from channelRef
      */
@@ -53,24 +78,24 @@ export default class CmdChannel {
     let cmdChannel: GuildChannel;
 
     try {
-     cmdChannel = msg.guild.channels.get(parsedRef);
-     await GuildController.setCmdChannel(msg.guild, parsedRef);
+      cmdChannel = msg.guild.channels.get(parsedRef);
+      await GuildController.setCmdChannel({ guild: msg.guild, channelId: parsedRef });
     } catch (error) {
-      SendMsg.cmdRes(
+      SendMsg.cmdRes({
         bot,
         msg,
-        CmdStatus.ERROR,
-        error.toString()
-      );
+        status: CmdStatus.ERROR,
+        text: error.toString()
+      });
       return;
     }
 
     // On success
-    SendMsg.cmdRes(
+    SendMsg.cmdRes({
       bot,
       msg,
-      CmdStatus.SUCCESS,
-      "Set cmd channel to #" + cmdChannel.name
-    );
+      status: CmdStatus.SUCCESS,
+      text: "Set cmd channel to #" + cmdChannel.name
+    });
   }
 }

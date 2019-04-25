@@ -17,11 +17,15 @@ export default class Init {
    * @param {string} adminRoleRef The output-ed string of the cmdParser
    * @memberof Init
    */
-  public static async init(
-    bot: Client,
-    msg: Message,
-    adminRoleRef: string
-  ): Promise<void> {
+  public static async init({
+    bot,
+    msg,
+    adminRoleRef
+  }: {
+    bot: Client;
+    msg: Message;
+    adminRoleRef: string;
+  }): Promise<void> {
     /**
      * Anti-duplicate flag
      */
@@ -42,12 +46,12 @@ export default class Init {
     // Continue only if the guild isn't already initialized
     if (alreadyInitialized) {
       // If the guild is already initialized
-      SendMsg.cmdRes(
+      SendMsg.cmdRes({
         bot,
         msg,
-        CmdStatus.ERROR,
-        "error: Guild already initialized"
-      );
+        status: CmdStatus.ERROR,
+        text: "error: Guild already initialized"
+      });
       return;
     }
 
@@ -60,11 +64,11 @@ export default class Init {
     });
 
     // Send success
-    SendMsg.cmdRes(
+    SendMsg.cmdRes({
       bot,
       msg,
-      CmdStatus.SUCCESS,
-      "Guild successfully initialized.\n\n" + "Welcome to MemeBot!"
-    );
+      status: CmdStatus.SUCCESS,
+      text: "Guild successfully initialized.\n\n" + "Welcome to MemeBot!"
+    });
   }
 }

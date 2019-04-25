@@ -19,7 +19,7 @@ const bot: Client = new Client();
 export const prefix: string = process.env.MB_PREFIX || "mb";
 
 // Register events
-bot.on("message", (message: Message) => Events.message(bot, message));
+bot.on("message", (message: Message) => Events.message({ bot, msg: message }));
 
 // Connect to the database
 createConnection({

@@ -3,7 +3,8 @@ import { log } from "util";
 import request = require("request-promise-native");
 
 export default class SendMsg {
-  public static readonly questionMarkImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Icon-round-Question_mark.svg/1024px-Icon-round-Question_mark.svg.png";
+  public static readonly questionMarkImageUrl =
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Icon-round-Question_mark.svg/1024px-Icon-round-Question_mark.svg.png";
 
   /**
    * Sends an embed with a quote into the channel of the message, mentioning
@@ -20,14 +21,21 @@ export default class SendMsg {
    * @param {string} [description] The description of the embed
    * @memberof SendMsg
    */
-  public static cmdRes(
-    bot: Client,
-    msg: Message,
-    status: CmdStatus,
-    text: string,
-    title?: string,
-    description?: string
-  ): void {
+  public static cmdRes({
+    bot,
+    msg,
+    status,
+    text,
+    title,
+    description
+  }: {
+    bot: Client;
+    msg: Message;
+    status: CmdStatus;
+    text: string;
+    title?: string;
+    description?: string;
+  }): void {
     /**
      * The RichEmbed to be sent into the channel
      */
@@ -44,28 +52,36 @@ export default class SendMsg {
     msg.channel.send(re);
   }
 
-  public static confession(
-    bot: Client,
-    channel: TextChannel,
-    groupRole: Role,
-    text: string,
-    imageUrl?: string,
-    age?: number
-  ) {
+  public static confession({
+    bot,
+    channel,
+    groupRole,
+    text,
+    age,
+    imageUrl
+  }: {
+    bot: Client;
+    channel: TextChannel;
+    groupRole: Role;
+    text: string;
+    age?: number;
+    imageUrl?: string;
+  }) {
     /**
      * The RichEmbed to be sent into the channel
      */
     let re: RichEmbed = new RichEmbed()
-      .setColor(groupRole.color)
-      .setAuthor(age == null ? groupRole.name : groupRole.name + " (" + age + ")",
-        imageUrl || this.questionMarkImageUrl)
-      .setDescription(msg.author.toString() || "")
+      .setColor(groupRole.color || "82368c")
+      .setAuthor(
+        age == null ? groupRole.name : groupRole.name + " (" + age + ")",
+        imageUrl || this.questionMarkImageUrl
+      )
       .addField(status, "```\n" + text + "```")
       .setTimestamp()
       .setFooter(this.getQuote());
 
     // Send the RichEmbed into the target channel
-    msg.channel.send(re);
+    channel.send(re);
   }
 
   /**
