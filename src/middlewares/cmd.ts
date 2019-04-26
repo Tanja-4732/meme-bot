@@ -164,7 +164,7 @@ export default class Cmd {
               break;
             case 5002:
               // Disable confessions
-              Confession.disableConfessions();
+              Confession.disableConfessions(msg);
               break;
             case 5003:
               // Print the confession channel

@@ -254,4 +254,16 @@ export default class GuildController {
       throw new Error(error);
     }
   }
+
+  public static async removeConfessionChannel(guild: Guild): Promise<void> {
+    const mgr = getManager();
+    try {
+      const gm = await mgr.findOne(GuildModel, guild.id);
+      gm.confessionChannelId = null;
+      mgr.save(gm);
+    } catch (error) {
+      log("big oof removing confessions:\n" + error);
+      throw new Error(error);
+    }
+  }
 }

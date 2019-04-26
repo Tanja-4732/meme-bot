@@ -69,8 +69,25 @@ export default class Confession {
     });
   }
 
-  // TODO implement #43
-  public static disableConfessions() {}
+  public static disableConfessions(msg: Message) {
+    try {
+      GuildController.removeConfessionChannel(msg.guild);
+
+      // Send confirmation message
+      SendMsg.cmdRes({
+        msg,
+        status: CmdStatus.SUCCESS,
+        text: "We've disabled confessions successfully."
+      });
+    } catch (error) {
+      SendMsg.cmdRes({
+        msg,
+        status: CmdStatus.ERROR,
+        text: "We couldn't disable confessions.\nThat's all we know."
+      });
+    }
+  }
+
   public static setConfessionChannel(msg: Message, channelRef: string) {
     try {
       const channelId = ParseRef.parseChannelRef(channelRef);
