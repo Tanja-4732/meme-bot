@@ -4,6 +4,7 @@ import { GuildModel } from "../models/guildModel";
 import SendMsg, { CmdStatus } from "../utils/sendMsg";
 import GuildController from "../controllers/guildController";
 import ParseRef from "../utils/parseRef";
+import { log } from "util";
 
 export default class Confession {
   public static async postConfession({
@@ -64,7 +65,7 @@ export default class Confession {
         "The confession channel is " +
         (confessionChannel == null
           ? "disabled."
-          : " set to #" + confessionChannel.name)
+          : "set to #" + confessionChannel.name)
     });
   }
 
@@ -81,10 +82,9 @@ export default class Confession {
         status: CmdStatus.SUCCESS,
         text:
           "Set the confession channel to #" +
-          msg.guild.channels.find("id", channelRef).name
+          msg.guild.channels.find("id", channelId).name
       });
     } catch (error) {
-      log("Big oof:\n" + error);
       SendMsg.cmdRes({
         msg,
         status: CmdStatus.ERROR,
