@@ -31,6 +31,4 @@ export default class Events {
         break;
     }
   }
-
-  public static dm({ bot, msg }: { bot: Client; msg: Message }): void {}
 }

@@ -18,11 +18,9 @@ export default class Init {
    * @memberof Init
    */
   public static async init({
-    bot,
     msg,
     adminRoleRef
   }: {
-    bot: Client;
     msg: Message;
     adminRoleRef: string;
   }): Promise<void> {
@@ -64,7 +62,6 @@ export default class Init {
 
     // Send success
     SendMsg.cmdRes({
-      bot,
       msg,
       status: CmdStatus.SUCCESS,
       text: "Guild successfully initialized.\n\n" + "Welcome to MemeBot!"

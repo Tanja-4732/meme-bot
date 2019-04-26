@@ -27,7 +27,6 @@ export default class Confession {
     } catch (error) {
       // Return an error message
       SendMsg.cmdRes({
-        bot,
         msg,
         status: CmdStatus.ERROR,
         text: "The guild doesn't support confessions.",
@@ -38,7 +37,6 @@ export default class Confession {
     if (age != null) {
       // Post confession
       SendMsg.confession({
-        bot,
         channel: bot.channels.find("id", confessionChannelId) as TextChannel,
         groupRole: null,
         text,
@@ -46,7 +44,6 @@ export default class Confession {
       });
     } else {
       SendMsg.confession({
-        bot,
         channel: bot.channels.find("id", confessionChannelId) as TextChannel,
         groupRole: null,
         text

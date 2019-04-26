@@ -50,14 +50,12 @@ export default class SendMsg {
   }
 
   public static confession({
-    bot,
     channel,
     groupRole,
     text,
     age,
     imageUrl
   }: {
-    bot: Client;
     channel: TextChannel;
     groupRole: Role;
     text: string;

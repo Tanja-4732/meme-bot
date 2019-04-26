@@ -87,34 +87,21 @@ export default class AdminRole {
     });
   }
 
-  static async printAdminRole({
-    bot,
-    msg
-  }: {
-    bot: Client;
-    msg: Message;
-  }): Promise<void> {
+  static async printAdminRole({ msg }: { msg: Message }): Promise<void> {
     log("Printing admin role");
 
     SendMsg.cmdRes({
       msg,
       status: CmdStatus.INFO,
-      text: "The admin role is @" + (await this.getAdminRole({ bot, msg })).name
+      text: "The admin role is @" + (await this.getAdminRole({ msg })).name
     });
   }
 
-  public static async getAdminRole({
-    bot,
-    msg
-  }: {
-    bot: Client;
-    msg: Message;
-  }): Promise<Role> {
+  public static async getAdminRole({ msg }: { msg: Message }): Promise<Role> {
     try {
       return await GuildController.getAdminRole(msg.guild);
     } catch (error) {
       SendMsg.cmdRes({
-        bot,
         msg,
         status: CmdStatus.ERROR,
         text: error.toString()
