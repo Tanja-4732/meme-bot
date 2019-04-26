@@ -5,6 +5,7 @@ import request = require("request-promise-native");
 export default class SendMsg {
   public static readonly questionMarkImageUrl =
     "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Icon-round-Question_mark.svg/1024px-Icon-round-Question_mark.svg.png";
+  static res: any;
 
   /**
    * Sends an embed with a quote into the channel of the message, mentioning

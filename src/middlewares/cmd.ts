@@ -160,7 +160,7 @@ export default class Cmd {
             // 5 Confessions
             case 5001:
               // Set confession channel
-              Confession.setConfessionChannel();
+              Confession.setConfessionChannel(msg, ret.stdout.toString());
               break;
             case 5002:
               // Disable confessions

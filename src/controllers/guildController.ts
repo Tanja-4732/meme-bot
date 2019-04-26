@@ -40,6 +40,16 @@ export default class GuildController {
     }
   }
 
+  // public static isInitialized(guild: Guild): boolean {
+  //   try {
+  //     const mgr = getManager();
+
+  //     mgr.findOneOrFail(GuildModel, {
+  //       where: { id: guild.id }
+  //     });
+  //   } catch (error) {}
+  // }
+
   /**
    * Returns the cmd channel of a registered guild,
    * throws an error if the guild isn't initialized.
@@ -224,6 +234,24 @@ export default class GuildController {
       return guild.channels.find("id", gm.confessionChannelId) as TextChannel;
     } catch (error) {
       return null;
+    }
+  }
+
+  public static async setConfessionChannel({
+    guild,
+    channelId
+  }: {
+    guild: Guild;
+    channelId: string;
+  }): Promise<void> {
+    const mgr = getManager();
+
+    try {
+      const gm = await mgr.findOne(GuildModel, guild.id);
+      gm.confessionChannelId = channelId;
+      mgr.save(gm);
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }

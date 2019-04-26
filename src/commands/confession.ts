@@ -3,6 +3,7 @@ import { getManager, EntityManager } from "typeorm";
 import { GuildModel } from "../models/guildModel";
 import SendMsg, { CmdStatus } from "../utils/sendMsg";
 import GuildController from "../controllers/guildController";
+import ParseRef from "../utils/parseRef";
 
 export default class Confession {
   public static async postConfession({
@@ -69,5 +70,26 @@ export default class Confession {
 
   // TODO implement #43
   public static disableConfessions() {}
-  public static setConfessionChannel() {}
+  public static setConfessionChannel(msg: Message, channelRef: string) {
+    try {
+      const channelId = ParseRef.parseChannelRef(channelRef);
+      GuildController.setConfessionChannel({ guild: msg.guild, channelId });
+
+      // Send confirmation message
+      SendMsg.cmdRes({
+        msg,
+        status: CmdStatus.SUCCESS,
+        text:
+          "Set the confession channel to #" +
+          msg.guild.channels.find("id", channelRef).name
+      });
+    } catch (error) {
+      log("Big oof:\n" + error);
+      SendMsg.cmdRes({
+        msg,
+        status: CmdStatus.ERROR,
+        text: "Couldn't set the confession channel.\nThat's all we know."
+      });
+    }
+  }
 }
