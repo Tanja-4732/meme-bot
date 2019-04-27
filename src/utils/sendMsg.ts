@@ -50,6 +50,13 @@ export default class SendMsg {
     msg.channel.send(re);
   }
 
+  /**
+   * Post a confession message to the specified channel
+   *
+   * It will be colored according to the role of the user
+   * who requested its posting. The user will remain remain
+   * anonymous. An image can be specified.
+   */
   public static confession({
     channel,
     groupRole,
@@ -58,7 +65,7 @@ export default class SendMsg {
     imageUrl
   }: {
     channel: TextChannel;
-    groupRole: Role;
+    groupRole?: Role;
     text: string;
     age?: number;
     imageUrl?: string;

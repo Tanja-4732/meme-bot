@@ -7,6 +7,7 @@ import Init from "../commands/init";
 import CheckCmd from "../utils/checkCmd";
 import AdminRole from "../commands/adminRole";
 import Confession from "../commands/confession";
+import StringUtils from "../utils/stringUtils";
 
 /**
  * This class parses commands; it doesn't handle message, dm or any other events
@@ -53,9 +54,9 @@ export default class Cmd {
 
       // Concat the user-specified parameters to the others
       args = args.concat(
-        msg.content
-          // Split the user-specified parameters
-          .split(/ +/)
+        // Split the user-specified parameters
+        StringUtils.toArgv(msg.content)
+
           // Don't include the prefix
           .slice(1)
       );
@@ -74,12 +75,6 @@ export default class Cmd {
       // msg.reply(JSON.stringify(ret, null, 2));
       throw new Error("Couldn't parse command");
     }
-
-    /**
-     * The error state
-     */
-    const status: CmdStatus =
-      ret.stderr.toString() === "" ? CmdStatus.SUCCESS : CmdStatus.ERROR;
 
     /**
      * The complete response from the parser
@@ -110,7 +105,11 @@ export default class Cmd {
               break;
             case 1:
               // Something went wrong
-              SendMsg.cmdRes({ msg, status, text: parserResponse });
+              SendMsg.cmdRes({
+                msg,
+                status: CmdStatus.ERROR,
+                text: parserResponse
+              });
               break;
 
             // 2 Initialize
@@ -216,7 +215,11 @@ export default class Cmd {
           break;
         case 1:
           // Something went wrong
-          SendMsg.cmdRes({ msg, status, text: parserResponse });
+          SendMsg.cmdRes({
+            msg,
+            status: CmdStatus.ERROR,
+            text: parserResponse
+          });
           break;
         case 2001:
           // Initialize guild
@@ -240,6 +243,15 @@ export default class Cmd {
     }
   }
 
+  /**
+   * Parse and execute commands received via a DM
+   *
+   * @static
+   * @param {Client} bot The Discord.js Client
+   * @param {Message} msg The message object from the event
+   * @returns {Promise<void>}
+   * @memberof Cmd
+   */
   public static async useDmCmd(bot: Client, msg: Message): Promise<void> {
     /**
      * Error flag
@@ -261,9 +273,9 @@ export default class Cmd {
 
       // Concat the user-specified parameters to the others
       args = args.concat(
-        msg.content
-          // Split the user-specified parameters
-          .split(/ +/)
+        // Split the user-specified parameters
+        StringUtils.toArgv(msg.content)
+
           // Don't include the prefix
           .slice(1)
       );
@@ -282,12 +294,6 @@ export default class Cmd {
       // msg.reply(JSON.stringify(ret, null, 2));
       throw new Error("Couldn't parse command");
     }
-
-    /**
-     * The error state
-     */
-    const status: CmdStatus =
-      ret.stderr.toString() === "" ? CmdStatus.SUCCESS : CmdStatus.ERROR;
 
     /**
      * The complete response from the parser
@@ -313,12 +319,17 @@ export default class Cmd {
         case 1:
           // Something went wrong
           log(parserResponse);
-          SendMsg.cmdRes({ msg, status, text: parserResponse });
+          SendMsg.cmdRes({
+            msg,
+            status: CmdStatus.ERROR,
+            text: parserResponse
+          });
           break;
 
-        // 2 Submit confession without age
+        // 2 Submit confession
         case 2001:
-          log(JSON.stringify(msg.member));
+          // Submit confession without age
+          log(JSON.stringify(ret.stdout.toString()));
           Confession.postConfession({ bot, msg, text: ret.stdout.toString() });
           break;
 
@@ -347,7 +358,11 @@ export default class Cmd {
           break;
         case 1:
           // Something went wrong
-          SendMsg.cmdRes({ msg, status, text: parserResponse });
+          SendMsg.cmdRes({
+            msg,
+            status: CmdStatus.ERROR,
+            text: parserResponse
+          });
           break;
         case 2001:
           // Initialize guild

@@ -36,17 +36,23 @@ export default class Confession {
       });
     }
 
+    // Post confession
     if (age != null) {
-      // Post confession
+      // Post with age
       SendMsg.confession({
-        channel: bot.channels.find("id", confessionChannelId) as TextChannel,
+        channel: bot.channels.find(
+          channel => channel.id === confessionChannelId
+        ) as TextChannel,
         groupRole: null,
         text,
         age
       });
     } else {
+      // Post without age
       SendMsg.confession({
-        channel: bot.channels.find("id", confessionChannelId) as TextChannel,
+        channel: bot.channels.find(
+          channel => channel.id === confessionChannelId
+        ) as TextChannel,
         groupRole: null,
         text
       });
