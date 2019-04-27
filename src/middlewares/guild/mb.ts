@@ -22,6 +22,9 @@ function init(adminRoleRef: string) {
 }
 
 function cmdChannel(channelName: string, cmd: any) {
+  // Request the removal of the cmd channel
+  if (cmd.disable) exit(3003);
+
   if (channelName == null) {
     // Request cmd channel to be printed
     exit(3001);
@@ -29,9 +32,6 @@ function cmdChannel(channelName: string, cmd: any) {
 
   // Log channel name to be read later
   stdout.write(channelName);
-
-  // Request the removal of the cmd channel
-  if (cmd.disable) exit(3003);
 
   // Request setting the channel name
   exit(3002);

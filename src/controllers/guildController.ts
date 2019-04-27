@@ -40,6 +40,7 @@ export default class GuildController {
     }
   }
 
+  // TODO implement or remove
   // public static isInitialized(guild: Guild): boolean {
   //   try {
   //     const mgr = getManager();
@@ -126,12 +127,20 @@ export default class GuildController {
       // Set the channel
       g.cmdChannelId = channelId;
 
-      em.save(g);
+      await em.save(g);
     } catch (error) {
       throw new Error(
         "Couldn't find guild or channel. Make sure to specify an existing channel and to initialize the guild."
       );
     }
+  }
+
+  static async removeCmdChannel(guild: Guild): Promise<void> {
+    const mgr = getManager();
+
+    const gm = await mgr.findOneOrFail(GuildModel, guild.id);
+    gm.cmdChannelId = null;
+    await mgr.save(gm);
   }
 
   static async getAdminRole(guild: Guild): Promise<Role> {
@@ -215,7 +224,7 @@ export default class GuildController {
       g.adminRoleId = roleId;
       log("Got this far 2");
 
-      em.save(g);
+      await em.save(g);
     } catch (error) {
       throw new Error(
         "Couldn't find guild or role. Make sure to specify an existing role and to initialize the guild."
@@ -231,7 +240,9 @@ export default class GuildController {
     try {
       const gm = await mgr.findOne(GuildModel, guild.id);
 
-      return guild.channels.find("id", gm.confessionChannelId) as TextChannel;
+      return guild.channels.find(
+        channel => channel.id === gm.confessionChannelId
+      ) as TextChannel;
     } catch (error) {
       return null;
     }
@@ -249,7 +260,7 @@ export default class GuildController {
     try {
       const gm = await mgr.findOne(GuildModel, guild.id);
       gm.confessionChannelId = channelId;
-      mgr.save(gm);
+      await mgr.save(gm);
     } catch (error) {
       throw new Error(error);
     }
@@ -260,7 +271,7 @@ export default class GuildController {
     try {
       const gm = await mgr.findOne(GuildModel, guild.id);
       gm.confessionChannelId = null;
-      mgr.save(gm);
+      await mgr.save(gm);
     } catch (error) {
       log("big oof removing confessions:\n" + error);
       throw new Error(error);

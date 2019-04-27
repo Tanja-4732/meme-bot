@@ -26,7 +26,7 @@ export default class AdminRole {
     adminRoleRef: string;
   }): Promise<void> {
     if (
-      msg.member.permissions.hasPermission("ADMINISTRATOR") ||
+      msg.member.permissions.has("ADMINISTRATOR") ||
       msg.member.roles.has(ParseRef.parseChannelRef(adminRoleRef))
     ) {
       await this.setAdminRoleForce({ msg, adminRoleRef });

@@ -83,12 +83,11 @@ export default class Cmd {
       ret.stdout.toString() + ret.stderr.toString();
 
     // TODO remove
-    log("ret status=" + ret.status);
+    log("guild cmd: " + ret.status);
 
     try {
       // Assure the message was sent from the cmd channel
       const sentInCmdChannel = await CheckCmd.isInCmdChannel(msg);
-      log("sentInCmdChannel=" + sentInCmdChannel);
       if (sentInCmdChannel) {
         // Check auth
         if (CheckCmd.hasAdminRole(msg)) {
@@ -302,7 +301,7 @@ export default class Cmd {
       ret.stdout.toString() + ret.stderr.toString();
 
     // TODO remove
-    log("ret status=" + ret.status);
+    log("dm cmd: " + ret.status);
 
     try {
       // If authorized, call a static method to handle the requested command based on the status

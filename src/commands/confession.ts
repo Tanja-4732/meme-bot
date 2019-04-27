@@ -105,7 +105,7 @@ export default class Confession {
         status: CmdStatus.SUCCESS,
         text:
           "Set the confession channel to #" +
-          msg.guild.channels.find("id", channelId).name
+          msg.guild.channels.find(channel => channel.id === channelId).name
       });
     } catch (error) {
       SendMsg.cmdRes({

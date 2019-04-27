@@ -6,7 +6,22 @@ import ParseRef from "../utils/parseRef";
 
 export default class CmdChannel {
   public static async removeChannel({ msg }: { msg: Message }): Promise<void> {
-    log("Remove cmd req (implement me) #30"); // TODO implement
+    try {
+      await GuildController.removeCmdChannel(msg.guild);
+      SendMsg.cmdRes({
+        msg,
+        status: CmdStatus.SUCCESS,
+        text:
+          "We successfully disabled the cmd channel requirement.\n" +
+          "From now on, all channels can receive bot commands."
+      });
+    } catch (error) {
+      SendMsg.cmdRes({
+        msg,
+        status: CmdStatus.ERROR,
+        text: "We couldn't disable the cmd channel.\nThat's all we know."
+      });
+    }
   }
 
   public static async getCmdChannel({
