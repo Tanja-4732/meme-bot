@@ -131,7 +131,7 @@ export default class Cmd {
               break;
             case 3003:
               // Remove cmd channel requirement
-              CmdChannel.removeChannel({ msg });
+              CmdChannel.disableCmdChannel({ msg });
               break;
 
             // 4 Admin role
@@ -235,7 +235,7 @@ export default class Cmd {
           SendMsg.cmdRes({
             msg,
             status: CmdStatus.ERROR,
-            text: "error: Guild not initialized"
+            text: "Something went wrong.\nThat's all we know."
           });
           break;
       }
@@ -378,7 +378,7 @@ export default class Cmd {
           SendMsg.cmdRes({
             msg,
             status: CmdStatus.ERROR,
-            text: "error: Guild not initialized"
+            text: "Something went wrong.\nThat's all we know."
           });
           break;
       }

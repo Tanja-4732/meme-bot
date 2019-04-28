@@ -1,7 +1,7 @@
-import { Client, Message, Role } from "discord.js";
-import CmdChannel from "../commands/cmdChannel";
-import SendMsg, { CmdStatus } from "./sendMsg";
+import { Message } from "discord.js";
 import AdminRole from "../commands/adminRole";
+import { log } from "util";
+import GuildController from "../controllers/guildController";
 
 export default class CheckCmd {
   /**
@@ -15,8 +15,8 @@ export default class CheckCmd {
    * @memberof CheckCmd
    */
   public static async isInCmdChannel(msg: Message): Promise<boolean> {
-    const cmdChannel = (await CmdChannel.getCmdChannel({ msg })).id;
-    return cmdChannel == null || cmdChannel === msg.channel.id;
+    const cmdChannel = await GuildController.getCmdChannel(msg.guild);
+    return cmdChannel == null || cmdChannel.id === msg.channel.id;
   }
 
   /**

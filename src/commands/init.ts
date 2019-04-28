@@ -1,5 +1,5 @@
 import { log } from "util";
-import { Client, Message } from "discord.js";
+import { Message } from "discord.js";
 import ParseRef from "../utils/parseRef";
 import GuildController from "../controllers/guildController";
 import SendMsg, { CmdStatus } from "../utils/sendMsg";
@@ -32,7 +32,7 @@ export default class Init {
     // Check if guild is already initialized
     try {
       // This should fail
-      await GuildController.getCmdChanel(msg.guild);
+      await GuildController.getCmdChannel(msg.guild);
 
       // If the guild is already initialized
       alreadyInitialized = true;

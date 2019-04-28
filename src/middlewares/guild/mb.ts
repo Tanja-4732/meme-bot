@@ -94,23 +94,22 @@ program
 
 // Cmd-channel
 program
-  .command("cmd [cmdChannel]")
+  .command("cmd-channel [cmdChannel]")
   .description(
     "Set the cmd channel to [cmdChannel], or get the current cmd channel"
   )
-  // .alias("cmd-channel <cmdChannel>")
-  .alias("c")
+  .alias("cmd")
   .option("-d, --disable", "Disable the cmd channel check")
   .action(cmdChannel);
 
-// Init
+// Initialize
 program
-  .command("init <adminRole>")
+  .command("initialize <adminRole>")
   .description(
-    "Initialize this guild; Sets the cmd channel to the one this command is issued in" +
-      ", and the admin role to <adminRole>"
+    "Initialize this guild; Sets the cmd channel to the one this command is" +
+      " issued in, and the admin role to <adminRole>"
   )
-  .alias("i")
+  .alias("init")
   .action(init);
 
 // Set admin role

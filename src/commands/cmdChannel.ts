@@ -5,7 +5,11 @@ import { log } from "util";
 import ParseRef from "../utils/parseRef";
 
 export default class CmdChannel {
-  public static async removeChannel({ msg }: { msg: Message }): Promise<void> {
+  public static async disableCmdChannel({
+    msg
+  }: {
+    msg: Message;
+  }): Promise<void> {
     try {
       await GuildController.removeCmdChannel(msg.guild);
       SendMsg.cmdRes({
@@ -24,22 +28,6 @@ export default class CmdChannel {
     }
   }
 
-  public static async getCmdChannel({
-    msg
-  }: {
-    msg: Message;
-  }): Promise<GuildChannel> {
-    let cmdChannel: GuildChannel;
-
-    try {
-      cmdChannel = await GuildController.getCmdChanel(msg.guild);
-    } catch (error) {
-      throw new Error("Couldn't find the cmd channel");
-    }
-
-    return cmdChannel;
-  }
-
   public static async printCmdChannel({
     msg
   }: {
@@ -48,12 +36,12 @@ export default class CmdChannel {
     let cmdChannel: GuildChannel;
 
     try {
-      cmdChannel = await GuildController.getCmdChanel(msg.guild);
+      cmdChannel = await GuildController.getCmdChannel(msg.guild);
     } catch (error) {
       SendMsg.cmdRes({
         msg,
         status: CmdStatus.ERROR,
-        text: error.toString()
+        text: "We couldn't print the cmd channel.\nThat's all we know."
       });
       return;
     }
@@ -61,7 +49,9 @@ export default class CmdChannel {
     SendMsg.cmdRes({
       msg,
       status: CmdStatus.INFO,
-      text: "The cmd channel is #" + cmdChannel.name
+      text:
+        "The cmd channel is " +
+        (cmdChannel == null ? "disabled." : "#" + cmdChannel.name)
     });
   }
 

@@ -1,6 +1,11 @@
+import { log } from "util";
+
+// Startup message
+log("Starting MemeBot");
+
 import { Client, Message } from "discord.js";
 import { createConnection, ConnectionOptions } from "typeorm";
-import { log } from "util";
+import "source-map-support/register";
 
 import Events from "./middlewares/events";
 import SendMsg from "./utils/sendMsg";
@@ -10,9 +15,6 @@ import SendMsg from "./utils/sendMsg";
  *
  * It connects to a Postgres database, and the Discord API.
  */
-
-// Startup message
-log("Starting MemeBot");
 
 const bot: Client = new Client();
 

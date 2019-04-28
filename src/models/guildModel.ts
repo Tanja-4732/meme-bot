@@ -40,7 +40,7 @@ export class GuildModel {
    * @type {string}
    * @memberof GuildModel
    */
-  @Column()
+  @Column({ nullable: true })
   cmdChannelId: string;
 
   /**

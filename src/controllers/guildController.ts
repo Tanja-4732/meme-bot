@@ -52,28 +52,28 @@ export default class GuildController {
   // }
 
   /**
-   * Returns the cmd channel of a registered guild,
-   * throws an error if the guild isn't initialized.
+   * Returns the cmd channel of a guild when enabled, returns null if the
+   * dbc-channel requirement is disabled on the specified guild.
    *
    * @static
    * @param {Guild} guild The discord.js guild
-   * @returns {Promise<GuildChannel>} The discord.js GuildChannel which is cmd channel
+   * @returns {Promise<GuildChannel>} The cmd-channel or null
    * @memberof GuildController
    */
-  public static async getCmdChanel(guild: Guild): Promise<GuildChannel> {
+  public static async getCmdChannel(guild: Guild): Promise<GuildChannel> {
     /**
      * The EntityManager to perform db operations on
      */
-    const em: EntityManager = getManager();
+    const mgr: EntityManager = getManager();
 
     /**
      * The Guild-model of the guild
      */
-    let g: GuildModel;
+    let gm: GuildModel;
 
     try {
       // Get the guild-data from the db
-      g = await em.findOneOrFail(GuildModel, {
+      gm = await mgr.findOne(GuildModel, {
         where: {
           id: guild.id
         }
@@ -84,14 +84,7 @@ export default class GuildController {
       );
     }
 
-    // Validate chanel
-    if (guild.channels.get(g.cmdChannelId) == null) {
-      throw new Error(
-        "Couldn't find channel. Make sure to specify an existing channel."
-      );
-    }
-
-    return guild.channels.get(g.cmdChannelId);
+    return guild.channels.get(gm.cmdChannelId);
   }
 
   public static async setCmdChannel({

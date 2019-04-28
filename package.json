@@ -23,6 +23,7 @@
     "@types/node": "^11.11.3",
     "@types/request": "^2.48.1",
     "@types/request-promise-native": "^1.0.15",
+    "@types/source-map-support": "^0.5.0",
     "nodemon": "^1.18.10",
     "tslint": "^5.14.0"
   },
@@ -32,6 +33,7 @@
     "pg": "^7.9.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
+    "source-map-support": "^0.5.12",
     "typeorm": "^0.2.15",
     "typescript": "^3.3.3333"
   }
