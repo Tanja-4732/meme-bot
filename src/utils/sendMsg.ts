@@ -1,11 +1,17 @@
-import { Client, Message, RichEmbed, TextChannel, Role } from "discord.js";
+import {
+  Client,
+  Message,
+  RichEmbed,
+  TextChannel,
+  Role,
+  Attachment
+} from "discord.js";
 import { log } from "util";
 import request = require("request-promise-native");
 
 export default class SendMsg {
   public static readonly questionMarkImageUrl =
     "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Icon-round-Question_mark.svg/1024px-Icon-round-Question_mark.svg.png";
-  static res: any;
 
   /**
    * Sends an embed with a quote into the channel of the message, mentioning
@@ -74,6 +80,31 @@ export default class SendMsg {
     /**
      * The RichEmbed to be sent into the channel
      */
+    let re: RichEmbed = new RichEmbed()
+      .setColor(groupRole.color || "82368c")
+      .setAuthor(
+        age == null ? groupRole.name : groupRole.name + " (" + age + ")",
+        imageUrl || this.questionMarkImageUrl
+      )
+      .addField("Confession", "```\n" + text + "```")
+      .setTimestamp()
+      .setFooter(this.getQuote());
+
+    // Send the RichEmbed into the target channel
+    channel.send(re);
+  }
+
+  static meme({
+    channel,
+    attachment,
+    msg,
+    groupRole
+  }: {
+    channel: TextChannel;
+    attachment: Attachment;
+    msg: Message;
+    groupRole: Role;
+  }): void {
     let re: RichEmbed = new RichEmbed()
       .setColor(groupRole.color || "82368c")
       .setAuthor(
