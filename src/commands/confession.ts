@@ -79,7 +79,7 @@ export default class Confession {
     try {
       GuildController.removeConfessionChannel(msg.guild);
 
-      // Send confirmation message
+      // Send confirmation message 
       SendMsg.cmdRes({
         msg,
         status: CmdStatus.SUCCESS,
