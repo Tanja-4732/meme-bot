@@ -8,6 +8,7 @@ import CheckCmd from "../utils/checkCmd";
 import AdminRole from "../commands/adminRole";
 import Confession from "../commands/confession";
 import StringUtils from "../utils/stringUtils";
+import Meme from "../commands/meme";
 
 /**
  * This class parses commands; it doesn't handle message, dm or any other events
@@ -337,6 +338,16 @@ export default class Cmd {
             ret.stdout.toString()
           );
           Confession.postConfession({ bot, msg, text, age });
+          break;
+
+        // 3 Memes
+        case 3001:
+          // Post meme anonymously
+          Meme.postMeme(msg);
+          break;
+        case 3002:
+          // Post meme with attribution
+          break;
 
         // Errors
         case 4242:

@@ -54,6 +54,10 @@ export class GuildModel {
   @Column({ nullable: true })
   confessionChannelId: string;
 
+  // TODO allow for several meme channels #11 & #12
+  @Column({nullable: true})
+  memeChannelId: string;
+
   /**
    * The unique short handle to be used in DMs to specify a guild
    *

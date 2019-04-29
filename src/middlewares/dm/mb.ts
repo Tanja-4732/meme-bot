@@ -29,6 +29,16 @@ function confession(text: string, options: any) {
   }
 }
 
+function meme(options: any) {
+  if (options.anonymous) {
+    // Request posting meme anonymously
+    exit(3001);
+  } else {
+    // Request posting meme with attribution
+    exit(3002);
+  }
+}
+
 // Start
 program
   .version("MemeBot version 0.5.0", "-v, --version")
@@ -45,6 +55,15 @@ program
   )
   .option("-a <age>, --age <age>", "specify ones age")
   .action(confession);
+
+program
+  .command("meme")
+  .description(
+    "Post a meme! Send your picture or video first, then use this command.\n" +
+      "This will post the last received picture or video either with attribution (named) or anonymously."
+  )
+  .option("-a, --anonymous", "Post the meme anonymous")
+  .action(meme);
 
 // Help
 program
