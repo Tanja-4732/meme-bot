@@ -70,6 +70,7 @@ export default class SendMsg {
     age?: number;
     imageUrl?: string;
   }) {
+    // TODO remove this
     /**
      * The RichEmbed to be sent into the channel
      */
@@ -79,7 +80,7 @@ export default class SendMsg {
         age == null ? groupRole.name : groupRole.name + " (" + age + ")",
         imageUrl || this.questionMarkImageUrl
       )
-      .addField(status, "```\n" + text + "```")
+      .addField("Confession", "```\n" + text + "```")
       .setTimestamp()
       .setFooter(this.getQuote());
 

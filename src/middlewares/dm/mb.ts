@@ -9,11 +9,16 @@ import { exit, stdout } from "process";
  */
 
 function confession(text: string, cmd: any) {
+  // Check if an age was specified
   if (cmd.age == null) {
+    // Write the specified adminRoleRef to stdout
+    stdout.write(text);
+
+    // Request posting a confession
     exit(2001);
   } else {
     // Write the specified adminRoleRef to stdout
-    stdout.write(cmd);
+    stdout.write(text);
 
     // Request init
     exit(2002);
@@ -31,7 +36,7 @@ program
 program
   .command("confession <confession message>")
   .description(
-    "Post an anonymous <confession message>. Using\"quote marks\" is required."
+    'Post an anonymous <confession message>. Using"quote marks" is required.'
   )
   .alias("conf")
   .option("-a <age>, --age <age>", "specify ones age")
@@ -40,7 +45,7 @@ program
 // Help
 program
   .option("-e, --examples", "Print examples with the help output")
-  .on("--help", function () {
+  .on("--help", function() {
     log("");
     if (program.examples) {
       log("Examples:");
@@ -51,8 +56,8 @@ program
       log("  mb --help");
       log("  mb -h");
       log("");
-      log("  mb confession \"I did stuff.\"");
-      log("  mb conf \"I did stuff.\"");
+      log('  mb confession "I did stuff."');
+      log('  mb conf "I did stuff."');
       log("");
       log("  mb submit");
       log("  mb sub");
