@@ -39,6 +39,23 @@ export default class StringUtils {
       return v.replace(/\\"/g, '"');
     });
   }
+
+  /**
+   * Gets the age and the message from a ageFul, genderLess confession
+   *
+   * @static
+   * @param {string} text
+   * @returns {{ text: string; age: number }}
+   * @memberof StringUtils
+   */
+  static getAgeAndText(text: string): { text: string; age: number } {
+    const separatorPosition = text.indexOf(";");
+
+    return {
+      text: text.substring(separatorPosition + 1),
+      age: parseInt(text.substring(0, separatorPosition))
+    };
+  }
 }
 
 // const str = `mb conf "Hello there: \\"Hello\\"" --age 18`;

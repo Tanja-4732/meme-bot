@@ -8,19 +8,23 @@ import { exit, stdout } from "process";
  * It runs in a child-process of the bot.
  */
 
-function confession(text: string, cmd: any) {
+function confession(text: string, options: any) {
   // Check if an age was specified
-  if (cmd.age == null) {
+  if (options.age == null) {
     // Write the specified adminRoleRef to stdout
     stdout.write(text);
 
-    // Request posting a confession
+    // Request posting a confession without age and gender info
     exit(2001);
   } else {
+    // TODO this doesn't work #53
+    // Write the age with a delimiter
+    stdout.write(options.age + ";");
+
     // Write the specified adminRoleRef to stdout
     stdout.write(text);
 
-    // Request init
+    // Request posting a confession with age info without gender
     exit(2002);
   }
 }
@@ -35,10 +39,10 @@ program
 // Confession
 program
   .command("confession <confession message>")
+  .alias("conf")
   .description(
     'Post an anonymous <confession message>. Using"quote marks" is required.'
   )
-  .alias("conf")
   .option("-a <age>, --age <age>", "specify ones age")
   .action(confession);
 

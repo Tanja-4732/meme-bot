@@ -327,10 +327,16 @@ export default class Cmd {
 
         // 2 Submit confession
         case 2001:
-          // Submit confession without age
-          log(JSON.stringify(ret.stdout.toString()));
+          // Submit confession without age not gender
           Confession.postConfession({ bot, msg, text: ret.stdout.toString() });
           break;
+        case 2002:
+          // Submit confession with age without gender
+          log(ret.stdout.toString());
+          const { text, age } = StringUtils.getAgeAndText(
+            ret.stdout.toString()
+          );
+          Confession.postConfession({ bot, msg, text, age });
 
         // Errors
         case 4242:
