@@ -1,4 +1,4 @@
-import { Client, Message, TextChannel } from "discord.js";
+import { Client, Message, TextChannel, Role } from "discord.js";
 import { getManager, EntityManager } from "typeorm";
 import { GuildModel } from "../models/guildModel";
 import SendMsg, { CmdStatus } from "../utils/sendMsg";
@@ -36,6 +36,20 @@ export default class Confession {
       });
     }
 
+    /**
+     * The role to be used for coloring the message
+     */
+    const groupRole = bot.guilds
+
+      // Get the guild // TODO allow for multiple guilds #42
+      .find(guild => guild.id === guildId)
+
+      // Get the member of the guild
+      .members.find(member => member.id === msg.author.id)
+
+      // Get the lowest role // TODO allow for a role to be specified #44
+      .roles.last();
+
     // Post confession
     if (age != null) {
       // Post with age
@@ -43,7 +57,7 @@ export default class Confession {
         channel: bot.channels.find(
           channel => channel.id === confessionChannelId
         ) as TextChannel,
-        groupRole: null,
+        groupRole,
         text,
         age
       });
@@ -53,7 +67,7 @@ export default class Confession {
         channel: bot.channels.find(
           channel => channel.id === confessionChannelId
         ) as TextChannel,
-        groupRole: null,
+        groupRole,
         text
       });
     }
