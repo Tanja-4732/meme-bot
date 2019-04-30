@@ -11,6 +11,7 @@ import DmGuildLogic from "../utils/dmGuildLogic";
 import { log, inspect } from "util";
 import { getManager } from "typeorm";
 import { GuildModel } from "../models/guildModel";
+import ParseRef from "../utils/parseRef";
 
 export default class Meme {
   static async postMeme(msg: Message): Promise<void> {
@@ -64,11 +65,60 @@ export default class Meme {
   static async disableMemeChannel(msg: Message): Promise<void> {
     try {
       await GuildController.disableMemeChannel(msg.guild);
-      SendMsg.cmdRes({msg, status: CmdStatus.SUCCESS, text: "Disabled meme channel."})
+      SendMsg.cmdRes({
+        msg,
+        status: CmdStatus.SUCCESS,
+        text: "We successfully disabled the meme channel."
+      });
     } catch (error) {
-      
+      SendMsg.cmdRes({
+        msg,
+        status: CmdStatus.ERROR,
+        text: "We couldn't disable the meme channel.\nThat's all we know."
+      });
     }
   }
 
-  static 
+  static async setMemeChannel(
+    msg: Message,
+    memeChannelRef: string
+  ): Promise<void> {
+    try {
+      const parsedRef = ParseRef.parseChannelRef(memeChannelRef);
+      await GuildController.setMemeChannel(msg.guild, parsedRef);
+
+      SendMsg.cmdRes({
+        msg,
+        status: CmdStatus.SUCCESS,
+        text:
+          "We set the meme channel to #" +
+          msg.guild.channels.find(channel => channel.id === parsedRef).name
+      });
+    } catch (error) {
+      SendMsg.cmdRes({
+        msg,
+        status: CmdStatus.ERROR,
+        text: "We couldn't set the meme channel.\nThat's all we know."
+      });
+    }
+  }
+
+  static async printMemeChannel(msg: Message): Promise<void> {
+    try {
+      const memeChannel = await GuildController.getMemeChannel(msg.guild);
+      SendMsg.cmdRes({
+        msg,
+        status: CmdStatus.INFO,
+        text:
+          "The meme channel is " +
+          (memeChannel == null ? "disabled." : "set to #" + memeChannel.name)
+      });
+    } catch (error) {
+      SendMsg.cmdRes({
+        msg,
+        status: CmdStatus.ERROR,
+        text: "We couldn't print the meme channel.\nThat's all we know."
+      });
+    }
+  }
 }

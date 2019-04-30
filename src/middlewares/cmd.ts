@@ -181,7 +181,7 @@ export default class Cmd {
             // 6 Memes
             case 6001:
               // Disable meme channel
-              Meme.disableMemes(msg);
+              Meme.disableMemeChannel(msg);
               break;
             case 6002:
               // Print meme channel

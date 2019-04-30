@@ -159,6 +159,7 @@ program
 program
   .command("meme-channel [memeChannel]")
   .description("Sets, disables or prints the [memeChannel].")
+  .alias("meme")
   .option(
     "-d, --disable",
     "Disable the meme channel. The channel remains unchanged."

@@ -30,7 +30,8 @@ export default class GuildController {
         cmdChannelId,
         name,
         confessionChannelId: null,
-        postingGroups: null
+        postingGroups: null,
+        memeChannelId: null
       };
 
       // Add the guild-model to the db
@@ -270,7 +271,7 @@ export default class GuildController {
       throw new Error(error);
     }
   }
-  static async getMemeChannel(guild: Guild): Promise<GuildChannel | void> {
+  static async getMemeChannel(guild: Guild): Promise<GuildChannel | null> {
     const mgr = getManager();
 
     try {
