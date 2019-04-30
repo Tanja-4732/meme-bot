@@ -270,4 +270,14 @@ export default class GuildController {
       throw new Error(error);
     }
   }
+  static async getMemeChannel(guild: Guild): Promise<GuildChannel | void> {
+    const mgr = getManager();
+
+    try {
+      const gm = await mgr.findOne(GuildModel, guild.id);
+      return guild.channels.find(channel => channel.id === gm.memeChannelId);
+    } catch (error) {
+      return null;
+    }
+  }
 }

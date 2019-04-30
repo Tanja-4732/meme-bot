@@ -4,7 +4,8 @@ import {
   RichEmbed,
   TextChannel,
   Role,
-  Attachment
+  Attachment,
+  MessageAttachment
 } from "discord.js";
 import { log } from "util";
 import request = require("request-promise-native");
@@ -101,17 +102,20 @@ export default class SendMsg {
     groupRole
   }: {
     channel: TextChannel;
-    attachment: Attachment;
+    attachment: MessageAttachment;
     msg: Message;
     groupRole: Role;
   }): void {
+    const authorAsMember = channel.guild.members.find(
+      member => member.id === msg.author.id
+    );
     let re: RichEmbed = new RichEmbed()
       .setColor(groupRole.color || "82368c")
       .setAuthor(
-        age == null ? groupRole.name : groupRole.name + " (" + age + ")",
-        imageUrl || this.questionMarkImageUrl
+        authorAsMember.displayName,
+        authorAsMember.user.displayAvatarURL
       )
-      .addField("Confession", "```\n" + text + "```")
+      .setImage(attachment.url)
       .setTimestamp()
       .setFooter(this.getQuote());
 
