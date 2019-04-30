@@ -280,4 +280,24 @@ export default class GuildController {
       return null;
     }
   }
+
+  static async setMemeChannel(guild: Guild, channelId: string): Promise<void> {
+    const mgr = getManager();
+    try {
+      const gm = await mgr.findOne(GuildModel, guild.id);
+      gm.memeChannelId = channelId;
+      await mgr.save(gm);
+    } catch (error) {
+      log("big oof setting meme channel:\n" + error);
+      throw new Error(error);
+    }
+  }
+
+  static async disableMemeChannel(guild: Guild): Promise<void> {
+    const mgr = getManager();
+
+    const gm = await mgr.findOneOrFail(GuildModel, guild.id);
+    gm.memeChannelId = null;
+    await mgr.save(gm);
+  }
 }

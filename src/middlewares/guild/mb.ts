@@ -85,6 +85,24 @@ function setConfChannel(confChannelRef: string, cmd: any) {
   }
 }
 
+function meme(memeChannelRef: string, options: any) {
+  if (options.disable) {
+    // Request the meme channel to be disabled
+    exit(6001);
+  } else {
+    if (memeChannelRef == null) {
+      // Request meme channel to be printed
+      exit(6002);
+    } else {
+      // Output the desired meme channel
+      stdout.write(memeChannelRef);
+
+      // Request the meme channel to be set
+      exit(6003);
+    }
+  }
+}
+
 // Start
 program
   .version("MemeBot version 0.5.0", "-v, --version")
@@ -136,6 +154,16 @@ program
     "Disable the confession channel. The channel remains unchanged."
   )
   .action(setConfChannel);
+
+// Memes
+program
+  .command("meme-channel [memeChannel]")
+  .description("Sets, disables or prints the [memeChannel].")
+  .option(
+    "-d, --disable",
+    "Disable the meme channel. The channel remains unchanged."
+  )
+  .action(meme);
 
 // Help
 program

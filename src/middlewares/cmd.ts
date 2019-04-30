@@ -178,6 +178,20 @@ export default class Cmd {
               });
               break;
 
+            // 6 Memes
+            case 6001:
+              // Disable meme channel
+              Meme.disableMemes(msg);
+              break;
+            case 6002:
+              // Print meme channel
+              Meme.printMemeChannel(msg);
+              break;
+            case 6003:
+              // Set meme channel
+              Meme.setMemeChannel(msg, ret.stdout.toString());
+              break;
+
             // Errors
             case 4242:
               SendMsg.cmdRes({

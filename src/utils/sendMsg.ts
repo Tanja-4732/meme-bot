@@ -98,19 +98,17 @@ export default class SendMsg {
   static meme({
     channel,
     attachment,
-    msg,
-    groupRole
+    msg
   }: {
     channel: TextChannel;
     attachment: MessageAttachment;
     msg: Message;
-    groupRole: Role;
   }): void {
     const authorAsMember = channel.guild.members.find(
       member => member.id === msg.author.id
     );
     let re: RichEmbed = new RichEmbed()
-      .setColor(groupRole.color || "82368c")
+      .setColor(authorAsMember.colorRole.color || "82368c")
       .setAuthor(
         authorAsMember.displayName,
         authorAsMember.user.displayAvatarURL
