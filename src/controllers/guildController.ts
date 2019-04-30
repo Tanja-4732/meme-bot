@@ -30,7 +30,8 @@ export default class GuildController {
         cmdChannelId,
         name,
         confessionChannelId: null,
-        postingGroups: null
+        postingGroups: null,
+        memeChannelId: null
       };
 
       // Add the guild-model to the db
@@ -269,5 +270,35 @@ export default class GuildController {
       log("big oof removing confessions:\n" + error);
       throw new Error(error);
     }
+  }
+  static async getMemeChannel(guild: Guild): Promise<GuildChannel | null> {
+    const mgr = getManager();
+
+    try {
+      const gm = await mgr.findOne(GuildModel, guild.id);
+      return guild.channels.find(channel => channel.id === gm.memeChannelId);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  static async setMemeChannel(guild: Guild, channelId: string): Promise<void> {
+    const mgr = getManager();
+    try {
+      const gm = await mgr.findOne(GuildModel, guild.id);
+      gm.memeChannelId = channelId;
+      await mgr.save(gm);
+    } catch (error) {
+      log("big oof setting meme channel:\n" + error);
+      throw new Error(error);
+    }
+  }
+
+  static async disableMemeChannel(guild: Guild): Promise<void> {
+    const mgr = getManager();
+
+    const gm = await mgr.findOneOrFail(GuildModel, guild.id);
+    gm.memeChannelId = null;
+    await mgr.save(gm);
   }
 }
