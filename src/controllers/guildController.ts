@@ -302,9 +302,29 @@ export default class GuildController {
     await mgr.save(gm);
   }
 
-  static setDownvoteLimit(guild: Guild, downvoteLimit: number): void {
+  static async setDownvoteLimit(
+    guild: Guild,
+    downvoteLimit: number
+  ): Promise<void> {
     const mgr = getManager();
 
-    const gm = mgr.findOne(GuildModel, guild.id);
+    const gm = await mgr.findOne(GuildModel, guild.id);
+    gm.downvoteLimit = downvoteLimit;
+    await mgr.save(gm);
+  }
+
+  static async getDownvoteLimit(guild: Guild): Promise<number | null> {
+    const mgr = getManager();
+
+    const gm = await mgr.findOne(GuildModel, guild.id);
+    return gm.downvoteLimit || null;
+  }
+
+  static async removeDownvoteLimit(guild: Guild): Promise<void> {
+    const mgr = getManager();
+
+    const gm = await mgr.findOne(GuildModel, guild.id);
+    gm.downvoteLimit = null;
+    await mgr.save(gm);
   }
 }

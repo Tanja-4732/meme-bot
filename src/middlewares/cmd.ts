@@ -9,6 +9,7 @@ import AdminRole from "../commands/adminRole";
 import Confession from "../commands/confession";
 import StringUtils from "../utils/stringUtils";
 import Meme from "../commands/meme";
+import DownvoteLimit from "../commands/downvoteLimit";
 
 /**
  * This class parses commands; it doesn't handle message, dm or any other events
@@ -195,12 +196,18 @@ export default class Cmd {
             // 7 Downvote limit
             case 7001:
               // Disable the downvote limit
+              DownvoteLimit.removeDownvoteLimit(msg);
               break;
             case 7002:
               // Print the downvote limit
+              DownvoteLimit.printDownvoteLimit(msg);
               break;
             case 7003:
               //Set the downvote limit
+              DownvoteLimit.setDownvoteLimit(
+                msg,
+                parseInt(ret.stdout.toString())
+              );
               break;
 
             // Errors
