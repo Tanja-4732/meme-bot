@@ -95,15 +95,17 @@ export default class SendMsg {
     channel.send(re);
   }
 
-  static meme({
+  static async meme({
     channel,
     attachment,
-    msg
+    msg,
+    attribution
   }: {
     channel: TextChannel;
     attachment: MessageAttachment;
     msg: Message;
-  }): void {
+    attribution: boolean;
+  }): Promise<void> {
     const authorAsMember = channel.guild.members.find(
       member => member.id === msg.author.id
     );
@@ -112,22 +114,32 @@ export default class SendMsg {
 
     let re: RichEmbed = new RichEmbed()
       .setColor(authorAsMember.colorRole.color || "82368c")
-      .setAuthor(
-        authorAsMember.displayName,
-        authorAsMember.user.displayAvatarURL
-      )
+
       .setImage(attachment.url)
       .setTimestamp()
       .setFooter(this.getQuote());
 
+    if (attribution) {
+      re.setAuthor(
+        authorAsMember.displayName,
+        authorAsMember.user.displayAvatarURL
+      ).setDescription("We've put the video above.");
+    } else {
+      re.setAuthor("Anonymous");
+    }
+
     // Send the RichEmbed into the target channel
-    channel.send(re);
 
     if (isVideo) {
       channel.send({
         files: [attachment.url]
       });
     }
+
+    const postedMeme = ((await channel.send(re)) as unknown) as Message;
+
+    postedMeme.react("👍");
+    postedMeme.react("👎");
   }
 
   /**

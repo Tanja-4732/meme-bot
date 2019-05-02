@@ -14,7 +14,7 @@ import { GuildModel } from "../models/guildModel";
 import ParseRef from "../utils/parseRef";
 
 export default class Meme {
-  static async postMeme(msg: Message): Promise<void> {
+  static async postMeme(msg: Message, attribution: boolean): Promise<void> {
     // TODO allow for multiple guilds #42
     const guildId: string = "557276089869664288";
 
@@ -58,7 +58,8 @@ export default class Meme {
     SendMsg.meme({
       attachment: attachments.first(),
       channel: memeChannel as TextChannel,
-      msg
+      msg,
+      attribution
     });
   }
 
