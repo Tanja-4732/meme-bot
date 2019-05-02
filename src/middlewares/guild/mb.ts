@@ -103,6 +103,24 @@ function meme(memeChannelRef: string, options: any) {
   }
 }
 
+function downvote(downvoteLimit: string, options: any) {
+  if (options.disable) {
+    // Request the downvote limit to be disabled
+    exit(7001);
+  } else {
+    if (downvoteLimit == null) {
+      // Request downvote limit to be printed
+      exit(7002);
+    } else {
+      // Output the desired downvote limit
+      stdout.write(downvoteLimit);
+
+      // Request the downvote limit to be set
+      exit(7003);
+    }
+  }
+}
+
 // Start
 program
   .version("MemeBot version 0.5.0", "-v, --version")
@@ -165,6 +183,14 @@ program
     "Disable the meme channel. The channel remains unchanged."
   )
   .action(meme);
+
+// Downvote limit
+program
+  .command("downvote [downvote-limit]")
+  .description("Sets, disables or prints the [downvote-limit]")
+  .alias("dv")
+  .option("-d, --disable", "Disable the downvote limit.")
+  .action(downvote);
 
 // Help
 program

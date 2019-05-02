@@ -55,7 +55,7 @@ export class GuildModel {
   confessionChannelId: string;
 
   // TODO allow for several meme channels #11 & #12
-  @Column({nullable: true})
+  @Column({ nullable: true })
   memeChannelId: string;
 
   /**
@@ -69,4 +69,7 @@ export class GuildModel {
 
   @OneToMany(() => PostingGroup, postingGroup => postingGroup.guildModel)
   postingGroups: PostingGroup[];
+
+  @Column({ nullable: true })
+  downvoteLimit: number;
 }

@@ -192,6 +192,17 @@ export default class Cmd {
               Meme.setMemeChannel(msg, ret.stdout.toString());
               break;
 
+            // 7 Downvote limit
+            case 7001:
+              // Disable the downvote limit
+              break;
+            case 7002:
+              // Print the downvote limit
+              break;
+            case 7003:
+              //Set the downvote limit
+              break;
+
             // Errors
             case 4242:
               SendMsg.cmdRes({

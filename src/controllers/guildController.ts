@@ -301,4 +301,10 @@ export default class GuildController {
     gm.memeChannelId = null;
     await mgr.save(gm);
   }
+
+  static setDownvoteLimit(guild: Guild, downvoteLimit: number): void {
+    const mgr = getManager();
+
+    const gm = mgr.findOne(GuildModel, guild.id);
+  }
 }
