@@ -42,7 +42,7 @@ export default class Meme {
       MessageAttachment
     > = dmChannel.messages.last(2)[0].attachments;
 
-    log(inspect(dmChannel.lastMessage, null, 2));
+    // log(inspect(dmChannel.lastMessage, null, 2));
 
     if (attachments.size != 1) {
       // Send error
@@ -91,7 +91,7 @@ export default class Meme {
         msg,
         status: CmdStatus.SUCCESS,
         text:
-          "We set the meme channel to #" +
+          "We've set the meme channel to #" +
           msg.guild.channels.find(channel => channel.id === parsedRef).name
       });
     } catch (error) {

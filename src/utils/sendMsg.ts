@@ -107,6 +107,9 @@ export default class SendMsg {
     const authorAsMember = channel.guild.members.find(
       member => member.id === msg.author.id
     );
+
+    const isVideo: boolean = attachment.filename.endsWith(".mp4");
+
     let re: RichEmbed = new RichEmbed()
       .setColor(authorAsMember.colorRole.color || "82368c")
       .setAuthor(
@@ -119,6 +122,12 @@ export default class SendMsg {
 
     // Send the RichEmbed into the target channel
     channel.send(re);
+
+    if (isVideo) {
+      channel.send({
+        files: [attachment.url]
+      });
+    }
   }
 
   /**
