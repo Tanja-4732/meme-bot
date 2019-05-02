@@ -357,10 +357,11 @@ export default class Cmd {
         // 3 Memes
         case 3001:
           // Post meme anonymously
-          Meme.postMeme(msg);
+          Meme.postMeme(msg, false);
           break;
         case 3002:
           // Post meme with attribution
+          Meme.postMeme(msg, true);
           break;
 
         // Errors

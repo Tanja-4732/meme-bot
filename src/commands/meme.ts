@@ -14,7 +14,7 @@ import { GuildModel } from "../models/guildModel";
 import ParseRef from "../utils/parseRef";
 
 export default class Meme {
-  static async postMeme(msg: Message): Promise<void> {
+  static async postMeme(msg: Message, attribution: boolean): Promise<void> {
     // TODO allow for multiple guilds #42
     const guildId: string = "557276089869664288";
 
@@ -42,7 +42,7 @@ export default class Meme {
       MessageAttachment
     > = dmChannel.messages.last(2)[0].attachments;
 
-    log(inspect(dmChannel.lastMessage, null, 2));
+    // log(inspect(dmChannel.lastMessage, null, 2));
 
     if (attachments.size != 1) {
       // Send error
@@ -58,7 +58,8 @@ export default class Meme {
     SendMsg.meme({
       attachment: attachments.first(),
       channel: memeChannel as TextChannel,
-      msg
+      msg,
+      attribution
     });
   }
 
@@ -91,7 +92,7 @@ export default class Meme {
         msg,
         status: CmdStatus.SUCCESS,
         text:
-          "We set the meme channel to #" +
+          "We've set the meme channel to #" +
           msg.guild.channels.find(channel => channel.id === parsedRef).name
       });
     } catch (error) {
