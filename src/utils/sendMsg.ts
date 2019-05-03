@@ -105,7 +105,7 @@ export default class SendMsg {
     attachment: MessageAttachment;
     msg: Message;
     attribution: boolean;
-  }): Promise<void> {
+  }): Promise<Message> {
     const authorAsMember = channel.guild.members.find(
       member => member.id === msg.author.id
     );
@@ -136,10 +136,7 @@ export default class SendMsg {
       });
     }
 
-    const postedMeme = ((await channel.send(re)) as unknown) as Message;
-
-    postedMeme.react("👍");
-    postedMeme.react("👎");
+    return ((await channel.send(re)) as unknown) as Message;
   }
 
   /**

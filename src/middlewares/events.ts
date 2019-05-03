@@ -1,5 +1,5 @@
-import { Client, Message } from "discord.js";
-import { log } from "util";
+import { Client, Message, MessageReaction, User } from "discord.js";
+import { log, inspect } from "util";
 import Cmd from "./cmd";
 import { prefix } from "../bot";
 
@@ -30,5 +30,9 @@ export default class Events {
         Cmd.useGroupCmd(bot, msg);
         break;
     }
+  }
+
+  static messageReactionAdd(messageReaction: MessageReaction, user: User) {
+    log(inspect(messageReaction));
   }
 }

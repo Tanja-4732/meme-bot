@@ -3,7 +3,9 @@ import {
   DMChannel,
   MessageAttachment,
   Collection,
-  TextChannel
+  TextChannel,
+  ReactionEmoji,
+  User
 } from "discord.js";
 import SendMsg, { CmdStatus } from "../utils/sendMsg";
 import GuildController from "../controllers/guildController";
@@ -55,12 +57,21 @@ export default class Meme {
     }
 
     // Post meme
-    SendMsg.meme({
+    const meme = await SendMsg.meme({
       attachment: attachments.first(),
       channel: memeChannel as TextChannel,
       msg,
       attribution
     });
+
+    await meme.react("👍");
+    await meme.react("👎");
+
+    const downvoteCollector = meme.createReactionCollector(
+      (reaction: ReactionEmoji, user: User) => reaction.name === "👎"
+    );
+
+    // downvoteCollector.on("collect", ) // TODO #58
   }
 
   static async disableMemeChannel(msg: Message): Promise<void> {
