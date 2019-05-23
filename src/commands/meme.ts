@@ -5,7 +5,9 @@ import {
   Collection,
   TextChannel,
   ReactionEmoji,
-  User
+  User,
+  MessageReaction,
+  Collector
 } from "discord.js";
 import SendMsg, { CmdStatus } from "../utils/sendMsg";
 import GuildController from "../controllers/guildController";
@@ -73,14 +75,40 @@ export default class Meme {
       attribution
     });
 
+    // Add reactions in order
     await meme.react("👍");
     await meme.react("👎");
 
+    // Register meme
+    Meme.registerMeme(meme); // TODO #58
+  }
+
+  /**
+   * Registers a meme in this instance
+   *
+   * This makes sure that downvotes are tracked and events are processed correctly.
+   * This method should be called for every meme to be tracked after each startup.
+   *
+   * @private
+   * @static
+   * @param {Message} meme
+   * @memberof Meme
+   */
+  static registerMeme(meme: Message, video?: Message) {
     const downvoteCollector = meme.createReactionCollector(
       (reaction: ReactionEmoji, user: User) => reaction.name === "👎"
     );
+    downvoteCollector.on("collect", this.onDownvote);
+  }
 
-    // downvoteCollector.on("collect", ) // TODO #58
+  private static async onDownvote(
+    element: MessageReaction,
+    collector: Collector<string, MessageReaction>
+  ): Promise<void> {
+    const downvoteLimit: number = await GuildController.getDownvoteLimit(
+      element.message.guild
+    );
+    if (collector.collected.size > downvoteLimit) this.onLimitExceeded();
   }
 
   static async disableMemeChannel(msg: Message): Promise<void> {
@@ -98,6 +126,17 @@ export default class Meme {
         text: "We couldn't disable the meme channel.\nThat's all we know."
       });
     }
+  }
+
+  /**
+   * Remove the meme (including the video, if any)
+   *
+   * @private
+   * @static
+   * @memberof Meme
+   */
+  private static onLimitExceeded() {
+    // TODO #58
   }
 
   static async setMemeChannel(
