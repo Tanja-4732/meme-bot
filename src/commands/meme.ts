@@ -16,6 +16,15 @@ import { GuildModel } from "../models/guildModel";
 import ParseRef from "../utils/parseRef";
 
 export default class Meme {
+  /**
+   * Handles memes to be posted
+   *
+   * @static
+   * @param {Message} msg
+   * @param {boolean} attribution If the username should be included
+   * @returns {Promise<void>}
+   * @memberof Meme
+   */
   static async postMeme(msg: Message, attribution: boolean): Promise<void> {
     // TODO allow for multiple guilds #42
     const guildId: string = "557276089869664288";

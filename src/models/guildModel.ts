@@ -1,5 +1,6 @@
 import { Entity, PrimaryColumn, Column, OneToMany } from "typeorm";
 import PostingGroup from "./postingGroup";
+import MemeMessage from "./memeMessage";
 
 @Entity()
 export class GuildModel {
@@ -72,4 +73,7 @@ export class GuildModel {
 
   @Column({ nullable: true })
   downvoteLimit: number;
+
+  @OneToMany(() => MemeMessage, mm => mm.guildModel)
+  memeMessages: MemeMessage[];
 }

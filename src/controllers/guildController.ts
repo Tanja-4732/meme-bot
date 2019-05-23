@@ -24,14 +24,11 @@ export default class GuildController {
       /**
        * The guild-model to be added to the db
        */
-      const guildToRegister: GuildModel = {
+      const guildToRegister: GuildModel | any = { // TODO not very nice #61
         id,
         adminRoleId,
         cmdChannelId,
-        name,
-        confessionChannelId: null,
-        postingGroups: null,
-        memeChannelId: null
+        name
       };
 
       // Add the guild-model to the db
