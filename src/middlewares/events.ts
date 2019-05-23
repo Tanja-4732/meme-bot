@@ -2,6 +2,7 @@ import { Client, Message, MessageReaction, User } from "discord.js";
 import { log, inspect } from "util";
 import Cmd from "./cmd";
 import { prefix } from "../bot";
+import Vote from "./vote";
 
 export default class Events {
   public static message({ bot, msg }: { bot: Client; msg: Message }): void {
@@ -33,6 +34,8 @@ export default class Events {
   }
 
   static messageReactionAdd(messageReaction: MessageReaction, user: User) {
-    log(inspect(messageReaction));
+    log(inspect(messageReaction)); // TODO remove
+
+    Vote.useReaction(messageReaction, user);
   }
 }
