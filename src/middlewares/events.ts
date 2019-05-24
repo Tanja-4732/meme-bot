@@ -33,9 +33,13 @@ export default class Events {
     }
   }
 
-  static messageReactionAdd(messageReaction: MessageReaction, user: User) {
+  static messageReactionAdd(
+    bot: Client,
+    messageReaction: MessageReaction,
+    user: User
+  ) {
     log(inspect(messageReaction)); // TODO remove
-
-    Vote.useReaction(messageReaction, user);
+    // Prevent self-activation
+    if (user !== bot.user) Vote.useReaction(messageReaction, user);
   }
 }

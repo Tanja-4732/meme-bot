@@ -11,6 +11,14 @@ export default class Vote {
       switch (messageReaction.emoji.name) {
         case "👍":
           log("up");
+          // Remove the users downvote
+          messageReaction.message.reactions
+            .find(
+              (mr: MessageReaction): boolean => {
+                return mr.emoji.name === "👎";
+              }
+            )
+            .remove(user);
           break;
         case "👎":
           log("down");

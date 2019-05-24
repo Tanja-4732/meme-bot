@@ -23,7 +23,7 @@ export const prefix: string = process.env.MB_PREFIX || "mb";
 // Register events
 bot.on("message", (message: Message) => Events.message({ bot, msg: message }));
 bot.on("messageReactionAdd", (messageReaction: MessageReaction, user: User) =>
-  Events.messageReactionAdd(messageReaction, user)
+  Events.messageReactionAdd(bot, messageReaction, user)
 );
 
 // Connect to the database
