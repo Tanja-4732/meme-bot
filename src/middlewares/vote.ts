@@ -3,26 +3,42 @@ import MemeController from "../controllers/memeController";
 import { log } from "util";
 
 export default class Vote {
-  static useReaction(messageReaction: MessageReaction, user: User) {
+  /**
+   * Processes a reaction given its context
+   *
+   * @static
+   * @param {MessageReaction} mr
+   * @param {User} user
+   * @memberof Vote
+   */
+  static useReaction(mr: MessageReaction, user: User) {
     // Check if the message is a meme
-    const meme = MemeController.getMeme(messageReaction.message);
+    const meme = MemeController.getMeme(mr.message);
     if (meme != null) {
       // Keep up/downvotes form each other
-      switch (messageReaction.emoji.name) {
+      switch (mr.emoji.name) {
         case "👍":
           log("up");
           // Remove the users downvote
-          messageReaction.message.reactions
+          mr.message.reactions
             .find(
               (mr: MessageReaction): boolean => {
                 return mr.emoji.name === "👎";
               }
             )
             .remove(user);
-          break;
+          return;
         case "👎":
           log("down");
-          break;
+          // Remove the users upvote
+          mr.message.reactions
+            .find(
+              (mr: MessageReaction): boolean => {
+                return mr.emoji.name === "👍";
+              }
+            )
+            .remove(user);
+          return;
       }
     }
   }

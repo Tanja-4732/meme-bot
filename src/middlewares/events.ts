@@ -38,7 +38,6 @@ export default class Events {
     messageReaction: MessageReaction,
     user: User
   ) {
-    log(inspect(messageReaction)); // TODO remove
     // Prevent self-activation
     if (user !== bot.user) Vote.useReaction(messageReaction, user);
   }
