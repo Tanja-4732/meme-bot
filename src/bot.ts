@@ -3,7 +3,7 @@ import { log } from "util";
 // Startup message
 log("Starting MemeBot");
 
-import { Client, Message } from "discord.js";
+import { Client, Message, MessageReaction, User } from "discord.js";
 import { createConnection, ConnectionOptions } from "typeorm";
 import "source-map-support/register";
 
@@ -22,6 +22,9 @@ export const prefix: string = process.env.MB_PREFIX || "mb";
 
 // Register events
 bot.on("message", (message: Message) => Events.message({ bot, msg: message }));
+bot.on("messageReactionAdd", (messageReaction: MessageReaction, user: User) =>
+  Events.messageReactionAdd(bot, messageReaction, user)
+);
 
 // Connect to the database
 createConnection({

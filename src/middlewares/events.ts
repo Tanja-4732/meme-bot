@@ -1,7 +1,8 @@
-import { Client, Message } from "discord.js";
-import { log } from "util";
+import { Client, Message, MessageReaction, User } from "discord.js";
+import { log, inspect } from "util";
 import Cmd from "./cmd";
 import { prefix } from "../bot";
+import Vote from "./vote";
 
 export default class Events {
   public static message({ bot, msg }: { bot: Client; msg: Message }): void {
@@ -30,5 +31,14 @@ export default class Events {
         Cmd.useGroupCmd(bot, msg);
         break;
     }
+  }
+
+  static messageReactionAdd(
+    bot: Client,
+    messageReaction: MessageReaction,
+    user: User
+  ) {
+    // Prevent self-activation
+    if (user !== bot.user) Vote.useReaction(messageReaction, user);
   }
 }

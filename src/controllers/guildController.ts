@@ -24,14 +24,11 @@ export default class GuildController {
       /**
        * The guild-model to be added to the db
        */
-      const guildToRegister: GuildModel = {
+      const guildToRegister: GuildModel | any = { // TODO not very nice #61
         id,
         adminRoleId,
         cmdChannelId,
-        name,
-        confessionChannelId: null,
-        postingGroups: null,
-        memeChannelId: null
+        name
       };
 
       // Add the guild-model to the db
@@ -299,6 +296,32 @@ export default class GuildController {
 
     const gm = await mgr.findOneOrFail(GuildModel, guild.id);
     gm.memeChannelId = null;
+    await mgr.save(gm);
+  }
+
+  static async setDownvoteLimit(
+    guild: Guild,
+    downvoteLimit: number
+  ): Promise<void> {
+    const mgr = getManager();
+
+    const gm = await mgr.findOne(GuildModel, guild.id);
+    gm.downvoteLimit = downvoteLimit;
+    await mgr.save(gm);
+  }
+
+  static async getDownvoteLimit(guild: Guild): Promise<number | null> {
+    const mgr = getManager();
+
+    const gm = await mgr.findOne(GuildModel, guild.id);
+    return gm.downvoteLimit || null;
+  }
+
+  static async removeDownvoteLimit(guild: Guild): Promise<void> {
+    const mgr = getManager();
+
+    const gm = await mgr.findOne(GuildModel, guild.id);
+    gm.downvoteLimit = null;
     await mgr.save(gm);
   }
 }
