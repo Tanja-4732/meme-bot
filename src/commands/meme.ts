@@ -12,6 +12,7 @@ import {
 import SendMsg, { CmdStatus } from "../utils/sendMsg";
 import GuildController from "../controllers/guildController";
 import ParseRef from "../utils/parseRef";
+import MemeController from "../controllers/memeController";
 
 export default class Meme {
   /**
@@ -65,7 +66,7 @@ export default class Meme {
     }
 
     // Post meme
-    const meme = await SendMsg.meme({
+    const memeArray = await SendMsg.meme({
       attachment: attachments.first(),
       channel: memeChannel as TextChannel,
       msg,
@@ -73,31 +74,54 @@ export default class Meme {
     });
 
     // Add reactions in order
-    await meme.react("👍");
-    await meme.react("👎");
+    await memeArray[0].react("👍");
+    await memeArray[0].react("👎");
 
     // Register meme
-    Meme.registerMeme(meme); // TODO #58
+    Meme.registerMeme(memeArray); // TODO #58
   }
 
   /**
-   * Registers a meme in this instance
+   * Registers a meme in the db, and starts watching it immediately
+   *
+   *
+   * @static
+   * @param {Message[]} memeArray
+   * @memberof Meme
+   */
+  static registerMeme(memeArray: Message[]): void {
+    MemeController.add(memeArray);
+    this.watchMeme(memeArray);
+  }
+
+  /**
+   * Watches a meme in this instance
    *
    * This makes sure that downvotes are tracked and events are processed correctly.
    * This method should be called for every meme to be tracked after each startup.
    *
    * @private
    * @static
-   * @param {Message} meme
+   * @param {Message} memeArray
    * @memberof Meme
    */
-  static registerMeme(meme: Message, video?: Message) {
-    const downvoteCollector = meme.createReactionCollector(
+  static watchMeme(memeArray: Message[]) {
+    const downvoteCollector = memeArray[0].createReactionCollector(
       (reaction: ReactionEmoji, user: User) => reaction.name === "👎"
     );
     downvoteCollector.on("collect", this.onDownvote);
   }
 
+  /**
+   * Logic for downvote handling
+   *
+   * @private
+   * @static
+   * @param {MessageReaction} element
+   * @param {Collector<string, MessageReaction>} collector
+   * @returns {Promise<void>}
+   * @memberof Meme
+   */
   private static async onDownvote(
     element: MessageReaction,
     collector: Collector<string, MessageReaction>
@@ -108,6 +132,14 @@ export default class Meme {
     if (collector.collected.size > downvoteLimit) this.onLimitExceeded();
   }
 
+  /**
+   * Disables the meme channel of the guild the command (in msg) was sent from
+   *
+   * @static
+   * @param {Message} msg
+   * @returns {Promise<void>}
+   * @memberof Meme
+   */
   static async disableMemeChannel(msg: Message): Promise<void> {
     try {
       await GuildController.disableMemeChannel(msg.guild);
@@ -136,6 +168,16 @@ export default class Meme {
     // TODO #58
   }
 
+  /**
+   * Sets the meme channel to the desired channel in
+   * the guild the command (in msg) was sent from
+   *
+   * @static
+   * @param {Message} msg
+   * @param {string} memeChannelRef
+   * @returns {Promise<void>}
+   * @memberof Meme
+   */
   static async setMemeChannel(
     msg: Message,
     memeChannelRef: string
@@ -160,6 +202,14 @@ export default class Meme {
     }
   }
 
+  /**
+   * Prints the meme channel of the guild the command (in msg) was sent from
+   *
+   * @static
+   * @param {Message} msg
+   * @returns {Promise<void>}
+   * @memberof Meme
+   */
   static async printMemeChannel(msg: Message): Promise<void> {
     try {
       const memeChannel = await GuildController.getMemeChannel(msg.guild);

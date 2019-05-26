@@ -95,6 +95,19 @@ export default class SendMsg {
     channel.send(re);
   }
 
+  /**
+   * Posts a formatted meme into a channel and creates a second message to host
+   * a video attachment, if required. Both of the messages will be returned in
+   * an array, leading with the meme itself, the video thereafter, if not null.
+   *
+   * The name of the author gets resolved using the msg parameter. It expects
+   * the message, which contained the original command.
+   *
+   * @static
+   * @returns {(Promise<[Message, null | Message]>)} An array with the meme
+   * itself at index 0 and the video message (or null) at index 1
+   * @memberof SendMsg
+   */
   static async meme({
     channel,
     attachment,
@@ -105,12 +118,14 @@ export default class SendMsg {
     attachment: MessageAttachment;
     msg: Message;
     attribution: boolean;
-  }): Promise<Message> {
+  }): Promise<[Message, null | Message]> {
     const authorAsMember = channel.guild.members.find(
       member => member.id === msg.author.id
     );
 
-    const isVideo: boolean = attachment.filename.endsWith(".mp4");
+    const isVideo: boolean =
+      attachment.filename.endsWith(".mp4") ||
+      attachment.filename.endsWith(".mov");
 
     let re: RichEmbed = new RichEmbed()
       .setColor(authorAsMember.colorRole.color || "82368c")
@@ -130,16 +145,24 @@ export default class SendMsg {
       re.setAuthor("Anonymous");
     }
 
+    // The video message
+    let video: Message | null;
+
     if (isVideo) {
       // Set the video-info, so the message isn't empty
       re.setDescription("We've put the video above.");
 
       // Send the video first
-      await channel.send({ files: [attachment.url] });
+      video = ((await channel.send({
+        files: [attachment.url]
+      })) as unknown) as Message;
     }
 
     // Send the RichEmbed into the target channel
-    return ((await channel.send(re)) as unknown) as Message;
+    const meme = ((await channel.send(re)) as unknown) as Message;
+
+    // Return the message and the video, if one exists
+    return [meme, video];
   }
 
   /**
