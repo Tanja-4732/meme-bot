@@ -25,6 +25,7 @@ bot.on("message", (message: Message) => Events.message({ bot, msg: message }));
 bot.on("messageReactionAdd", (messageReaction: MessageReaction, user: User) =>
   Events.messageReactionAdd(bot, messageReaction, user)
 );
+bot.on("ready", () => Events.ready(bot));
 
 // Connect to the database
 createConnection({
@@ -49,16 +50,11 @@ createConnection({
   });
 
 // Connect to Discord
-bot
-  .login(process.env.MB_TOKEN)
-  .then(() => {
-    log("Connected to Discord");
-  })
-  .catch((reason: any) => {
-    log("Discord connection failed:\n" + reason);
-    log(process.env.MB_TOKEN);
-    process.exit(2);
-  });
+bot.login(process.env.MB_TOKEN).catch((reason: any) => {
+  log("Discord connection failed:\n" + reason);
+  log(process.env.MB_TOKEN);
+  process.exit(2);
+});
 
 // Fetch quotes
 SendMsg.fetchQuotes();
