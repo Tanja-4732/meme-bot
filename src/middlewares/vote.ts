@@ -11,9 +11,9 @@ export default class Vote {
    * @param {User} user
    * @memberof Vote
    */
-  static useReaction(mr: MessageReaction, user: User) {
+  static async useReaction(mr: MessageReaction, user: User) {
     // Check if the message is a meme
-    const meme = MemeController.getMeme(mr.message);
+    const meme = await MemeController.getMeme(mr.message);
     if (meme != null) {
       // Keep up/downvotes form each other
       switch (mr.emoji.name) {

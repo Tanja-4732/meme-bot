@@ -11,10 +11,6 @@ import {
 } from "discord.js";
 import SendMsg, { CmdStatus } from "../utils/sendMsg";
 import GuildController from "../controllers/guildController";
-import DmGuildLogic from "../utils/dmGuildLogic";
-import { log, inspect } from "util";
-import { getManager } from "typeorm";
-import { GuildModel } from "../models/guildModel";
 import ParseRef from "../utils/parseRef";
 
 export default class Meme {
@@ -57,6 +53,7 @@ export default class Meme {
 
     // log(inspect(dmChannel.lastMessage, null, 2));
 
+    // Check for empty attachments
     if (attachments.size != 1) {
       // Send error
       SendMsg.cmdRes({

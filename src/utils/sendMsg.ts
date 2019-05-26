@@ -120,22 +120,25 @@ export default class SendMsg {
       .setFooter(this.getQuote());
 
     if (attribution) {
+      // Add attribution when requested for
       re.setAuthor(
         authorAsMember.displayName,
         authorAsMember.user.displayAvatarURL
-      ).setDescription("We've put the video above.");
+      );
     } else {
+      // Declare the post as anonymous, when attribution is requested against
       re.setAuthor("Anonymous");
     }
 
-    // Send the RichEmbed into the target channel
-
     if (isVideo) {
-      channel.send({
-        files: [attachment.url]
-      });
+      // Set the video-info, so the message isn't empty
+      re.setDescription("We've put the video above.");
+
+      // Send the video first
+      await channel.send({ files: [attachment.url] });
     }
 
+    // Send the RichEmbed into the target channel
     return ((await channel.send(re)) as unknown) as Message;
   }
 
