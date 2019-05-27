@@ -3,6 +3,7 @@ import { getManager } from "typeorm";
 import MemeMessage from "../models/memeMessage";
 import GuildController from "./guildController";
 import { GuildModel } from "../models/guildModel";
+import Meme from "../commands/meme";
 
 export default class MemeController {
   /**
@@ -38,5 +39,9 @@ export default class MemeController {
     const result = await mgr.findOne(MemeMessage, msg.id);
 
     return result;
+  }
+
+  static async getAllMemesOfGuild(guildModel: string): Promise<MemeMessage[]> {
+    return await getManager().find(MemeMessage, { where: { guildModel } });
   }
 }

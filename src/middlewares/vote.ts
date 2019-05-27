@@ -18,7 +18,6 @@ export default class Vote {
       // Keep up/downvotes form each other
       switch (mr.emoji.name) {
         case "👍":
-          log("up");
           // Remove the users downvote
           mr.message.reactions
             .find(
@@ -29,7 +28,6 @@ export default class Vote {
             .remove(user);
           return;
         case "👎":
-          log("down");
           // Remove the users upvote
           mr.message.reactions
             .find(
