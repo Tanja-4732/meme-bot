@@ -12,6 +12,8 @@ import { log, inspect } from "util";
 import Cmd from "./cmd";
 import { prefix } from "../bot";
 import Vote from "./vote";
+import GuildController from "../controllers/guildController";
+import MemeController from "../controllers/memeController";
 
 /**
  * Contains all event-handling logic
@@ -73,28 +75,28 @@ export default class Events {
     if (user !== bot.user) Vote.useReaction(messageReaction, user);
   }
 
-  static ready(bot: Client): void {
+  static async ready(bot: Client): Promise<void> {
     log("Connected to Discord");
 
-    const textChannels = bot.guilds
-      // TODO Add support for other guilds
-      .find(
-        (guild: Guild): boolean => {
-          return guild.id === "557276089869664288";
-        }
-      )
+    // Iterate over all initialized guilds
+    for (const gm of await GuildController.getAllInitializedGuildModels()) {
+      // Check if the guild has the meme channel enabled
+      if (gm.memeChannelId != null) {
+        // Get the meme channel
+        const memeChannel = (bot.guilds
+          .get(gm.id)
+          .channels.get(gm.memeChannelId) as unknown) as TextChannel;
 
-      // Only the text channels
-      .channels.filter(
-        (value: GuildChannel): boolean => {
-          return value.type === "text";
-        }
-      );
+        // Iterate over all memes
+        for (const mm of await MemeController.getAllMemesOfGuild(gm.id)) {
+          // Fetch the meme
+          memeChannel.fetchMessage(mm.messageId);
 
-    // Fetch all messages
-    for (const cn of textChannels) {
-      // Fetch all messages
-      log((cn[1] as TextChannel).name);
+          // Fetch the video if one exists
+          if (mm.videoMessageId != null)
+            memeChannel.fetchMessage(mm.videoMessageId);
+        }
+      }
     }
   }
 }

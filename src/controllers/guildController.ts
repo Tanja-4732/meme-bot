@@ -24,7 +24,8 @@ export default class GuildController {
       /**
        * The guild-model to be added to the db
        */
-      const guildToRegister: GuildModel | any = { // TODO not very nice #61
+      const guildToRegister: GuildModel | any = {
+        // TODO not very nice #61
         id,
         adminRoleId,
         cmdChannelId,
@@ -323,5 +324,9 @@ export default class GuildController {
     const gm = await mgr.findOne(GuildModel, guild.id);
     gm.downvoteLimit = null;
     await mgr.save(gm);
+  }
+
+  static async getAllInitializedGuildModels(): Promise<GuildModel[]> {
+    return await getManager().find(GuildModel);
   }
 }
