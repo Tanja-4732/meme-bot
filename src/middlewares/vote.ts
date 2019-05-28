@@ -39,5 +39,10 @@ export default class Vote {
           return;
       }
     }
+
+    // Keep videos clear from reactions
+    if (await MemeController.isMemeVideo(mr.message)) {
+      mr.message.clearReactions();
+    }
   }
 }
