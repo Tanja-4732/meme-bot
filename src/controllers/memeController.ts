@@ -44,4 +44,14 @@ export default class MemeController {
   static async getAllMemesOfGuild(guildModel: string): Promise<MemeMessage[]> {
     return await getManager().find(MemeMessage, { where: { guildModel } });
   }
+
+  static async isMemeVideo(msg: Message): Promise<boolean> {
+    const mgr = getManager();
+
+    const videoMessage = await mgr.find(MemeMessage, {
+      where: { videoMessageId: msg.id }
+    });
+
+    return videoMessage.length === 1;
+  }
 }
