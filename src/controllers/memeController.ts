@@ -22,7 +22,7 @@ export default class MemeController {
     meme.messageId = memeArray[0].id;
     meme.videoMessageId = memeArray[1] == null ? null : memeArray[1].id;
 
-    await mgr.save<MemeMessage>(meme);
+    await mgr.save(meme);
   }
 
   /**

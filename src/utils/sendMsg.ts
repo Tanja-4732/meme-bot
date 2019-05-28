@@ -41,6 +41,16 @@ export default class SendMsg {
     title?: string;
     description?: string;
   }): void {
+    const messageLimit = 1024 - (3 * 2 + 1);
+
+    const textArray: string[] = [];
+
+    // Split the message in multiple parts
+    do {
+      textArray.push("```\n" + text.substr(0, messageLimit) + "```");
+      text = text.substr(1 + messageLimit);
+    } while (text.length !== 0);
+
     /**
      * The RichEmbed to be sent into the channel
      */
@@ -48,10 +58,27 @@ export default class SendMsg {
       .setColor(this.getColorFromStatus(status))
       .setTitle(title || "")
       .setAuthor(msg.author.username, msg.author.avatarURL)
-      .setDescription(msg.author.toString() || "")
-      .addField(status, "```\n" + text + "```")
+      .setDescription(
+        msg.author.toString() +
+          // Append a parted-notice to the description of the RichEmbed, if it exceeds the limit
+          (textArray.length === 1
+            ? ""
+            : "\n\nThis message exceeds Discords limit.\nIt will be split into several blocks.")
+      )
       .setTimestamp()
       .setFooter(this.getQuote());
+
+    // Append all of the text to the RichEmbed
+    for (let i = 0; i < textArray.length; i++) {
+      re.addField(
+        status +
+          // If there are several parts, indicate them accordingly
+          (textArray.length > 1
+            ? " (" + (i + 1) + "/" + textArray.length + ")"
+            : ""),
+        textArray[i]
+      );
+    }
 
     // Send the RichEmbed into the target channel
     msg.channel.send(re);
