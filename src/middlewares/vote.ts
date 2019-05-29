@@ -1,6 +1,7 @@
 import { MessageReaction, User } from "discord.js";
 import MemeController from "../controllers/memeController";
 import { log } from "util";
+import GuildController from "../controllers/guildController";
 
 export default class Vote {
   /**
@@ -36,7 +37,26 @@ export default class Vote {
               }
             )
             .remove(user);
-          return;
+
+          // Get the downvote limit
+          const downvoteLimit = await GuildController.getDownvoteLimit(
+            mr.message.guild
+          );
+
+          // Check for downvote limit
+          if (downvoteLimit != null && downvoteLimit < mr.count - 1) {
+            // Remove the accompanying video, if one exists
+            if (meme.videoMessageId != null) {
+              mr.message.channel.messages.delete(meme.videoMessageId);
+            }
+
+            // Delete the message itself
+            mr.message.delete();
+
+            // Remove the meme from the db
+            MemeController.removeMeme(meme);
+            return;
+          }
       }
     }
 

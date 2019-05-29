@@ -54,4 +54,8 @@ export default class MemeController {
 
     return videoMessage.length === 1;
   }
+
+  static async removeMeme(mm: MemeMessage): Promise<void> {
+    await getManager().remove(mm);
+  }
 }

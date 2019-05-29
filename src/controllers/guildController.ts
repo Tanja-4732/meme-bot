@@ -315,7 +315,7 @@ export default class GuildController {
     const mgr = getManager();
 
     const gm = await mgr.findOne(GuildModel, guild.id);
-    return gm.downvoteLimit || null;
+    return gm.downvoteLimit;
   }
 
   static async removeDownvoteLimit(guild: Guild): Promise<void> {
