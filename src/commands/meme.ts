@@ -78,58 +78,7 @@ export default class Meme {
     await memeArray[0].react("👎");
 
     // Register meme
-    Meme.registerMeme(memeArray); // TODO #58
-  }
-
-  /**
-   * Registers a meme in the db, and starts watching it immediately
-   *
-   *
-   * @static
-   * @param {Message[]} memeArray
-   * @memberof Meme
-   */
-  static registerMeme(memeArray: Message[]): void {
     MemeController.add(memeArray);
-    this.watchMeme(memeArray);
-  }
-
-  /**
-   * Watches a meme in this instance
-   *
-   * This makes sure that downvotes are tracked and events are processed correctly.
-   * This method should be called for every meme to be tracked after each startup.
-   *
-   * @private
-   * @static
-   * @param {Message} memeArray
-   * @memberof Meme
-   */
-  static watchMeme(memeArray: Message[]) {
-    const downvoteCollector = memeArray[0].createReactionCollector(
-      (reaction: ReactionEmoji, user: User) => reaction.name === "👎"
-    );
-    downvoteCollector.on("collect", this.onDownvote);
-  }
-
-  /**
-   * Logic for downvote handling
-   *
-   * @private
-   * @static
-   * @param {MessageReaction} element
-   * @param {Collector<string, MessageReaction>} collector
-   * @returns {Promise<void>}
-   * @memberof Meme
-   */
-  private static async onDownvote(
-    element: MessageReaction,
-    collector: Collector<string, MessageReaction>
-  ): Promise<void> {
-    const downvoteLimit: number = await GuildController.getDownvoteLimit(
-      element.message.guild
-    );
-    if (collector.collected.size > downvoteLimit) this.onLimitExceeded();
   }
 
   /**
@@ -155,17 +104,6 @@ export default class Meme {
         text: "We couldn't disable the meme channel.\nThat's all we know."
       });
     }
-  }
-
-  /**
-   * Remove the meme (including the video, if any)
-   *
-   * @private
-   * @static
-   * @memberof Meme
-   */
-  private static onLimitExceeded() {
-    // TODO #58
   }
 
   /**
