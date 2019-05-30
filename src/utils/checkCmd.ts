@@ -31,9 +31,11 @@ export default class CheckCmd {
    * @memberof CheckCmd
    */
   public static async hasAdminRole(msg: Message): Promise<boolean> {
-    const hasAdminRole: boolean = msg.member.roles.has(
-      (await AdminRole.getAdminRole({ msg })).id
-    );
+    const adminRole = await AdminRole.getAdminRole({ msg });
+
+    if (adminRole == null) return true;
+
+    const hasAdminRole: boolean = msg.member.roles.has(adminRole.id);
     const isGuildAdmin: boolean = msg.member.permissions.has("ADMINISTRATOR");
 
     return hasAdminRole || isGuildAdmin;

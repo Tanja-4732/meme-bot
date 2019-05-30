@@ -5,12 +5,12 @@ import { log } from "util";
 
 export default class GuildController {
   public static async registerGuild({
-    id,
+    guild,
     adminRoleId,
     cmdChannelId,
     name
   }: {
-    id: string;
+    guild: Guild;
     adminRoleId: string;
     cmdChannelId: string;
     name: string;
@@ -19,19 +19,18 @@ export default class GuildController {
      * The EntityManager to perform db operations on
      */
     const em: EntityManager = getManager();
+    /**
+     * The guild-model to be added to the db
+     */
+    const guildToRegister: GuildModel | any = {
+      // TODO not very nice #61
+      id: guild.id,
+      adminRoleId,
+      cmdChannelId,
+      name
+    };
 
     try {
-      /**
-       * The guild-model to be added to the db
-       */
-      const guildToRegister: GuildModel | any = {
-        // TODO not very nice #61
-        id,
-        adminRoleId,
-        cmdChannelId,
-        name
-      };
-
       // Add the guild-model to the db
       await em.save(GuildModel, guildToRegister);
     } catch (error) {
@@ -156,13 +155,6 @@ export default class GuildController {
     } catch (error) {
       throw new Error(
         "Couldn't find guild. Make sure to initialize the guild."
-      );
-    }
-
-    // Validate role
-    if (guild.roles.get(g.adminRoleId) == null) {
-      throw new Error(
-        "Couldn't find role. Make sure to specify an existing role."
       );
     }
 

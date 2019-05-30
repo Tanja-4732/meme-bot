@@ -116,7 +116,8 @@ export default class Cmd {
             // 2 Initialize
             case 2001:
               // Initialize guild
-              Init.init({ msg, adminRoleRef: ret.stdout.toString() });
+              Init.init({ msg }); // TODO init with admin role
+              // Init.init({ msg, adminRoleRef: ret.stdout.toString() });
               break;
 
             // 3 Cmd channel
