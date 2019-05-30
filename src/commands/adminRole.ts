@@ -88,12 +88,13 @@ export default class AdminRole {
   }
 
   static async printAdminRole({ msg }: { msg: Message }): Promise<void> {
-    log("Printing admin role");
-
+    const adminRole = await this.getAdminRole({ msg });
     SendMsg.cmdRes({
       msg,
       status: CmdStatus.INFO,
-      text: "The admin role is @" + (await this.getAdminRole({ msg })).name
+      text:
+        "The admin role is " +
+        (adminRole == null ? "disabled." : "@" + adminRole.name)
     });
   }
 

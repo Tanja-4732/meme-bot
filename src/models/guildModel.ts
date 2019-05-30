@@ -25,14 +25,14 @@ export class GuildModel {
   name: string;
 
   /**
-   * The role which a guild member must have to have the
-   * commands sent to the bot be executed. Having the
-   * administrator permission on the guild also works.
+   * The role which a guild member must have to have the commands
+   * sent to the bot be executed. Having the administrator
+   * permission on the guild is also sufficient.
    *
    * @type {string}
    * @memberof GuildModel
    */
-  @Column()
+  @Column({ nullable: true })
   adminRoleId: string;
 
   /**

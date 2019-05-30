@@ -14,8 +14,9 @@ import { exit, stdout } from "process";
  * @param {string} adminRoleRef The mention of the admin role
  */
 function init(adminRoleRef: string) {
-  // Write the specified adminRoleRef to stdout
-  stdout.write(adminRoleRef);
+  // TODO init with admin role
+  // // Write the specified adminRoleRef to stdout
+  // stdout.write(adminRoleRef);
 
   // Request init
   exit(2001);
@@ -140,7 +141,8 @@ program
 
 // Initialize
 program
-  .command("initialize <adminRole>")
+.command("initialize") // TODO init with admin role
+// .command("initialize <adminRole>")
   .description(
     "Initialize this guild; Sets the cmd channel to the one this command is" +
       " issued in, and the admin role to <adminRole>"

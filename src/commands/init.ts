@@ -22,7 +22,7 @@ export default class Init {
     adminRoleRef
   }: {
     msg: Message;
-    adminRoleRef: string;
+    adminRoleRef?: string;
   }): Promise<void> {
     /**
      * Anti-duplicate flag
@@ -52,13 +52,23 @@ export default class Init {
       return;
     }
 
-    // Register the guild in the db
-    GuildController.registerGuild({
-      id: msg.guild.id,
-      name: msg.guild.name,
-      adminRoleId: ParseRef.parseRoleRef(adminRoleRef),
-      cmdChannelId: msg.channel.id
-    });
+    try {
+      // Register the guild in the db
+      await GuildController.registerGuild({
+        guild: msg.guild,
+        name: msg.guild.name,
+        adminRoleId: null, // TODO set admin role on init
+        // adminRoleId: ParseRef.parseRoleRef(adminRoleRef),
+        cmdChannelId: msg.channel.id
+      });
+    } catch (error) {
+      SendMsg.cmdRes({
+        msg,
+        status: CmdStatus.ERROR,
+        text: "Something went wrong.\nThat's all we know."
+      });
+      return;
+    }
 
     // Send success
     SendMsg.cmdRes({
