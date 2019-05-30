@@ -123,7 +123,7 @@ function downvote(downvoteLimit: string, options: any) {
 
 // Start
 program
-  .version("MemeBot version 0.5.0", "-v, --version")
+  .version("MemeBot version 0.6.0", "-v, --version")
   .description(
     "MemeBot - Automates and manages meme channels for Discord guilds"
   );
