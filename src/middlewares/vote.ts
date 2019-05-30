@@ -47,8 +47,9 @@ export default class Vote {
           if (downvoteLimit != null && downvoteLimit < mr.count - 1) {
             // Remove the accompanying video, if one exists
             if (meme.videoMessageId != null) {
-              log("is video " + meme.videoMessageId);
-              await mr.message.channel.messages.delete(meme.videoMessageId);
+              mr.message.channel.messages
+                .find(msg => msg.id == meme.videoMessageId)
+                .delete();
             }
 
             // Delete the message itself
