@@ -14,14 +14,12 @@ export class GuildModel {
   id: string;
 
   /**
-   * Used for quick identification in the database.
-   * This might get deleted.
+   * Used in DMs to identify a server
    *
-   * @deprecated
    * @type {string}
    * @memberof GuildModel
    */
-  @Column()
+  @Column({ unique: true })
   name: string;
 
   /**

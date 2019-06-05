@@ -10,6 +10,7 @@ import Confession from "../commands/confession";
 import StringUtils from "../utils/stringUtils";
 import Meme from "../commands/meme";
 import DownvoteLimit from "../commands/downvoteLimit";
+import GuildName from "../commands/guildName";
 
 /**
  * This class parses commands; it doesn't handle message, dm or any other events
@@ -209,6 +210,16 @@ export default class Cmd {
                 msg,
                 parseInt(ret.stdout.toString())
               );
+              break;
+
+            // 8 Guild name
+            case 8001:
+              // Set guild name
+              GuildName.setGuildName(msg, ret.stdout.toString());
+              break;
+            case 8002:
+              // Print guild name
+              GuildName.printGuildName(msg);
               break;
 
             // Errors
