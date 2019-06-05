@@ -39,12 +39,12 @@ function meme(options: any) {
   }
 }
 
-function setGuild(guildName: string) {
-  if (guildName == null) {
+function setGuild(serverName: string) {
+  if (serverName == null) {
     exit(4001);
   }
 
-  stdout.write(guildName);
+  stdout.write(serverName);
   exit(4002);
 }
 

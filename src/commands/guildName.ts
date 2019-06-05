@@ -1,6 +1,7 @@
 import { Message } from "discord.js";
 import GuildController from "../controllers/guildController";
 import SendMsg, { CmdStatus } from "../utils/sendMsg";
+import { log } from "util";
 
 export default class GuildName {
   static async setGuildName(msg: Message, name: string) {
@@ -32,5 +33,9 @@ export default class GuildName {
     });
   }
 
-  static async setDM(msg: Message, guildName: string) {}
+  static async setDM(msg: Message, guildName: string) {
+    log(guildName);
+  }
+
+  static async printDM(msg: Message) {}
 }

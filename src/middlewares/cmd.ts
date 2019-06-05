@@ -397,9 +397,11 @@ export default class Cmd {
         // 4 Set guild
         case 4001:
           // Print guild name
+          GuildName.printDM(msg);
           break;
         case 4002:
           // Set guild name
+          GuildName.setDM(msg, ret.stdout.toString());
           break;
 
         // Errors
