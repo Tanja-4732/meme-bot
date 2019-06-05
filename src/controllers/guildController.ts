@@ -356,4 +356,10 @@ export default class GuildController {
       throw error;
     }
   }
+
+  static async getGuildModelByName(name: string): Promise<GuildModel> {
+    const mgr = getManager();
+
+    return await mgr.findOne(GuildModel, { where: { name } });
+  }
 }

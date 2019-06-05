@@ -2,6 +2,7 @@ import { Message } from "discord.js";
 import GuildController from "../controllers/guildController";
 import SendMsg, { CmdStatus } from "../utils/sendMsg";
 import { log } from "util";
+import NoteStorageController from "../controllers/noteStorageController";
 
 export default class GuildName {
   static async setGuildName(msg: Message, name: string) {
@@ -34,8 +35,25 @@ export default class GuildName {
   }
 
   static async setDM(msg: Message, guildName: string) {
-    log(guildName);
+    if (await GuildName.guildExists(guildName)) {
+      await NoteStorageController.setGuild(msg.author, guildName);
+      SendMsg.cmdRes({
+        msg,
+        status: CmdStatus.SUCCESS,
+        text: "We've selected the server " + guildName
+      });
+    } else {
+      SendMsg.cmdRes({
+        msg,
+        status: CmdStatus.ERROR,
+        text: "We couldn't set the server.\nPlease check your spelling."
+      });
+    }
   }
 
   static async printDM(msg: Message) {}
+
+  static async guildExists(guildName: string): Promise<boolean> {
+    return null != (await GuildController.getGuildModelByName(guildName));
+  }
 }
