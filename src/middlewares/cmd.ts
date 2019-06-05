@@ -394,6 +394,14 @@ export default class Cmd {
           Meme.postMeme(msg, true);
           break;
 
+        // 4 Set guild
+        case 4001:
+          // Print guild name
+          break;
+        case 4002:
+          // Set guild name
+          break;
+
         // Errors
         case 4242:
           SendMsg.cmdRes({

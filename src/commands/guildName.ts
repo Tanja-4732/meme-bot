@@ -31,4 +31,6 @@ export default class GuildName {
           : "The name is set to " + name
     });
   }
+
+  static async setDM(msg: Message, guildName: string) {}
 }
