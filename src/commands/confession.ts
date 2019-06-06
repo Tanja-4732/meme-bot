@@ -5,8 +5,16 @@ import SendMsg, { CmdStatus } from "../utils/sendMsg";
 import GuildController from "../controllers/guildController";
 import ParseRef from "../utils/parseRef";
 import { log } from "util";
+import UserController from "../controllers/userController";
 
 export default class Confession {
+  /**
+   * Handles the post confession commands
+   *
+   * @static
+   * @returns {Promise<void>}
+   * @memberof Confession
+   */
   public static async postConfession({
     bot,
     msg,
@@ -18,8 +26,7 @@ export default class Confession {
     text: string;
     age?: number;
   }): Promise<void> {
-    // TODO allow for multiple guilds #42
-    const guildId: string = "557276089869664288";
+    const guildId: string = await UserController.getGuildId(msg.author);
 
     let confessionChannelId: string;
     try {
@@ -41,7 +48,7 @@ export default class Confession {
      */
     const groupRole = bot.guilds
 
-      // Get the guild // TODO allow for multiple guilds #42
+      // Get the guild
       .find(guild => guild.id === guildId)
 
       // Get the member of the guild

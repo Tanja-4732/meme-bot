@@ -13,6 +13,8 @@ import SendMsg, { CmdStatus } from "../utils/sendMsg";
 import GuildController from "../controllers/guildController";
 import ParseRef from "../utils/parseRef";
 import MemeController from "../controllers/memeController";
+import UserController from "../controllers/userController";
+import { log } from "console";
 
 export default class Meme {
   /**
@@ -25,8 +27,8 @@ export default class Meme {
    * @memberof Meme
    */
   static async postMeme(msg: Message, attribution: boolean): Promise<void> {
-    // TODO allow for multiple guilds #42
-    const guildId: string = "557276089869664288";
+    const guildId: string = await UserController.getGuildId(msg.author);
+    log("Selected guildID=" + guildId);
 
     // Get guild to post in
     const guild = msg.client.guilds.find(guild => guild.id === guildId);
@@ -39,7 +41,7 @@ export default class Meme {
         msg,
         status: CmdStatus.ERROR,
         text:
-          "We couldn't post your meme for the guild you specified " +
+          "We couldn't post your meme for the server you specified " +
           "doesn't allow for memes to be posted."
       });
       return;

@@ -2,7 +2,7 @@ import { Message } from "discord.js";
 import GuildController from "../controllers/guildController";
 import SendMsg, { CmdStatus } from "../utils/sendMsg";
 import { log } from "util";
-import NoteStorageController from "../controllers/noteStorageController";
+import UserController from "../controllers/userController";
 
 export default class GuildName {
   static async setGuildName(msg: Message, name: string) {
@@ -36,7 +36,7 @@ export default class GuildName {
 
   static async setDM(msg: Message, guildName: string) {
     if (await GuildName.guildExists(guildName)) {
-      await NoteStorageController.setGuild(msg.author, guildName);
+      await UserController.setGuild(msg.author, guildName);
       SendMsg.cmdRes({
         msg,
         status: CmdStatus.SUCCESS,
@@ -51,7 +51,17 @@ export default class GuildName {
     }
   }
 
-  static async printDM(msg: Message) {}
+  static async printDM(msg: Message) {
+    const guildName = await UserController.getGuildName(msg.author);
+    SendMsg.cmdRes({
+      msg,
+      status: CmdStatus.INFO,
+      text:
+        guildName == null
+          ? "You haven't selected a server yet.\nPlease do so using the 'mb server [name]' command."
+          : "The selected server is " + guildName
+    });
+  }
 
   static async guildExists(guildName: string): Promise<boolean> {
     return null != (await GuildController.getGuildModelByName(guildName));
