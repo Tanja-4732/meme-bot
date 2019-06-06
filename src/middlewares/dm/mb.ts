@@ -39,6 +39,15 @@ function meme(options: any) {
   }
 }
 
+function setGuild(serverName: string) {
+  if (serverName == null) {
+    exit(4001);
+  }
+
+  stdout.write(serverName);
+  exit(4002);
+}
+
 // Start
 program
   .version("MemeBot version 0.6.0", "-v, --version")
@@ -56,6 +65,7 @@ program
   .option("-a <age>, --age <age>", "specify ones age")
   .action(confession);
 
+// Submit memes
 program
   .command("meme")
   .description(
@@ -64,6 +74,15 @@ program
   )
   .option("-a, --anonymous", "Post the meme anonymous")
   .action(meme);
+
+// Set guild
+program
+  .command("server [serverName]")
+  .description(
+    "Sets the server to be worked with. A server needs to be selected.\n" +
+      "If no server-name is specified, the selected one will be printed."
+  )
+  .action(setGuild);
 
 // Help
 program

@@ -122,6 +122,16 @@ function downvote(downvoteLimit: string, options: any) {
   }
 }
 
+function guildName(guildName: string) {
+  if (guildName == null) {
+    exit(8002);
+  }
+
+  stdout.write(guildName);
+
+  exit(8001);
+}
+
 // Start
 program
   .version("MemeBot version 0.6.0", "-v, --version")
@@ -193,6 +203,12 @@ program
   .alias("dv")
   .option("-d, --disable", "Disable the downvote limit.")
   .action(downvote);
+
+// Guild name
+program
+  .command("name [guildName]")
+  .description("Sets or prints the name of the guild")
+  .action(guildName);
 
 // Help
 program

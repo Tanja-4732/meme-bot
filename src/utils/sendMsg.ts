@@ -155,7 +155,11 @@ export default class SendMsg {
       attachment.filename.endsWith(".mov");
 
     let re: RichEmbed = new RichEmbed()
-      .setColor(authorAsMember.colorRole.color || "82368c")
+      .setColor(
+        authorAsMember.colorRole == null
+          ? "82368c"
+          : authorAsMember.colorRole.color
+      )
 
       .setImage(attachment.url)
       .setTimestamp()

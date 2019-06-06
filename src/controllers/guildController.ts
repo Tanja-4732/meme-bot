@@ -321,4 +321,45 @@ export default class GuildController {
   static async getAllInitializedGuildModels(): Promise<GuildModel[]> {
     return await getManager().find(GuildModel);
   }
+
+  static async setName(guild: Guild, name: string): Promise<boolean> {
+    try {
+      const mgr = getManager();
+
+      const gm: GuildModel = await mgr.findOneOrFail(GuildModel, {
+        where: {
+          id: guild.id
+        }
+      });
+
+      gm.name = name;
+
+      await mgr.save(gm);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  static async getName(guild: Guild): Promise<string> {
+    try {
+      const mgr = getManager();
+
+      const gm: GuildModel = await mgr.findOneOrFail(GuildModel, {
+        where: {
+          id: guild.id
+        }
+      });
+
+      return gm.name;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getGuildModelByName(name: string): Promise<GuildModel> {
+    const mgr = getManager();
+
+    return await mgr.findOne(GuildModel, { where: { name } });
+  }
 }
