@@ -1,54 +1,34 @@
 # MemeBot
 
-Improve your meme-experience on your discord server the easy way, big-time.
-**Work in progress, close to first pre-release**
+Automated meme management for Discord
 
 ## Table of contents
 
 - [MemeBot](#memebot)
   - [Table of contents](#table-of-contents)
   - [Features](#features)
-  - [Implementation](#implementation)
+  - [Getting started](#getting-started)
   - [Configuration](#configuration)
   - [Copyright notice](#copyright-notice)
 
-The goad of the MemeBot is to organize a Discord servers meme channel into 9Gag-like areas.
-This is accomplished by the owner creating two or three channels:
-
-- Fresh
-- Trending
-- Hot
-
-The trending area is optional (TODO).
-
-When a submission reaches a certain number of upvotes (emoji-reactions, the up- and downvote emojis can be configured), it gets copied to the next area.
-
-A user who doesn't want to get pinged that often may only subscribe to the Hot ara.
-
 ## Features
 
-The MemeBot comes with many great features.
-Here are a bunch of them:
+MemeBot enriches your guild with the following features:
 
-- Copy memes form one area to the next
-- Remove a copied meme from the old channel (optional)
-- Allow/Prohibit anonymous posting
-- Auto-remove disliked memes
-- Alert an admin of repeated offenses
+- Memes
+  - Indirect posting
+  - With attribution or anonymous
+- Anonymous confessions
+  - Optional coloring based on roles
+- Reaction-based voting
+  - Remove memes with too many downvotes
+  - Vote contradiction mitigation (can't upvote AND downvote)
 
-The admin can configure
+## Getting started
 
-- The number of upvotes required to get a post into the next area
-- If downvoting should be allowed
-- Which emoji gets treated as the upvote
-- Which emoji gets treated as the downvote
-- Whether or not the bot should take submissions via DM to submit anonymously
+Setup is quick and easy.
 
-## Implementation
-
-To improve your servers meme channel, tell your admin to execute the following easy steps:
-
-1. Add the bot to the server
+1. Add the bot to the guild
 2. Create a dedicated bot-command channel
 3. Write the `mb init` command and hit return
 4. Set up the channels that are going to be the areas for your memes (Fresh, Trending (optional), Hot)
@@ -67,9 +47,9 @@ You can always see the help using `mb -h`.
 As an admin you might want to configure more settings.
 Here are your options
 
-| Command                                                             | Purpose                                                                       |
-|---------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| `mb init`                                                        | Initializes the MemeBot (creates config files)                                |
+| Command                                                            | Purpose                                                                       |
+| ------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
+| `mb init`                                                          | Initializes the MemeBot (creates config files)                                |
 | `mb cmd-channel <channel_name>`                                    | Sets the channel to listen to commands to                                     |
 | `mb admin-role <role_name>`                                        | Sets the role the bot accept commands from                                    |
 | `mb section <section_name>`                                        | Defines a new section                                                         |
@@ -92,4 +72,4 @@ Here are your options
 ## Copyright notice
 
 **Copyright 2019 Bernd-L.  
-Licensed  under [the AGPLv3 license](https://github.com/Bernd-L/meme-bot/blob/master/LICENSE.md)**
+Licensed under [the AGPLv3 license](https://github.com/Bernd-L/meme-bot/blob/master/LICENSE.md)**
