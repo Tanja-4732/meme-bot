@@ -1,5 +1,5 @@
 import { log } from "util";
-import { Message } from "discord.js";
+import { Message, GuildMember } from "discord.js";
 import ParseRef from "../utils/parseRef";
 import GuildController from "../controllers/guildController";
 import SendMsg, { CmdStatus } from "../utils/sendMsg";
@@ -28,6 +28,21 @@ export default class Init {
      * Anti-duplicate flag
      */
     let alreadyInitialized: boolean = false;
+
+    // Check if the initializer is an admin
+    if (
+      !((msg.author as unknown) as GuildMember).permissions.has("ADMINISTRATOR")
+    ) {
+      SendMsg.cmdRes({
+        text:
+          "We couldn't initialize MemeBot for this guild, " +
+          "for only a guild administrator may command so.\n" +
+          "Make sure to have the ADMIN privilege and try again.",
+        msg,
+        status: CmdStatus.ERROR
+      });
+      return;
+    }
 
     // Check if guild is already initialized
     try {

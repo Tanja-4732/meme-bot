@@ -52,7 +52,6 @@ createConnection({
 // Connect to Discord
 bot.login(process.env.MB_TOKEN).catch((reason: any) => {
   log("Discord connection failed:\n" + reason);
-  log(process.env.MB_TOKEN);
   process.exit(2);
 });
 
