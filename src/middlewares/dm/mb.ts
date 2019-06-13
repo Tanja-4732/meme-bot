@@ -50,7 +50,7 @@ function setGuild(serverName: string) {
 
 // Start
 program
-  .version("MemeBot version 0.6.0", "-v, --version")
+  .version("MemeBot version 1.0.0", "-v, --version")
   .description(
     "MemeBot - Automates and manages meme channels for Discord guilds"
   );
