@@ -4,13 +4,14 @@
     "MEMEBOT",
     "cooldown",
     "downvote",
+    "downvoted",
     "downvotes",
     "downvoting",
-    "upvote",
-    "upvoted",
-    "upvotes",
+    "middlewares",
     "postgres",
     "typeorm",
-    "middlewares"
+    "upvote",
+    "upvoted",
+    "upvotes"
   ]
 }

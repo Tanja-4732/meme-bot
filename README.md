@@ -9,11 +9,12 @@ Automated meme management for Discord
   - [Features](#features)
   - [Getting started](#getting-started)
   - [Configuration](#configuration)
+  - [Users' manual](#users-manual)
   - [Copyright notice](#copyright-notice)
 
 ## Features
 
-MemeBot enriches your guild with the following features:
+MemeBot enriches a guild with the following features:
 
 - Memes
   - Indirect posting
@@ -23,53 +24,123 @@ MemeBot enriches your guild with the following features:
 - Reaction-based voting
   - Remove memes with too many downvotes
   - Vote contradiction mitigation (can't upvote AND downvote)
+- Multi-guild support
+  - One instance of MemeBot may serve several guilds at once
 
 ## Getting started
 
 Setup is quick and easy.
 
-1. Add the bot to the guild
-2. Create a dedicated bot-command channel
-3. Write the `mb init` command and hit return
-4. Set up the channels that are going to be the areas for your memes (Fresh, Trending (optional), Hot)
-5. Set up another set of area-channels to form another section (optional) (TODO)
-6. Use `mb section default area fresh #fresh` given `#fresh` is your channel name
-7. Use `mb section default area trending #trending` given `#trending` is your channel name (optional)
-8. Use `mb section default no area trending` to disable the trending area (optional)
-9. Use `mb section default area hot #hot` given `#hot` is your channel name
+1. Get an instance of MemeBot and its invite link
+2. Add MemeBot to the guild using said invite link
+3. Create a dedicated bot-command channel
+4. Type the `mb init` command and hit return in the bot-command channel
+5. Create a meme channel and a confession channel (if they don't exist already; both are optional)
+6. Optional (but recommended) configuration
+   1. Enter `mb meme #meme-channel-name` to set the meme channel
+   2. Enter `mb confession #confession-channel-name` to set the confession channel
+7. You may enter the `mb downvote 10` command to set the downvote limit to `<=10`
+8. Enter the `mb name mas` to set the guilds name to "mas" (see [configuration](##Configuration))
 
 And you're all set.
 
 ## Configuration
 
-You can always see the help using `mb -h`.
+MemeBot provides help to any command using the `mb -h` command.
+Any other sub-command may also get `-h` appended to learn more about it.
 
-As an admin you might want to configure more settings.
-Here are your options
+Most commands and options have abbreviations. Check `mb -h` to see the all.
+For example, `--disable` may be substituted by `-d`, and `cmd-channel` by `cmd`.
 
-| Command                                                            | Purpose                                                                       |
-| ------------------------------------------------------------------ | ----------------------------------------------------------------------------- |
-| `mb init`                                                          | Initializes the MemeBot (creates config files)                                |
-| `mb cmd-channel <channel_name>`                                    | Sets the channel to listen to commands to                                     |
-| `mb admin-role <role_name>`                                        | Sets the role the bot accept commands from                                    |
-| `mb section <section_name>`                                        | Defines a new section                                                         |
-| `mb section <section_name> init`                                   | Initialize a section with predefined channels (Fresh, Trending, Hot)          |
-| `mb no section <section_name>`                                     | Dissolves a section. Channels remain unchanged                                |
-| `mb section <section_name> area <area_name> #<channel_name>`       | Sets up a channel as an area and auto-sets its settings                       |
-| `mb section <section_name> no area <area_name>`                    | Releases a channel and removes an area; Can be used to deactivate trending    |
-| `mb section <section_name> an-post`                                | Allows anonymous posting to fresh via a DM to the bot                         |
-| `mb section <section_name> no an-post`                             | Prohibits anonymous posting to fresh via a DM to the bot                      |
-| `mb section <section_name> cooldown <number> <s/m>`                | Sets a cooldown on how fast a user can post new memes in seconds or minutes   |
-| `mb section <section_name> no cooldown`                            | Removes the cooldown from a section                                           |
-| `mb section <section_name> area <area_name> upvote-req <number>`   | The number of upvotes required to get to the next area                        |
-| `mb section <section_name> area <area_name> downvote-rem <number>` | The number of downvotes a meme must have to be deleted                        |
-| `mb section <section_name> area <area_name> no downvote-rem`       | Disables downvote-based automated meme removal                                |
-| `mb section <section_name> direct`                                 | Allows a user to post memes themselves in the first area (e.g. Fresh)         |
-| `mb section <section_name> no direct`                              | Disallows a user to post memes themselves                                     |
-| `mb section <section_name> delete-on-push`                         | If set, the upvoted meme gets deleted when moved into the next channel        |
-| `mb section <section_name> no delete-on-push`                      | If set, the upvoted meme doesn't get deleted when moved into the next channel |
+The following may be configured by an admin:
+
+- Meme channel `mb meme -h`
+  - Set to a channel `mb meme #meme-channel`
+    - The old channel will not get modified
+    - The new channel will become the chanel in which MemeBot posts new memes
+  - Disable `mb meme --disable`
+    - Disables all meme functionality of MemeBot for the guild
+    - The old meme channel will not be deleted or modified
+  - Print the meme channel `mb meme`
+    - Used to see wich channel (if any) is configured as the meme channel for this guild
+- Confession channel
+  - Set to a channel `mb meme #confession-channel`
+    - The old channel will not get modified
+    - The new channel will become the chanel in which MemeBot posts new confessions
+  - Disable `mb conf --disable`
+    - Disables all confession functionality of MemeBot for the guild
+    - The old confession channel will not be deleted or modified
+  - Print the confession channel `mb conf`
+    - Used to see wich channel (if any) is configured as the confession channel for this guild
+- Cmd channel
+  - Set the cmd channel `mb cmd-channel #commands`
+    - Configures the channel in which MemeBot will listen for commands
+  - Disable the cmd channel `mb cmd-channel --disable`
+    - Disables the command channel
+    - MemeBot will be listening for commands in all channels
+    - The command channel is set by default to the one in which `mb init` was entered initially
+  - Print the cmd channel
+    - Used to see wich channel (if any) is configured as the command channel for this guild
+- Admin role `mb admin -h`
+  - Set the admin role `mb admin @BotAdmin`
+    - MemeBot will ignore all commands issued by users without the admin role or the Administrator guild privilege
+  - Disable the admin role `mb admin --disable`
+    - MemeBot will use all commands issued in the command channel (if set, otherwise all messages beginning with `mb` are interpreted as commands)
+  - Print the admin role `mb admin`
+    - Used to see wich channel (if any) is configured as the meme channel for this guild
+- Downvote limit `mb downvote -h`
+  - Set the downvote limit `mb downvote 10`
+    - Sets the downvote limit to 10
+    - Any meme with 11 or more downvotes will be removed by MemeBot
+    - Using `mb downvote 0` will result in any downvote issued removing a meme
+    - Already downvoted memes will not be re-checked if they still meet the condition
+    - Already downvoted memes will be removed once they don't meet the condition after a downvote
+  - Disable the downvote limit `mb downvote --disable`
+    - The downvote condition will get removed
+    - Memes which have been removed already will not get posted again
+  - Print the downvote limit `mb downvote`
+    - Used to see which number (if any) is configured as the downvote limit for this guild
+- Guild name `mb name -h`
+  - It's like a domain name for the guild, it must be unique and should be short. "My amazing server" may have "mas"
+  - Set the guild name `mb name nameOfGuild`
+    - Where "nameOfGuild" is the desired name
+  - Print the name `mb name`
+    - Prints the configured name
+  - The name may not be disabled
+    - Users need it to interact with the guild using MemeBot
+- Guild initialization `mb init`
+  - This command must be run once before all others
+  - Only someone with the Administrator guild-privilege may execute it
+  - It sets up the guild in MemeBots database
+  - It sets the guilds command channel to the one, in which this command was issued
+  - Setting the admin role is not supported at this step
+
+## Users' manual
+
+This section focuses on how a user (non-admin) may interact with MemeBot.
+
+A user may only interact with MemeBot via a direct message (DM) to MemeBot.
+For more details a user may always DM MemeBot with `mb -h`.
+Furthermore, `-h` may be appended to any command to learn more about any command.
+
+A user can:
+
+- Select a server
+  - This is required for MemeBot to know where to post
+    - Neither memes nor confessions can be submitted without this
+  - Enter `mb server serverName` where "serverName" is the name configured by the admins
+  - The user can view the selected server using `mb server`
+  - Deselecting a selected server is not supported (but changing it is)
+- Submit memes
+  - Post meme first (picture or video)
+  - Then enter `mb meme` (add `-a` to stay anonymous)
+- Submit confessions
+  - Type `mb conf "My multi-word confession with \"escaped quotes\" and a closing quote"`
+  - Confessions are always posted anonymously
+  - Confessions must be enclosed with double quotes `"`
+  - If a confession should contain quotes itself, they must be escaped `\"`
 
 ## Copyright notice
 
 **Copyright 2019 Bernd-L.  
-Licensed under [the AGPLv3 license](https://github.com/Bernd-L/meme-bot/blob/master/LICENSE.md)**
+Licensed under [the AGPLv3 license](https://github.com/Bernd-L/meme-bot/blob/master/LICENSE.md).**
