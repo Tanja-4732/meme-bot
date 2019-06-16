@@ -8,6 +8,7 @@
     "downvotes",
     "downvoting",
     "middlewares",
+    "nodemon",
     "postgres",
     "typeorm",
     "upvote",

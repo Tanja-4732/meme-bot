@@ -62,3 +62,6 @@ typings/
 
 # ignore the compiled dist folder
 dist
+
+# Ignore the container cache
+.vscode-server/
