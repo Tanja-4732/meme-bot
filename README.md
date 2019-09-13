@@ -10,6 +10,7 @@ Automated meme management for Discord
   - [Getting started](#getting-started)
   - [Configuration](#configuration)
   - [Users' manual](#users-manual)
+  - [Hosting](#hosting)
   - [Copyright notice](#copyright-notice)
 
 ## Features
@@ -139,6 +140,35 @@ A user can:
   - Confessions are always posted anonymously
   - Confessions must be enclosed with double quotes `"`
   - If a confession should contain quotes itself, they must be escaped `\"`
+
+## Hosting
+
+If you want to host MemeBot yourself, you'll need to follow these steps:
+
+1. Get the source code (e.g. `git clone git clone git@github.com:Bernd-L/ meme-bot.git`)
+2. Install [Node.js](https://nodejs.org/en/download/)
+3. Install [PostgreSQL](https://www.postgresql.org/download/)
+4. Run `npm install` within the source folder
+5. Create (or reuse existing) withing PostgreSQL
+   1. A user (with the login privilege and a password)
+   2. A database (owned by the user)
+   3. A schema within the database (owned by the user)
+6. Set the environment variables in the table below
+7. Start MemeBot using `npm start`
+
+The environment variables:
+
+| Description                                        | Environment variable name | Example value(s)                                  |
+| -------------------------------------------------- | ------------------------- | ------------------------------------------------- |
+| The hostname of the PostgreSQL server              | `MB_HOST`                 | `localhost`, `memebot-db.example.com`             |
+| The post of the PostgreSQL server                  | `MB_PORT`                 | `5432` (It's recommended to use this one)         |
+| The username of the PostgreSQL user                | `MB_USER`                 | `mb`, `memebot_user`                              |
+| The password of the                                | `MB_PWD`                  | `mb`, `Sup€rPassword123`                          |
+| The name of the PostgreSQL database used by MemBot | `MB_DB`                   | `mb`                                              |
+| If SSL should be used to connect to the DB         | `MB_SSL`                  | `false`, `true`                                   |
+| The mode of operation of MemeBot                   | `MB_MODE`                 | `development`, `production`                       |
+| The PostgreSQL schema to be used by MemeBot        | `MB_SCHEMA`               | `public`, `mb_dev`                                |
+| The token issued by Discord to connect MemeBot     | MB_TOKEN                  | `NSkjsd7349SDjlkj.sdfjNCS28.sdjJDS83349JWdjsdjgn` |
 
 ## Copyright notice
 

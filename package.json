@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Automates and manages meme channels for Discord guilds",
   "scripts": {
-    "start": "node ./dist/bot.js",
+    "start": "npm run build && node ./dist/bot.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "tslint **.ts",
     "build": "tsc",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "commander": "^2.19.0",
-    "discord.js": "^11.4.2",
+    "discord.js": "^11.5.1",
     "pg": "^7.9.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",

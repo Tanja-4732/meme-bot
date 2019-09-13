@@ -35,7 +35,7 @@ createConnection({
   username: process.env.MB_USER,
   password: process.env.MB_PWD,
   database: process.env.MB_DB,
-  ssl: true,
+  ssl: process.env.MB_SSL === "true",
   entities: [__dirname + "/models/*"],
   synchronize: process.env.MB_MODE !== "production" || true,
   logging: process.env.MB_LOG_DB === "3" ? true : ["error", "warn"],
