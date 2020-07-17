@@ -1,4 +1,6 @@
 # MemeBot
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FBernd-L%2Fmeme-bot.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FBernd-L%2Fmeme-bot?ref=badge_shield)
+
 
 Automated meme management for Discord
 
@@ -174,3 +176,7 @@ The environment variables:
 
 **Copyright 2019 Bernd-L.  
 Licensed under [the AGPLv3 license](https://github.com/Bernd-L/meme-bot/blob/master/LICENSE.md).**
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FBernd-L%2Fmeme-bot.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FBernd-L%2Fmeme-bot?ref=badge_large)
