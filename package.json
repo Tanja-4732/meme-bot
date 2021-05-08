@@ -34,7 +34,7 @@
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
     "source-map-support": "^0.5.12",
-    "typeorm": "^0.2.15",
+    "typeorm": "^0.2.25",
     "typescript": "^3.3.3333"
   }
 }
